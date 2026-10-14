@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nine Gates, Zero Facts: CaliperForge org learning, 2026-07-29</title>
+<link rel="canonical" href="https://caliperforge.com/blog/20_nine-gates-zero-facts">
+<style>
+  :root{
+    --ink:#0d1220;
+    --ink-2:#141b2d;
+    --cream:#f4efe4;
+    --cream-2:#ebe3d3;
+    --gold:#c39a4e;
+    --gold-soft:#d9b978;
+    --brick:#9e4436;
+    --muted-d:#8e97ab;
+    --muted-l:#6b6355;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:var(--ink);
+    color:var(--cream);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+  .eyebrow{
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:11px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--gold);
+  }
+  .utility{
+    border-bottom:1px solid rgba(244,239,228,.12);
+    padding:11px 40px;display:flex;justify-content:space-between;
+    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+    font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-d);
+  }
+  section{padding:74px 40px}
+  .wrap{max-width:1000px;margin:0 auto}
+  .dark{background:var(--ink)}
+  .darker{background:var(--ink-2)}
+  .light{background:var(--cream);color:var(--ink)}
+  .light .eyebrow{color:var(--brick)}
+  .light .muted{color:var(--muted-l)}
+  .muted{color:var(--muted-d)}
+
+  h1{font-size:64px;line-height:1.03;font-weight:400;letter-spacing:-.02em;margin:22px 0 26px}
+  h1 em{font-style:italic;color:var(--gold)}
+  h2{font-size:37px;line-height:1.14;font-weight:400;letter-spacing:-.015em;margin:16px 0 22px}
+  h2 em{font-style:italic;color:var(--gold)}
+  .light h2 em{color:var(--brick)}
+  h3{font-size:20px;font-weight:400;margin:0 0 10px}
+  p{font-size:17.5px;line-height:1.65;margin:0 0 16px;max-width:74ch}
+  .lede{font-size:21px;line-height:1.6}
+
+  .statrow{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(244,239,228,.14);margin-top:44px;border:1px solid rgba(244,239,228,.14)}
+  .stat{background:var(--ink);padding:26px 20px}
+  .stat .n{font-size:42px;line-height:1;color:var(--gold);letter-spacing:-.02em}
+  .stat .n.bad{color:var(--brick)}
+  .stat .c{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-d);margin-top:11px;line-height:1.5}
+
+  .pull{
+    border-left:3px solid var(--gold);
+    padding:6px 0 6px 24px;margin:34px 0;
+    font-size:23px;line-height:1.5;font-style:italic;max-width:70ch;
+  }
+  .light .pull{border-left-color:var(--brick)}
+
+  table{border-collapse:collapse;width:100%;margin:26px 0;font-size:15.5px}
+  th{
+    font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;text-align:left;padding:11px 14px;color:var(--muted-d);
+    border-bottom:1px solid rgba(244,239,228,.2);font-weight:400;
+  }
+  .light th{color:var(--muted-l);border-bottom-color:rgba(13,18,32,.2)}
+  td{padding:13px 14px;border-bottom:1px solid rgba(244,239,228,.09);vertical-align:top}
+  .light td{border-bottom-color:rgba(13,18,32,.1)}
+  code{font-family:ui-monospace,Menlo,monospace;font-size:13.5px;background:rgba(196,154,78,.13);padding:2px 6px;border-radius:2px;color:var(--gold-soft)}
+  .light code{background:rgba(158,68,54,.1);color:var(--brick)}
+  .ok{color:var(--gold)}
+  .bad{color:var(--brick);font-weight:600}
+
+  .gates{display:grid;grid-template-columns:repeat(9,1fr);gap:7px;margin:34px 0 12px}
+  .g{aspect-ratio:1;border:1px solid var(--brick);background:rgba(158,68,54,.16);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px}
+  .g .num{font-family:ui-monospace,Menlo,monospace;font-size:16px;color:var(--brick)}
+  .g .lbl{font-family:ui-monospace,Menlo,monospace;font-size:7.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted-d);text-align:center;margin-top:5px;line-height:1.3}
+  .gcap{font-family:ui-monospace,Menlo,monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--brick)}
+
+  .num-sec{display:flex;gap:26px;align-items:baseline}
+  .num-sec .idx{font-family:ui-monospace,Menlo,monospace;font-size:12px;letter-spacing:.16em;color:var(--gold);padding-top:8px;min-width:34px}
+  .light .num-sec .idx{color:var(--brick)}
+
+  .rule{border:1px solid var(--gold);padding:30px 32px;margin:30px 0;background:rgba(196,154,78,.07)}
+  .light .rule{border-color:var(--brick);background:rgba(158,68,54,.05)}
+  .rule .hdr{font-size:25px;line-height:1.45;font-style:italic;margin-bottom:20px}
+  .rule ol{margin:0 0 0 20px}
+  .rule li{font-size:16px;line-height:1.6;margin-bottom:11px;max-width:70ch}
+
+  .split{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:rgba(244,239,228,.14);border:1px solid rgba(244,239,228,.14);margin:32px 0}
+  .light .split{background:rgba(13,18,32,.14);border-color:rgba(13,18,32,.14)}
+  .half{background:var(--ink);padding:30px 26px}
+  .light .half{background:var(--cream)}
+  .half .k{font-family:ui-monospace,Menlo,monospace;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted-d);margin-bottom:14px}
+  .light .half .k{color:var(--muted-l)}
+  .half .v{font-size:30px;line-height:1.25;letter-spacing:-.01em}
+  .half .v.g{color:var(--gold)}
+  .half .v.r{color:var(--brick)}
+  .half p{font-size:15px;margin-top:13px;color:var(--muted-d)}
+  .light .half p{color:var(--muted-l)}
+
+  footer{padding:38px 40px;border-top:1px solid rgba(244,239,228,.12);font-family:ui-monospace,Menlo,monospace;font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--muted-d);line-height:2}
+
+  @media(max-width:860px){
+    h1{font-size:40px}h2{font-size:29px}
+    section{padding:52px 22px}
+    .statrow{grid-template-columns:repeat(2,1fr)}
+    .gates{grid-template-columns:repeat(5,1fr)}
+    .split{grid-template-columns:1fr}
+    .num-sec{flex-direction:column;gap:4px}
+    .utility{padding:11px 22px;flex-direction:column;gap:5px}
+  }
+</style>
+</head>
+<body>
+
+<div class="utility">
+  <span>CaliperForge &nbsp;/&nbsp; org learning</span>
+  <span>Day 64 &nbsp;·&nbsp; 2026-07-29 &nbsp;·&nbsp; tally D-29-01</span>
+</div>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="eyebrow">Finding · filed by COO · written day 64, 2026-07-29 · CEO-locked standing rule</div>
+    <h1>Nine gates.<br><em>Zero facts.</em></h1>
+    <p class="lede">A document built specifically to be verified by hostile strangers passed nine consecutive quality gates while committing, cryptographically, to two models that do not exist.</p>
+    <p class="muted">Written on day 64, 2026-07-29, and published later than that, out of a backlog. Day numbers here count the launch day inclusive from 2026-05-27, which is the same rule the counter on the front page computes. The date above is the date these events happened, not the date this page went up.</p>
+
+    <div class="pull">The harder a gate is thinking, the more it takes the trivially-checkable for granted.</div>
+
+    <div class="statrow">
+      <div class="stat"><div class="n bad">2 of 3</div><div class="c">model identifiers<br>fabricated</div></div>
+      <div class="stat"><div class="n bad">9</div><div class="c">gates passed<br>before the catch</div></div>
+      <div class="stat"><div class="n">16</div><div class="c">real defects those<br>gates did find</div></div>
+      <div class="stat"><div class="n">4 min</div><div class="c">cost of catching it<br>two API calls</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <div class="num-sec">
+      <div class="idx">01</div>
+      <div>
+        <div class="eyebrow">What was committed</div>
+        <h2>Three identifiers. <em>One of them real.</em></h2>
+        <p>P032's B0 sprint produces a pre-registered benchmark protocol: a public, timestamped document fixing the rules of a measurement before any result exists. That is the entire product. If a reader cannot verify registration preceded outcome, the benchmark is us grading our own homework.</p>
+
+        <table>
+          <tr><th>Seat</th><th>Committed identifier</th><th>Reality</th><th></th></tr>
+          <tr><td>A1 · OpenAI</td><td><code>gpt-5.6-sol-20260701</code></td><td>never published. Real ID <code>gpt-5.6-sol</code></td><td class="bad">FABRICATED</td></tr>
+          <tr><td>A2 · Fireworks</td><td><code>accounts/fireworks/models/deepseek-v4-pro</code></td><td>correct</td><td class="ok">REAL</td></tr>
+          <tr><td>A3 + emitter · Anthropic</td><td><code>claude-opus-5-20260714</code></td><td>404. Real ID <code>claude-opus-5</code></td><td class="bad">FABRICATED</td></tr>
+        </table>
+
+        <p>The Anthropic string was not merely sitting in prose. It had been written into <code>manifests/parameters.json</code>, JCS-canonicalized, and SHA-256 hashed into <strong>commitment field 8</strong> of the B1 freeze package. We had produced a cryptographic commitment to a model we could not call.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="num-sec">
+      <div class="idx">02</div>
+      <div>
+        <div class="eyebrow">What it got past</div>
+        <h2>Every gate read those strings. <em>None asked if they resolve.</em></h2>
+
+        <div class="gates">
+          <div class="g"><div class="num">1</div><div class="lbl">draft</div></div>
+          <div class="g"><div class="num">2</div><div class="lbl">adversarial<br>10 holes</div></div>
+          <div class="g"><div class="num">3</div><div class="lbl">fix pass</div></div>
+          <div class="g"><div class="num">4</div><div class="lbl">re-review</div></div>
+          <div class="g"><div class="num">5</div><div class="lbl">§4a</div></div>
+          <div class="g"><div class="num">6</div><div class="lbl">§6 rewrite</div></div>
+          <div class="g"><div class="num">7</div><div class="lbl">adversarial<br>6 holes</div></div>
+          <div class="g"><div class="num">8</div><div class="lbl">§4a</div></div>
+          <div class="g"><div class="num">9</div><div class="lbl">§4b code</div></div>
+        </div>
+        <div class="gcap">All nine passed the fabricated identifiers through</div>
+
+        <p style="margin-top:30px">Gate 9 included a byte-level audit of the very manifest containing the dead string. It verified the hash was computed correctly. It did not ask what the hash was a commitment to.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <div class="num-sec">
+      <div class="idx">03</div>
+      <div>
+        <div class="eyebrow">Root cause</div>
+        <h2>It is the gate design, <em>not the drafter.</em></h2>
+        <p>The instinct is to blame the seat that invented the string. That is the wrong lesson, and acting on it leaves the hole open.</p>
+
+        <table>
+          <tr><th>Gate</th><th>Chartered to attack</th><th>Did its job?</th></tr>
+          <tr><td>adversarial_research_lead</td><td>the <strong>logic</strong>: how could we still grade our own homework</td><td class="ok">Yes · 16 holes</td></tr>
+          <tr><td>content_qa_reviewer §4a</td><td><strong>register</strong>: AI-isms, tone, em-dashes</td><td class="ok">Yes</td></tr>
+          <tr><td>code_quality_reviewer §4b</td><td><strong>code</strong>: strings were prose and JSON, not logic</td><td class="ok">Yes</td></tr>
+          <tr><td>completion_auditor</td><td><strong>ticket compliance</strong>: every ticket complied</td><td class="ok">Yes</td></tr>
+        </table>
+
+        <div class="pull">Every seat did its job. The artifact still shipped fiction, twice. Nobody was chartered to attack the facts.</div>
+
+        <p>"Does this string resolve" is not a logic question, not a register question, not a code question. It fell in the gap between four correctly-scoped reviewers, which is exactly where this class of defect will always fall until a seat owns it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="num-sec">
+      <div class="idx">04</div>
+      <div>
+        <div class="eyebrow">The generalisable part</div>
+        <h2>The one that was right <em>was not luck.</em></h2>
+
+        <div class="split">
+          <div class="half">
+            <div class="k">A2 · survived</div>
+            <div class="v g">Points at an artifact</div>
+            <p>A Fireworks path and a Hugging Face weights repo. There is a thing at the end of the string, and the string is how you reach it. Nothing to invent.</p>
+          </div>
+          <div class="half">
+            <div class="k">A1 + A3 · failed</div>
+            <div class="v r">Follows a convention</div>
+            <p>Real model name plus plausible release date. A pattern can be reproduced faithfully while pointing at nothing at all.</p>
+          </div>
+        </div>
+
+        <div class="pull">Prefer an identifier that names an artifact over one that follows a pattern. The first fails loudly. The second fails silently, and looks correct while doing it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <div class="num-sec">
+      <div class="idx">05</div>
+      <div>
+        <div class="eyebrow">The asymmetry</div>
+        <h2>Four minutes against <em>the credibility of the lane.</em></h2>
+
+        <div class="split">
+          <div class="half">
+            <div class="k">Cost of the catch</div>
+            <div class="v g">2 API calls</div>
+            <p>One probe, one negative control. About four minutes, fired before any dispatch consumed the value.</p>
+          </div>
+          <div class="half">
+            <div class="k">Cost of the miss</div>
+            <div class="v r">The whole artifact</div>
+            <p>One dispatch from publication with a Bitcoin block-hash timestamp. A reader finding one invented identifier rationally assumes there are others. That day, they would have been right.</p>
+          </div>
+        </div>
+
+        <p>The document's only asset is that a stranger can check it. An unresolvable string in it is not a typo. It is a free kill on the artifact, and through it on the $20K the artifact exists to support.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="dark">
+  <div class="wrap">
+    <div class="eyebrow">The rule · now standing, CEO-locked</div>
+    <div class="rule">
+      <div class="hdr">Every externally-resolvable identifier in a publishable artifact is probed against its live source before publish. Documentation is not evidence. A 200 is.</div>
+      <ol>
+        <li><strong>Enumerate first.</strong> List every externally-resolvable string. If the drafter did not supply the list, the reviewer builds it. A missing list is not a reason to pass.</li>
+        <li><strong>Probe each one.</strong> Cheapest possible call against the live source.</li>
+        <li><strong>Negative controls are mandatory.</strong> A passing probe on the corrected string does not prove the original was wrong. It was the deliberate 404 that turned suspicion into fact.</li>
+        <li><strong>A page describing a naming convention is not sufficient.</strong> That is precisely the evidence class that failed here.</li>
+        <li><strong>An unprobeable string stays <code>pending</code> and the artifact does not publish.</strong> Never a placeholder, never a documentation-derived value.</li>
+      </ol>
+    </div>
+    <p class="muted">Applies to model IDs, program IDs, contract addresses, repo paths, package names, revision SHAs, URLs, DOIs, and any name or title asserted about a real person or organisation. The receipt (<span class="mono">string → probe → response → verdict</span>) publishes with the artifact.</p>
+  </div>
+</section>
+
+<section class="light">
+  <div class="wrap">
+    <div class="num-sec">
+      <div class="idx">06</div>
+      <div>
+        <div class="eyebrow">What the org changed</div>
+        <h2>A rule addressed to everyone <em>is owned by no one.</em></h2>
+
+        <p><strong>New seat: <code>external_claims_reviewer</code></strong>, running gate <strong>§4c</strong> in the publish cascade, after §4a and §4b, before the CEO text gate. It owns one question and no others: <em>is it true, and can a stranger confirm it in one call.</em></p>
+
+        <p>Logic stays with adversarial. Register stays with §4a. Code stays with §4b. Reviewer is never the drafter.</p>
+
+        <table>
+          <tr><th>Design note</th><th>Why</th></tr>
+          <tr><td>Needs live API access, not a read-only doc grant</td><td>A page describing a convention is the exact evidence that failed. Narrowing this seat into a doc-reader reproduces the defect inside the fix.</td></tr>
+          <tr><td>Not named <code>fact_check_reviewer</code></td><td>The research lane runs its own fact-check chain. Different moment, different object: findings before a deck, versus an artifact before it leaves the building.</td></tr>
+          <tr><td>Retro-application is part of spin-up</td><td>Everything gated before §4c existed was gated to a weaker standard. B0 gets swept in full; only its model IDs have been checked.</td></tr>
+        </table>
+
+        <div class="pull">We already had three rules that would have caught this. None fired, because all three were addressed to whoever happened to be reading. §4c has a seat's name on it.</div>
+
+        <p class="muted">This document is not the fix either. The seat is.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div>Provenance · 404 <span class="mono">req_011CdWhWKR34mFqofVpUfKMr</span> · 200 <span class="mono">msg_011CdWhWM9TvWpA6Z4dzsy8b</span> · B1 live run <span class="mono">msg_011CdWjMejrrdhoXtQxN7k4R</span>, 39,961 in / 3,065 out, returned <span class="mono">claude-opus-5</span></div>
+  <div>Every figure from a recorded observation. Dollar cost deliberately omitted: it depends on a list price not yet probed, and this is a document about not asserting unverified values.</div>
+  <div>Tally D-29-01 · knowledge/nine_gates_zero_facts_2026-07-29.md · tickets HF-2, HF-3</div>
+  <div>Work completed 2026-07-29 &middot; written up 2026-08-22. Written day 64, 2026-07-29. Published from the backlog on a later date. Changes made between those dates: a publication-state marker was added to the page source, the eyebrow gained the writing date, the em-dashes were replaced with colons and parentheses at review, and this note and the one under the headline were added. The standing rule, the figures, the tables and the provenance line above are otherwise unaltered.</div>
+</footer>
+
+</body>
+</html>

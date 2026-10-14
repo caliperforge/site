@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>5 billion SYS, one missing burn: Syscoin, SPV proofs, and the conservation invariant, CaliperForge</title>
+<meta name="description" content="On June 7, 2026, the Syscoin bridge lost $8.56M to a malformed SPV proof: approximately 5 billion SYS minted on the destination side with no corresponding burn. The conservation invariant a bridge must enforce, CI-verified reference pairs on Anchor/Solana and Cairo, and what a Syscoin-specific harness would look like.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-22 · MICHAEL MOFFETT</div>
+    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">5 billion SYS, one missing burn: Syscoin, SPV proofs, and the conservation invariant.</span></h1>
+    <p class="cf-hero-lede">
+      On June 7, 2026, the Syscoin bridge suffered a loss reported at
+      $8.56M (<a href="https://rekt.news/syscoin-rekt" rel="noopener">rekt.news</a>).
+      The mechanism was a malformed SPV proof accepted as valid:
+      approximately 5 billion SYS tokens were minted on the destination
+      side with no corresponding burn on the source side. That is the
+      load-bearing bug for the conservation class. The
+      <a href="https://www.halborn.com/blog/post/explained-the-syscoin-bridge-hack-june-2026" rel="noopener">Halborn postmortem</a>
+      linked below covers the full exploit chain, including the precise
+      proof fields that were malformed and the code paths that admitted
+      them.
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      This post is not a postmortem. Halborn published the definitive
+      technical incident report: proof structure, validation bypass,
+      on-chain evidence. What this post covers is the other leg: the
+      conservation property a bridge contract should enforce at the
+      state-transition level, what it asserts, and how a stateful test
+      that carries that property would have caught this class before
+      mainnet.
+    </p>
+  </header>
+</div>
+
+<main class="cf-band--paper">
+  <div class="cf-article-shell">
+    <article class="cf-article">
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What happened</p>
+        <h2>Mint without burn.</h2>
+        <p>
+          SPV (Simplified Payment Verification) is a class of proof that
+          lets one chain verify a transaction occurred on another chain
+          without downloading the full source-chain history. Cross-chain
+          bridges that move native tokens between chains use SPV proofs as
+          the authorization primitive for minting: the source chain records
+          a burn; the burn event is encoded into an SPV proof; the
+          destination chain validates the proof and mints equivalent tokens.
+        </p>
+        <p>The conservation property this flow should enforce is:</p>
+        <blockquote>
+          For every token minted on the destination, a valid proof of a
+          corresponding burn on the source must have been accepted first.
+        </blockquote>
+        <p>
+          The Syscoin bridge&rsquo;s SPV validation did not hold this
+          property under malformed inputs. A proof that should have failed
+          validation (because the proof fields did not correspond to a real
+          burn event on the source chain) was instead accepted. The
+          destination contract minted approximately 5 billion SYS without a
+          matching burn. Supply on the destination side diverged from supply
+          on the source side. The bridge&rsquo;s conservation invariant was
+          broken.
+        </p>
+        <p>
+          The Nomad bridge exploit in August 2022 (~$190M) is the closest
+          prior-art incident in this class. Nomad&rsquo;s replicas stored an
+          <code>acceptableRoot</code> hash used to validate bridge messages.
+          An initialization error set <code>acceptableRoot</code> to
+          <code>0x00</code>. Any message with a proof rooted at
+          <code>0x00</code>, including messages with a zeroed-out or empty
+          proof field, passed validation. The contract then processed those
+          messages as legitimate, allowing anyone to forge claims and drain
+          the bridge. Same pattern: proof validation admits inputs that
+          should be rejected &rarr; tokens minted or transferred without
+          genuine backing &rarr; conservation broken.
+        </p>
+        <p>
+          The specific proof field that was malformed in Syscoin&rsquo;s
+          case, and the code path that admitted it, is documented in the
+          Halborn postmortem. This writeup stays on the invariant class.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The pattern</p>
+        <h2>Supply divergence via proof validation bypass.</h2>
+        <p>
+          Cross-chain bridges in the burn-then-mint family have a core
+          conservation invariant that spans both sides of the bridge:
+        </p>
+        <pre><code>total_minted_on_destination &le; total_burned_on_source (for valid burns)</code></pre>
+        <p>
+          When proof validation is the gate that enforces &ldquo;this burn
+          was valid,&rdquo; any bypass of proof validation is a bypass of
+          the conservation invariant. The bridge&rsquo;s correctness depends
+          on the proof gate being sound, not merely present.
+        </p>
+        <p>
+          This is the pattern the <code>conservation</code> invariant class
+          is built to catch: a state change (minting) that should require an
+          authorizing condition (valid burn proof) proceeding without that
+          condition being genuinely satisfied. The state change here is a
+          token supply increase on the destination chain without a valid
+          corresponding commitment on the source chain.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What the invariant asserts</p>
+        <h2>The property and the violating sequence.</h2>
+        <p>The property the bridge should have enforced is:</p>
+        <blockquote>
+          After any mint operation, the total tokens outstanding on the
+          destination side must not exceed the total tokens proven burned on
+          the source side via proofs that pass a sound validation.
+        </blockquote>
+        <p>Expressed as a stateful test property:</p>
+        <ul>
+          <li>
+            Track a running counter of <code>valid_burns_proven</code>
+            and <code>tokens_minted</code>.
+          </li>
+          <li>
+            After every call to the mint entry point, assert:
+            <code>tokens_minted &le; valid_burns_proven</code>.
+          </li>
+          <li>
+            The attacker&rsquo;s move (submitting a malformed SPV proof
+            to the mint function) is in the callspace of the stateful
+            test.
+          </li>
+          <li>
+            If the validation function admits malformed proofs, the test
+            reaches a state where
+            <code>tokens_minted &gt; valid_burns_proven</code>, and the
+            invariant fires.
+          </li>
+        </ul>
+        <p>
+          The violating sequence is short: craft a malformed proof, call the
+          mint function, observe the counter diverge. A stateful fuzzer that
+          tracks the two counters, without being told the specific malformed
+          proof field, will find this shape by exploring the mint entry point
+          with random proof bytes. Some random byte vectors will trigger the
+          admitted-but-malformed path; the invariant fires when they do.
+        </p>
+        <p>
+          This is the same shape as the Jito
+          <code>claim_amount_conservation</code> invariant in our
+          CI-verified reference suite: total claimed must not exceed total
+          allocated per merkle root. The merkle root is the authorization
+          primitive for claims in Jito&rsquo;s tip distribution; the SPV
+          proof is the authorization primitive for mints in a bridge. The
+          invariant structure is the same.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">CI-verified coverage</p>
+        <h2>Map to CI-verified reference pairs.</h2>
+        <p>
+          Three artifacts in the CaliperForge toolkit carry a
+          <code>conservation</code> reference pair verified in CI today. All
+          are CI-verified per
+          <code>agents/build_squad_lead/proof_register.md</code>. The
+          conservation property is rail-agnostic; the Anchor/Solana and
+          Cairo/Starknet reference pairs are the CI-verified evidence for
+          the class on those rails.
+        </p>
+        <p>
+          <strong>cf-invariants-anchor (Anchor / Solana),
+          <code>balance_conservation</code> class
+          (<code>vault_ref</code> / <code>vault_ref_planted</code>).</strong>
+          The clean variant enforces that the vault&rsquo;s token supply can
+          only increase via calls with a valid deposit commitment; total
+          outstanding cannot exceed total committed. The planted variant
+          removes the supply cap check, allowing the minted/issued balance
+          to exceed the committed backing. The conservation invariant then
+          fires with at least one marker. Clean = 0 markers, planted
+          &ge; 1 marker. CI-verified, commit <code>aee4136</code>. Repo:
+          <a href="https://github.com/caliperforge/cf-invariants-anchor" rel="noopener">github.com/caliperforge/cf-invariants-anchor</a>.
+        </p>
+        <p>
+          The planted <code>vault_ref</code> drops the commitment check
+          before incrementing the balance. That is structurally equivalent
+          to what the Syscoin mint function did when it accepted a proof
+          without validating it: the branch that should gate the supply
+          increment was bypassed. The invariant catches both by tracking the
+          same divergence between &ldquo;authorized amount&rdquo; and
+          &ldquo;minted amount.&rdquo;
+        </p>
+        <p>
+          <strong>cf-invariants-jito (Anchor / Solana),
+          <code>claim_amount_conservation</code> +
+          <code>no_double_claim</code> classes on the real Jito
+          tip-distribution program.</strong>
+          <code>claim_amount_conservation</code> asserts that total claimed
+          across all recipients cannot exceed the merkle root&rsquo;s total
+          allocation. <code>no_double_claim</code> asserts that no recipient
+          can receive more than their single allocation. Both planted twins
+          remove the accounting check, allowing the invariant to fire.
+          CI-verified at commit <code>e683c5a</code>. Repo:
+          <a href="https://github.com/caliperforge/cf-invariants-jito" rel="noopener">github.com/caliperforge/cf-invariants-jito</a>.
+        </p>
+        <p>
+          The Jito conservation harness ran against a real on-chain
+          program&rsquo;s accounting logic, not a synthetic example. That is
+          the framing a Syscoin-specific harness would need: instrument the
+          real mint function&rsquo;s proof-validation and supply-accounting
+          paths &rarr; track the two-counter property &rarr; plant the
+          validation bypass &rarr; show the invariant fires on malformed
+          inputs.
+        </p>
+        <p>
+          <strong>cf-invariants (Cairo / Starknet), 12-class matrix
+          including conservation.</strong> The 12-class reference suite
+          covers supply conservation across ERC-20, ERC-4626, lending,
+          staking, and vesting contracts. Each reference has a planted bug
+          that breaks the relevant conservation property; each compile-twins
+          to a clean variant via a <code>clean</code> scarb feature; each
+          asserts <code>planted &ge; 1</code> AND <code>clean = 0</code> in
+          CI. PR #2 squash-merged 2026-06-07 at commit <code>0bff2c4</code>,
+          CI run <code>27075213962</code> 26/26 green. All twelve references
+          deployed and source-verified on Starknet Sepolia. Repo:
+          <a href="https://github.com/caliperforge/cf-invariants-starknet" rel="noopener">github.com/caliperforge/cf-invariants-starknet</a>.
+          Developer cookbook (public since 2026-06-11, PR #3 squash-merged
+          at <code>7f94b08</code>):
+          <a href="https://github.com/caliperforge/cf-invariants-starknet/tree/main/docs/cookbook" rel="noopener">github.com/caliperforge/cf-invariants-starknet/tree/main/docs/cookbook</a>.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Harness design</p>
+        <h2>What a Syscoin-specific invariant harness would look like.</h2>
+        <p>
+          The exercise is design rather than a shipped harness. Syscoin runs
+          its own UTXO-based chain with an Ethereum-compatible execution
+          layer (NEVM); the bridge contract lives in that EVM context. A
+          Syscoin-specific conservation harness would target the
+          bridge&rsquo;s mint entry point in a Foundry or Hardhat test
+          environment, not the Anchor or Cairo rails our CI-verified
+          reference pairs use.
+        </p>
+        <p>The invariant design is clear regardless of rail:</p>
+        <ol>
+          <li>
+            Identify the two counters:
+            <code>valid_burns_proven</code> (incremented only when SPV
+            proof validation succeeds on a non-malformed proof) and
+            <code>tokens_minted</code> (incremented on every successful
+            mint call).
+          </li>
+          <li>
+            Express the property: after every call to the mint entry
+            point, <code>tokens_minted &le; valid_burns_proven</code>.
+          </li>
+          <li>
+            Test setup: include the mint function in the callspace;
+            include a proof-generation helper that can emit both
+            well-formed and malformed proofs. The stateful test should
+            explore the full input space of the proof fields.
+          </li>
+          <li>
+            Assert after every transition: if <code>tokens_minted</code>
+            incremented, <code>valid_burns_proven</code> must have
+            incremented by the same amount in the same call.
+          </li>
+        </ol>
+        <p>
+          The violating sequence in step 4 is the exploit: mint called with
+          a malformed proof that the validation function admits, counters
+          diverge, invariant fires. A stateful fuzzer reaches this without
+          being told which proof field is malformed; it only needs to know
+          the property and the callspace.
+        </p>
+        <p>
+          The design above is a reference for teams building conservation
+          harnesses against bridge contracts in the EVM context.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Sources</p>
+        <h2>Primary analysis and CaliperForge artifacts.</h2>
+        <ul>
+          <li>
+            rekt.news writeup (incident coverage, loss figure, exploit
+            summary):
+            <a href="https://rekt.news/syscoin-rekt" rel="noopener">rekt.news/syscoin-rekt</a>
+          </li>
+          <li>
+            Halborn postmortem (primary technical analysis: proof
+            structure, validation bypass, on-chain evidence):
+            <a href="https://www.halborn.com/blog/post/explained-the-syscoin-bridge-hack-june-2026" rel="noopener">halborn.com/blog/post/explained-the-syscoin-bridge-hack-june-2026</a>
+          </li>
+        </ul>
+        <p><strong>Prior-art reference:</strong></p>
+        <ul>
+          <li>
+            Nomad bridge exploit (Aug 2022, ~$190M):
+            <code>acceptableRoot</code> initialized to <code>0x00</code>,
+            any zeroed proof accepted as valid, messages forged. Immunefi
+            hack analysis:
+            <a href="https://immunefi.com/blog/bug-fix-reviews/hack-analysis-nomad-bridge-august-2022/" rel="noopener">immunefi.com/blog/bug-fix-reviews/hack-analysis-nomad-bridge-august-2022/</a>
+          </li>
+        </ul>
+        <p><strong>CaliperForge artifacts cited:</strong></p>
+        <ul>
+          <li>
+            <a href="https://github.com/caliperforge/cf-invariants-anchor" rel="noopener">cf-invariants-anchor</a>
+           , Anchor / Solana, <code>balance_conservation</code>
+            reference pair, CI-verified <code>aee4136</code>.
+          </li>
+          <li>
+            <a href="https://github.com/caliperforge/cf-invariants-jito" rel="noopener">cf-invariants-jito</a>
+           , Anchor / Solana,
+            <code>claim_amount_conservation</code> +
+            <code>no_double_claim</code> classes on real Jito
+            tip-distribution, CI-verified <code>e683c5a</code>.
+          </li>
+          <li>
+            <a href="https://github.com/caliperforge/cf-invariants-starknet" rel="noopener">cf-invariants</a>
+           , Cairo / Starknet, 12-class matrix including
+            conservation, CI-verified <code>0bff2c4</code>, run
+            <code>27075213962</code>.
+          </li>
+          <li>
+            <a href="https://github.com/caliperforge/cf-invariants-starknet/tree/main/docs/cookbook" rel="noopener">cf-invariants developer cookbook</a>
+           , public since 2026-06-11, <code>7f94b08</code>.
+          </li>
+        </ul>
+        <p class="cf-article__meta">
+          Operator of record: Michael Moffett ,
+          <a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a>
+          ,
+          <a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a>.
+          This writeup was drafted with AI assistance; the invariant
+          framing, the coverage mapping, and this post were all reviewed
+          by the operator. See
+          <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>
+          for the full disclosure register.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>

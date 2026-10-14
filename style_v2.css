@@ -1,0 +1,475 @@
+/* ==========================================================================
+   CaliperForge — landing site stylesheet v2
+   Owner: Design Lead (T-009 v2 redesign — supersedes Eng Lead v1)
+   Locked: 2026-05-29
+   Pages: index.html, ai-disclosure.html
+
+   What this fixes from v1
+   -----------------------
+   1. v1 deployed white-on-black despite intended paper+blue palette. Root
+      cause: only `body { background; color; }` were set explicitly — every
+      child element inherited browser defaults, so any user-agent dark-mode
+      treatment (Safari Reader, Chrome auto-dark on dark-themed OS, Dark
+      Reader extension, screenshot-tool dark inversion) repainted the page
+      to its dark defaults. v2 sets `color-scheme: light` on :root which
+      tells the UA explicitly this page is light-only — UA dark-mode
+      machinery stands down. v2 also re-asserts background + color on every
+      structural element so nothing inherits a UA default. There is NO
+      `prefers-color-scheme: dark` block in this stylesheet, intentionally.
+   2. v1 tagline wrapped mid-word ("every chai / n.") because the masthead
+      container was too narrow vs. font-size at small viewports AND because
+      no soft-break / balance hint was given to the browser. v2 uses
+      `text-wrap: balance` on the h1, clamps the font-size with `clamp()`
+      so it scales smoothly, sets `hyphens: manual` + `word-break: normal`
+      to forbid mid-word breaks, and wraps the chain-comma phrase in a
+      no-wrap span so "every chain." stays atomic.
+   3. v1 contact block was a bulleted markdown-looking list. v2 is a CSS
+      grid with monospace label / body-text value rows, hairline rule
+      between rows. No bullet, no indent, label-value alignment.
+   4. v1 chains list was a markdown-style bulleted list. v2 is a row of
+      bordered chip-cards with chain name + scope. Reads as a designed
+      element, not body text.
+   5. v1 had no brand mark in the masthead. v2 inlines the locked anvil
+      mark (mark.svg) at 48px next to the wordmark — present, not dominant.
+   ========================================================================== */
+
+:root {
+    /* Color-scheme lock — tells the UA this page is LIGHT only.
+       Prevents Safari Reader / Chrome auto-dark / Dark Reader from
+       repainting form controls, scrollbars, and unstyled elements. */
+    color-scheme: light;
+
+    /* Palette — workshop register (Direction C). Warm off-white paper,
+       deep ink, workshop blue accent matching the locked brand mark. */
+    --paper:        #f5f1ea;   /* warm off-white background */
+    --paper-deep:   #ebe6dc;   /* slightly darker for chips / panels */
+    --rule:         #d8d1c2;   /* hairline rules */
+    --ink:          #171614;   /* near-black body text */
+    --ink-soft:     #4a463f;   /* muted body / secondary text */
+    --ink-faint:    #7a7468;   /* tertiary, captions */
+    --accent:       #1d3557;   /* workshop blue, same as brand mark fill */
+    --accent-hover: #2b4a73;   /* lifted on hover */
+    --accent-quiet: #e3e8f0;   /* very pale blue for chip backgrounds */
+
+    /* Type — system stack only. Zero network, zero FOUC, zero cost.
+       Justified: Phase 0 brand-front does not need a custom font to
+       establish identity; the workshop palette + the anvil mark + the
+       structural rhythm do that work. A custom font would add a render
+       blocking step for no identity gain at Phase 0 traffic. */
+    --font-sans:  -apple-system, BlinkMacSystemFont, "Segoe UI",
+                  "Inter", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-mono:  ui-monospace, "SF Mono", "JetBrains Mono", Menlo,
+                  Consolas, "Liberation Mono", monospace;
+
+    --measure: 44rem;          /* ~704px reading column */
+    --gutter:  1.5rem;
+    --radius:  4px;
+}
+
+/* ----- reset & base ---------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 16px;
+    -webkit-text-size-adjust: 100%;
+    background: var(--paper);
+    color: var(--ink);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Re-assert background on every structural region so no UA dark treatment
+   slips through on a sub-element. Belt + suspenders against v1's failure. */
+main, header, section, footer, aside, nav, article {
+    background: transparent;
+    color: var(--ink);
+}
+
+/* ----- layout shell ---------------------------------------------------- */
+
+.page {
+    max-width: var(--measure);
+    margin: 0 auto;
+    padding: 4.5rem var(--gutter) 6rem var(--gutter);
+}
+
+/* ----- masthead -------------------------------------------------------- */
+
+.masthead {
+    display: grid;
+    gap: 1.25rem;
+    padding-bottom: 2.5rem;
+    margin-bottom: 3rem;
+    border-bottom: 1px solid var(--rule);
+}
+
+.brandrow {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+}
+
+.brandrow .mark {
+    display: block;
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    background: var(--paper);
+}
+
+.brandrow .wordmark {
+    font-family: var(--font-sans);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    color: var(--ink);
+    text-decoration: none;
+}
+
+.brandrow .wordmark:hover {
+    color: var(--accent);
+}
+
+/* Tagline / h1.
+   Two-stage wrap defense:
+     1. `text-wrap: balance` — modern browsers balance line lengths and
+        prefer to break at word boundaries, never inside a word.
+     2. `clamp(...)` font-size — scales smoothly from 1.75rem on tiny
+        viewports up to 2.5rem on desktop. Removes the "huge headline in
+        a tight container" condition that drove v1's "chai/n" break.
+     3. `hyphens: manual` + `word-break: normal` + `overflow-wrap: normal`
+        — explicitly forbid the browser from breaking inside a word even
+        when squeezed. Better to overflow (which won't happen at clamp
+        sizes) than to break "chain" into "chai/n".
+     4. The `.nowrap` span around "every chain." atomizes that fragment
+        so the only legal break is between "contributions," and "every". */
+
+.masthead h1 {
+    font-family: var(--font-sans);
+    font-size: clamp(1.75rem, 4.2vw + 0.5rem, 2.5rem);
+    font-weight: 700;
+    line-height: 1.15;
+    letter-spacing: -0.022em;
+    color: var(--ink);
+    margin: 0;
+    text-wrap: balance;
+    hyphens: manual;
+    word-break: normal;
+    overflow-wrap: normal;
+}
+
+.masthead h1 .nowrap {
+    white-space: nowrap;
+}
+
+.masthead .kicker {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0;
+}
+
+.masthead .lede {
+    font-size: 1.125rem;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    margin: 0;
+    max-width: 36rem;
+    text-wrap: pretty;
+}
+
+/* ----- sections -------------------------------------------------------- */
+
+section {
+    margin: 3rem 0;
+}
+
+section + section {
+    margin-top: 3.25rem;
+}
+
+h2 {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 1.25rem 0;
+    padding-bottom: 0.625rem;
+    border-bottom: 1px solid var(--rule);
+}
+
+h3 {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 1.5rem 0 0.5rem 0;
+}
+
+p {
+    margin: 0 0 1rem 0;
+    color: var(--ink);
+    text-wrap: pretty;
+}
+
+p:last-child {
+    margin-bottom: 0;
+}
+
+.coverage-note {
+    margin-top: 1.25rem;
+    font-size: 0.9375rem;
+    color: var(--ink-soft);
+}
+
+/* ----- chains: chip card row (NOT a bulleted list) -------------------- */
+
+.chains {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+    gap: 0.75rem;
+}
+
+.chains li {
+    margin: 0;
+    padding: 1rem 1.125rem;
+    background: var(--paper);
+    border: 1px solid var(--rule);
+    border-radius: var(--radius);
+    border-left: 3px solid var(--accent);
+}
+
+.chains .name {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 0.125rem;
+}
+
+.chains .meta {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.5rem;
+}
+
+.chains .scope {
+    display: block;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--ink-soft);
+}
+
+/* ----- contact: label / value grid (NOT a bulleted list) -------------- */
+
+.contact {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid var(--rule);
+}
+
+.contact li {
+    display: grid;
+    grid-template-columns: 9rem 1fr;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--rule);
+    margin: 0;
+}
+
+.contact .label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+}
+
+.contact .value {
+    font-size: 0.9375rem;
+    color: var(--ink);
+    word-break: break-word;
+}
+
+.contact .value.muted {
+    color: var(--ink-faint);
+    font-style: italic;
+}
+
+/* ----- generic in-prose lists (ai-disclosure body) -------------------- */
+
+.prose ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 1.25rem 0;
+}
+
+.prose ul li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.625rem;
+    color: var(--ink);
+}
+
+.prose ul li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 0.5rem;
+    height: 1px;
+    background: var(--accent);
+}
+
+/* ----- links ----------------------------------------------------------- */
+
+a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.2em;
+    text-decoration-color: rgba(29, 53, 87, 0.4);
+    transition: text-decoration-color 0.12s ease, color 0.12s ease;
+}
+
+a:hover {
+    color: var(--accent-hover);
+    text-decoration-color: var(--accent-hover);
+    text-decoration-thickness: 2px;
+}
+
+/* ----- footer ---------------------------------------------------------- */
+
+.site-footer {
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-faint);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+    justify-content: space-between;
+}
+
+.site-footer a {
+    color: var(--ink-faint);
+    text-decoration-color: var(--rule);
+}
+
+.site-footer a:hover {
+    color: var(--accent);
+    text-decoration-color: var(--accent);
+}
+
+.site-footer p {
+    margin: 0;
+}
+
+/* ----- mobile ---------------------------------------------------------- */
+
+@media (max-width: 600px) {
+    .page {
+        padding: 2.5rem 1.25rem 4rem 1.25rem;
+    }
+
+    .masthead {
+        padding-bottom: 2rem;
+        margin-bottom: 2.25rem;
+    }
+
+    .brandrow .mark {
+        width: 40px;
+        height: 40px;
+    }
+
+    .masthead .lede {
+        font-size: 1.0625rem;
+    }
+
+    .contact li {
+        grid-template-columns: 1fr;
+        gap: 0.125rem;
+        padding: 0.75rem 0;
+    }
+
+    .site-footer {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+@media (max-width: 380px) {
+    .chains {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ----- print ----------------------------------------------------------- */
+
+@media print {
+    :root {
+        --paper: #fff;
+        --ink: #000;
+        --ink-soft: #222;
+        --ink-faint: #444;
+        --accent: #000;
+        --rule: #999;
+    }
+
+    body {
+        background: #fff;
+        color: #000;
+    }
+
+    a {
+        color: #000;
+        text-decoration: underline;
+    }
+
+    .brandrow .mark {
+        border: 1px solid #000;
+    }
+}
+
+/* NO `@media (prefers-color-scheme: dark)` block exists. Intentional.
+   This page is light-only by design lock (T-009 v2). Dark-mode auto-flip
+   was the suspected cause of v1's white-on-black deploy failure. If the
+   org later wants a dark variant, ship it as a separate stylesheet behind
+   an explicit toggle, not a UA media query. */

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cf-invariants | building the missing layer in Cairo testing | CaliperForge</title>
+<meta name="description" content="cf-invariants is a Rust CLI sidecar that adds stateful invariant testing to Cairo 2.x. Three reference contracts live on Starknet Sepolia, each surfacing a planted bug on cold start.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-01 · MICHAEL MOFFETT</div>
+    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">cf-invariants, building the missing layer in Cairo testing.</span></h1>
+    <p class="cf-hero-lede">
+      snforge ships with a fuzzer for single-function scalar arguments.
+      Stateful invariants, the kind every protocol team writes on
+      a whiteboard at some point, are the gap cf-invariants fills.
+    </p>
+  </header>
+</div>
+
+<main class="cf-band--paper">
+  <div class="cf-article-shell">
+    <article class="cf-article">
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The gap</p>
+        <h2>snforge covers one shape. Stateful invariants are a different shape.</h2>
+        <p>
+          snforge ships with a fuzzer. It generates random scalar values for
+          a single function's arguments and runs that function in isolation
+          against the property assertions in your test file. That works for
+          math-shaped properties on pure functions. It does not cover
+          stateful invariant testing. The shape there is different: pick a
+          random sequence of calls, with random callers, random values, and
+          random ordering. Apply the sequence to a live contract. Check
+          that a class invariant holds across every intermediate state.
+        </p>
+        <p>
+          The class invariants I have in mind are the ones every protocol
+          team has written on a whiteboard at some point. <code>total_supply == sum(balances)</code>
+          on a token. <code>is_executed(pid)</code> only ever transitioning
+          false&rarr;true on a governance contract. <code>reserve_a * reserve_b</code>
+          non-decreasing on a constant-product AMM. They are properties of
+          state, not properties of a single function call. The bugs that
+          violate them rarely look like the bug Foundry's fuzzer finds on
+          one call. They look like sequences.
+        </p>
+        <p>
+          The maintainers of starknet-foundry know this.
+          <a href="https://github.com/foundry-rs/starknet-foundry/issues/2464" rel="noopener">Issue #2464</a>
+          is the open roadmap entry &ldquo;Research Variant and Differential
+          Testing, Better Fuzzing Algorithms&rdquo;, size 5, still
+          open, and stateful invariant testing is the canonical example
+          downstream. It is what Foundry's <code>invariant</code>, Halmos,
+          and Echidna cover on the Solidity side. Cairo does not have it
+          yet. That is the gap cf-invariants is built around.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What we built</p>
+        <h2>A Rust CLI that sits next to snforge, not on top of it.</h2>
+        <p>
+          <a href="https://github.com/caliperforge/cf-invariants-starknet" rel="noopener">cf-invariants</a>
+          is a Rust CLI that sits next to snforge, not on top of it. It
+          reads a Scarb project, generates a per-run harness that fuzzes
+          random call sequences against a contract, runs <code>snforge test</code>
+          as a subprocess, and emits a structured <code>scorecard.json</code>
+          plus a human-readable scorecard. The scorecard reports
+          <code>N/M invariants violated</code> and the failing call
+          sequence. snforge stays the execution engine. cf-invariants is a
+          sequence-search and reporting layer around it. Apache-2.0. No
+          exclusivity, no fork, no claim on the upstream namespace.
+        </p>
+        <p>
+          The repo carries 42 tests across six Rust crates and a Cairo
+          crate of reference contracts. The Rust crates are a sequence
+          searcher, an snforge subprocess driver, a Cairo metadata reader,
+          a scorecard renderer, an opt-in AI suggestion module, and a CLI
+          front. Pinned toolchain:
+          <a href="https://github.com/foundry-rs/starknet-foundry/releases/tag/v0.61.0" rel="noopener">snforge 0.61.0</a>,
+          <a href="https://github.com/software-mansion/scarb/releases/tag/v2.18.0" rel="noopener">scarb 2.18.0</a>,
+          Cairo 2.18.0, sierra 1.8.0.
+        </p>
+        <p>
+          One detail of the design needs naming early, because it shapes
+          how the tool gets used. cf-invariants includes an opt-in AI
+          suggestion module that calls Anthropic Claude Sonnet 4.6 against
+          a versioned prompt and returns candidate invariants tagged by
+          class. Every AI-suggested invariant carries
+          <code>InvariantSource::AiSuggested { model, prompt_version, timestamp_utc }</code>
+          at the type level in Rust, and the developer reviews and accepts
+          (or rejects) each one before it runs. The tag stays in the
+          scorecard output. Two of the three reference findings below were
+          AI-suggested and author-reviewed. One was hand-written. The
+          point of the type-level tag is that a reviewer, a grant reader,
+          or a downstream contributor can tell at a glance which
+          invariants came from where. The disclosure is structural, not a
+          banner.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What's verifiable today</p>
+        <h2>Three reference contracts. Three counterexamples. Cold start.</h2>
+        <p>
+          Three Cairo 2.x reference contracts sit on Starknet Sepolia,
+          source-verified on Voyager. Each carries a planted bug on a
+          distinct surface, and cf-invariants surfaces a counterexample on
+          a single fuzz run for each:
+        </p>
+<pre><code>ERC20Ref         0x01def8&hellip;b055b    conservation invariant violated, seed 42
+Governance       0x066738&hellip;794e6    executed-state monotonicity violated, seed 7
+SingleSideAmm    0x05351d&hellip;c81f8    constant-product solvency violated, seed 11
+</code></pre>
+        <p>
+          The deployment manifest (class hashes, declare/deploy tx hashes,
+          Voyager links per contract) lives at
+          <a href="https://github.com/caliperforge/cf-invariants-starknet/blob/main/STARKNET_SEPOLIA_DEPLOYMENTS.md" rel="noopener">STARKNET_SEPOLIA_DEPLOYMENTS.md</a>.
+          The full reproducible findings report, failing call
+          sequences, relevant Cairo source lines, the cf-invariants
+          scorecard for each contract, and a cross-check from a direct
+          <code>snforge test</code> invocation, lives at
+          <a href="https://github.com/caliperforge/cf-invariants-starknet/blob/main/STARKNET_SEPOLIA_FINDINGS.md" rel="noopener">STARKNET_SEPOLIA_FINDINGS.md</a>.
+          Everything reproduces from a clean clone at the pinned toolchain.
+        </p>
+        <p>A representative invariant signature, lifted from the AMM suite:</p>
+<pre><code>#[invariant(
+    class = "solvency",
+    source = InvariantSource::AiSuggested {
+        model: "claude-sonnet-4-6",
+        prompt_version: "invariant_suggestion_v1",
+        timestamp_utc: "2026-05-30T19:14:22Z",
+    },
+)]
+fn k_does_not_decrease(state: &amp;State) -&gt; bool {
+    state.reserve_a * state.reserve_b &gt;= state.prev_k
+}
+</code></pre>
+        <p>
+          The scorecard line for that run reads
+          <code>1/1 invariants violated &middot; seed=11 &middot; counterexample: [mint(100), swap_a_for_b(40), swap_a_for_b(30)]</code>.
+          The bug is one line of arithmetic in <code>swap_a_for_b</code>
+          that ignores the current reserves. cf-invariants surfaces it on
+          cold start.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What's next</p>
+        <h2>Integration shape, Cairo depth, the long-game thesis.</h2>
+        <p>
+          The honest open question is integration shape. cf-invariants
+          today shells out to <code>snforge test</code> and parses its
+          output. That is the conservative call: no fork, no namespace
+          squat, no exclusivity. If the snforge maintainers would prefer a
+          different shape (a structured runner API, a library entry point,
+          a specific scorecard schema), I would rather refactor against
+          their direction than guess. A focused upstream PR is a cleaner
+          long-term landing spot than a documented sidecar pattern. That
+          is the conversation I am trying to start on
+          <a href="https://github.com/foundry-rs/starknet-foundry/issues/2464" rel="noopener">issue #2464</a>.
+        </p>
+        <p>
+          Past that, there is more depth to add on Cairo before moving
+          sideways. A richer set of canonical invariant classes. A
+          properly versioned scorecard schema. Tighter integration with
+          Voyager, so that surfaced counterexamples can be re-run against
+          forked-Sepolia state. Move support (Sui, Aptos) is the next
+          chain target after Cairo deepens. Solidity is already served by
+          Foundry's <code>invariant</code>, Halmos, and Echidna, and there
+          is no reason to add another tool there.
+        </p>
+        <p>
+          The long-game thesis is plain. There is currently no
+          production-grade stateful invariant testing tool for Cairo 2.x.
+          cf-invariants is the only one I am aware of, the field is
+          unoccupied, and the maintainers' own roadmap names the gap.
+          Three commitments make the bet real: keep shipping, keep the
+          integration question open with the snforge team, keep the AI
+          suggestion module honest about which invariants came from
+          where. Inside two to three release cycles, this is the
+          reference Cairo 2.x stateful invariant testing tool.
+        </p>
+        <p>
+          If you are a Cairo developer running into the same gap, the
+          repo is at
+          <a href="https://github.com/caliperforge/cf-invariants-starknet" rel="noopener">github.com/caliperforge/cf-invariants-starknet</a>.
+          The findings report is the fastest way to see what the tool
+          does. The issue tracker is the right place to push back on
+          anything in the design that does not fit your project.
+        </p>
+        <p class="cf-article__meta">
+         , Michael Moffett. Full AI policy at <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>

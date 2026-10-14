@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The reachability certification: sixteen seeds, hard alarm, CaliperForge</title>
+<meta name="description" content="An external reviewer named a real gap in the standing planted-twin CI claim: a single-seed green does not exclude a lucky-seed miss on classes with long triggers. Same-day fix: a merge gate that requires the planted twin to fail on all 16 canonical fuzzer seeds. Two cases certified today, Euler Earn M-01 (Foundry) and Blend V2 H-01 (Rust/Soroban), both green at head. The reachability job is now the standing receipt behind the docs claim.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="canonical" href="https://caliperforge.com/blog/17_multi-seed-reachability-hardening">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-07-14 · MICHAEL MOFFETT</div>
+    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">The reachability certification: sixteen seeds, hard alarm.</span></h1>
+    <p class="cf-hero-lede">
+      We publish clean/planted twin repositories for recurring bug
+      classes in on-chain protocol code. The pattern is: for a
+      fixed bug class in a specific protocol commit, vendor the
+      protocol source at the fix commit, encode the invariant that
+      the fix defends, and ship two twins. A clean twin that holds
+      the invariant on every fuzzed sequence, and a planted twin
+      whose only diff is a single-hunk revert of the fix. Wire both
+      twins as required CI jobs. Invert the planted job so its
+      "success" means the property test failed loudly on the
+      planted twin. That combination is the standing receipt: on
+      every commit, the invariant catches the class it claims to
+      catch.
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      This week, an external reviewer looked at that shape and
+      pointed out a real gap. The planted twin only fails when the
+      fuzzer's random walk actually reaches the trigger sequence
+      within one bounded campaign. For short triggers (the two-step
+      call sequence in Euler Earn's M-01, for instance) that is not
+      much of a gap: any reasonable seed reaches the trigger. For
+      longer or rarer trigger sequences, "the planted twin failed
+      the invariant on the CI run" is probabilistic evidence, not
+      proof. A run that happens to draw a lucky seed can look green
+      and mean nothing. The headline framing "standing proof the
+      property catches the class" was probabilistic in exactly that
+      spot.
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      The fix is straightforward and we shipped it the same day.
+      This post is the walk-through.
+    </p>
+  </header>
+</div>
+
+<main class="cf-band--paper">
+  <div class="cf-article-shell">
+    <article class="cf-article">
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The seed-reliability problem</p>
+        <h2>The seed-reliability problem.</h2>
+        <p>
+          Property-based fuzzers (Foundry's
+          <code>forge test --fuzz-seed</code>, Rust proptest's
+          <code>TestRunner::new_with_rng</code>) draw pseudo-random
+          operation sequences. Given the same seed, the same
+          source, and the same toolchain, they draw the same
+          sequences. Different seeds draw different sequences. A
+          campaign at budget 256 runs times depth 50 covers a lot
+          of state space, but the covered slice is a function of
+          the seed.
+        </p>
+        <p>
+          If a class's trigger is short, say a two-step
+          <code>directShareDeposit</code> then
+          <code>reallocateFromStrategy</code> in the Euler Earn
+          M-01 case, nearly every reasonable seed will draw a
+          sequence that touches the trigger inside a 256-by-50
+          campaign, and the planted twin will fail loudly. The
+          receipt is a receipt.
+        </p>
+        <p>
+          If a class's trigger is long, or a specific ordering of a
+          large set of operations, or a rare combination of
+          parameter values, one seed might draw a sequence that
+          fires the marker while another seed draws a sequence that
+          never touches the trigger and passes the planted twin
+          quietly. That last case is a false green: the receipt
+          claims a hard alarm on the class, and the run says PASS
+          on the planted twin. The receipt has degraded silently.
+        </p>
+        <p>
+          The scale of the gap depends on the class. For our first
+          two publicly-critiqued cases (Euler Earn M-01 and Blend
+          V2 H-01), we did not have a rigorous claim about how many
+          seeds would consistently fire the planted twin. "It
+          failed on the CI seed we happened to use" was what we
+          could say. The reviewer read the docs, saw the shape, and
+          named the gap. Fair reading.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The 16-seed fail-on-all gate</p>
+        <h2>The 16-seed fail-on-all gate.</h2>
+        <p>
+          The fix is a merge gate. A case is certified reachable
+          if, and only if, the planted twin fails the invariant on
+          all N distinct fuzzer seeds in a canonical seed set. The
+          canonical seed set lives at
+          <code>ci/reachability_seeds.txt</code> in each case repo
+          (identical file across repos) and contains N=16 distinct
+          u64 values: a mix of small integers, common testing
+          patterns (<code>0xdeadbeef</code>,
+          <code>0xcafebabe</code>, <code>0xfeedface</code>,
+          <code>0x1337c0de</code>), and pseudo-random bytes. Fixed
+          list, order-stable, not RNG-derived.
+        </p>
+        <p>
+          Each case repo carries a
+          <code>ci/reachability_leg.sh</code> runner tuned to the
+          case's toolchain. On the Euler M-01 case (Foundry), the
+          runner loops the seed set, invokes
+          <code>forge test --match-contract M01SolvencyPlanted --fuzz-seed &lt;seed&gt;</code>,
+          records per-seed rc plus
+          <code>INVARIANT VIOLATED</code> marker count, and emits
+          one verdict line:
+          <code>reachability certified: yes (k/N failed as required)</code>
+          or <code>no</code>. On the Soroban Blend V2 H-01 case
+          (Rust / proptest), the runner exports
+          <code>REACHABILITY_SEED</code> and runs
+          <code>cargo test -p &lt;planted-crate&gt; --test reachability -- --nocapture</code>.
+          The Rust test file <code>tests/reachability.rs</code>
+          parses the env var, tiles the 8-byte value to a 32-byte
+          ChaCha seed, and constructs
+          <code>TestRunner::new_with_rng(config, TestRng::from_seed(RngAlgorithm::ChaCha, &amp;seed))</code>.
+          No fallback to a default seed, no time-of-day input,
+          deterministic given seed plus source plus toolchain.
+        </p>
+        <p>
+          Each case repo carries a CI-leg script that runs the same
+          16-seed loop as an additional parallel CI job. In
+          <code>caliperforge/euler-earn-invariants</code>, the job
+          is <code>reachability-multi-seed</code>, running
+          alongside the existing <code>clean-passes</code> and
+          <code>planted-bug-twin-fails</code> jobs. In
+          <code>caliperforge/soroban-invariant-atlas</code>, the
+          job is <code>reachability</code>, running alongside
+          <code>clean</code>, <code>planted</code>, <code>fmt</code>,
+          and <code>clippy</code>. The pre-existing clean-green /
+          planted-red inversion is unchanged; the new job adds a
+          merge gate that requires the planted twin to fail all 16
+          seeds on repo HEAD.
+        </p>
+        <p>
+          The merge-gate rule is one line in each case's
+          <code>docs/reachability.md</code>: no case merges to
+          <code>main</code> unless the multi-seed reachability job
+          is green on the head commit. Future case authors
+          extending the pattern lift the same script and seed set
+          verbatim.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What the two certifications look like today</p>
+        <h2>What the two certifications look like today.</h2>
+        <p>Two cases certified as of today:</p>
+        <p>
+          <strong>Euler Earn M-01 (Foundry).</strong> Repo:
+          <a href="https://github.com/caliperforge/euler-earn-invariants" rel="noopener"><code>caliperforge/euler-earn-invariants</code></a>.
+          Head commit
+          <code>8696baf add multi-seed reachability gate (M-01 planted twin)</code>.
+          CI run
+          <a href="https://github.com/caliperforge/euler-earn-invariants/actions/runs/29269639472" rel="noopener">29269639472</a>.
+          All three parallel jobs green. Certification line in
+          README and <code>docs/reachability.md</code>:
+          <code>reachability certified: yes (16/16 failed as required)</code>
+          (2026-07-13).
+        </p>
+        <p>
+          <strong>Blend V2 H-01 (Rust / Soroban).</strong> Repo:
+          <a href="https://github.com/caliperforge/soroban-invariant-atlas" rel="noopener"><code>caliperforge/soroban-invariant-atlas</code></a>,
+          case <code>blendv2-h01</code>. Head commit
+          <code>d4e9164 add multi-seed reachability gate (case C-A1 Blend V2 H-01)</code>.
+          CI run
+          <a href="https://github.com/caliperforge/soroban-invariant-atlas/actions/runs/29269645178" rel="noopener">29269645178</a>.
+          All five parallel jobs green (<code>clean</code>,
+          <code>planted</code>, <code>fmt</code>,
+          <code>clippy</code>, <code>reachability</code>).
+          Certification line in README,
+          <code>docs/reachability.md</code>, and
+          <code>cases/blendv2-h01/README.md</code>:
+          <code>reachability certified: yes (16/16 failed as required)</code>
+          (2026-07-13).
+        </p>
+        <p>
+          Both certifications hold at the case's current campaign
+          budget. Foundry runs at 256 runs times depth 50 per
+          <code>foundry.toml</code>; the Soroban proptest campaign
+          runs at 256 cases with sequence length up to 24. If a
+          future case cannot certify at the case's base budget, the
+          merge-gate rule is explicit about two honest branches:
+          bump the budget until the case certifies, or document the
+          achieved k/N caveat in the case README and refuse to
+          claim <code>certified: yes</code> in the docs.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What this changes about the framing</p>
+        <h2>What this changes about the framing.</h2>
+        <p>
+          Before this week, the receipt line under a planted twin
+          was "the property test caught the class." Load-bearing
+          but probabilistic under one seed. The reviewer's reading
+          was correct: a green CI run with one seed does not
+          exclude the possibility of a lucky seed on a class with a
+          rare trigger. The framing was stronger than the
+          underlying evidence.
+        </p>
+        <p>
+          After this week, the receipt line under a certified case
+          is "the planted twin fails on all 16 canonical fuzzer
+          seeds." Bounded, precise, and cited to the seed set + the
+          CI run + the docs verdict. It is a hard alarm, not a
+          lucky green.
+        </p>
+        <p>
+          The framing change is what we owe the reader. It also
+          happens to be exactly what a class-encoded CI receipt
+          should look like: name N, run against N, publish the k/N,
+          and refuse to claim "certified" if k does not equal N.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What I am not claiming</p>
+        <h2>What I am not claiming.</h2>
+        <p>
+          I am not claiming 16 seeds is universally sufficient. It
+          is a canonical set that reliably breaks the "lucky
+          single-seed" reading of a green planted-twin CI run for
+          the classes we have certified today. For a class with a
+          genuinely rare trigger, 16 seeds is a floor, not a
+          ceiling; the honest branch is bumping the budget until
+          certified, or documenting the caveat. The rule allows
+          both.
+        </p>
+        <p>
+          I am not claiming the reachability gate replaces a formal
+          proof. It does not. A stateful fuzzer campaign, even
+          seeded 16 different ways, is a runnable receipt against a
+          bounded search of the state space. Formal verification is
+          a different tool with different guarantees; the
+          clean/planted twin pair is a defender-side regression
+          fixture, not a soundness certificate.
+        </p>
+        <p>
+          I am not claiming this method is novel or that no other
+          harness runs a multi-seed pattern. Seed rotation is
+          standard fuzzing hygiene; property-based testing suites
+          have supported it for years. What we added is a merge
+          gate that ties the standing "certified" claim in the docs
+          to the concrete 16-seed pass on the CI, so the docs
+          cannot drift from the receipt.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Where the receipt lives</p>
+        <h2>Where the receipt lives.</h2>
+        <ul>
+          <li>
+            Euler M-01 case (Foundry):
+            <a href="https://github.com/caliperforge/euler-earn-invariants/blob/main/ci/reachability_leg.sh" rel="noopener"><code>ci/reachability_leg.sh</code></a>
+            +
+            <a href="https://github.com/caliperforge/euler-earn-invariants/blob/main/ci/reachability_seeds.txt" rel="noopener"><code>ci/reachability_seeds.txt</code></a>.
+          </li>
+          <li>
+            Soroban Blend V2 H-01 case (Rust / proptest):
+            <a href="https://github.com/caliperforge/soroban-invariant-atlas/blob/main/ci/reachability_leg.sh" rel="noopener"><code>ci/reachability_leg.sh</code></a>
+            +
+            <a href="https://github.com/caliperforge/soroban-invariant-atlas/blob/main/ci/reachability_seeds.txt" rel="noopener"><code>ci/reachability_seeds.txt</code></a>.
+          </li>
+          <li>
+            Euler Earn M-01 case docs + certification:
+            <a href="https://github.com/caliperforge/euler-earn-invariants" rel="noopener"><code>caliperforge/euler-earn-invariants</code></a>,
+            README + <code>docs/reachability.md</code>, head
+            <code>8696baf</code>, CI run
+            <a href="https://github.com/caliperforge/euler-earn-invariants/actions/runs/29269639472" rel="noopener">29269639472</a>.
+          </li>
+          <li>
+            Blend V2 H-01 case docs + certification:
+            <a href="https://github.com/caliperforge/soroban-invariant-atlas" rel="noopener"><code>caliperforge/soroban-invariant-atlas</code></a>,
+            README + <code>docs/reachability.md</code> +
+            <code>cases/blendv2-h01/README.md</code>, head
+            <code>d4e9164</code>, CI run
+            <a href="https://github.com/caliperforge/soroban-invariant-atlas/actions/runs/29269645178" rel="noopener">29269645178</a>.
+          </li>
+          <li>
+            Underlying findings and credits: Code4rena and Certora
+            for the Blend V2 H-01 audit and the Blend team for the
+            protocol and fix
+            (<a href="https://code4rena.com/reports/2025-02-blend-v2-audit-certora-formal-verification" rel="noopener">Code4rena / Certora Blend V2 audit, February 2025</a>);
+            Pashov Audit Group for Euler Earn M-01
+            (<a href="/blog/14_share-accounting-solvency-euler-earn-m01">blog write-up</a>).
+          </li>
+        </ul>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Credit for the critique</p>
+        <h2>Credit for the critique.</h2>
+        <p>
+          The critique that motivated the gate came from an
+          external reviewer, Aminu Abubakar (handle aegonmyy). We
+          name it because reviewer credit is the discipline: name
+          the reader who improved the work, cite the shape of the
+          improvement, and ship the fix. The reviewer named a
+          probabilistic gap in a claim that read as deterministic;
+          the fix is the multi-seed gate above.
+        </p>
+        <p class="cf-article__meta">
+          This writeup was drafted with AI assistance. Authored and
+          reviewed by Michael Moffett, operator at CaliperForge.
+          Full policy at
+          <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>

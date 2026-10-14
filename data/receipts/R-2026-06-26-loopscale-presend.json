@@ -1,0 +1,9 @@
+{
+  "id": "a-loopscale-presend-oracle-framing-2026-06-26",
+  "headline": "Loopscale hand-off draft misattributed April 2025 exploit root cause, caught pre-send.",
+  "gate": "pre-send verify",
+  "verdict_iso": "2026-06-26",
+  "fix_ref": "draft flagged for rewrite; not sent",
+  "frame": "An independent pre-send verification of the outbound Loopscale maintainer hand-off draft found that draft paragraphs attributed the April 2025 Loopscale exploit to 'no TWAP floor / single-source oracle.' Loopscale's own published post-mortem names a materially different root cause: incomplete program-account validation on the RateX PT pricing path for non-Loop borrows, allowing an attacker-deployed program to spoof the RateX market interface and return an inflated PT exchange rate. The TWAP-floor absence was a contributing defense gap, not the architectural root cause and not in the announced fix package. Sending the incorrect framing to the team that wrote and published the correct post-mortem would be a credibility failure on a single-shot maintainer introduction. Caught and corrected pre-send.",
+  "writeup_url": null
+}

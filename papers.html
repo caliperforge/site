@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Papers | CaliperForge</title>
+<meta name="description" content="CaliperForge research papers. Invariant methodology, security analysis, and formal specifications for smart-contract verification across EVM, Solana, Cairo, and BNB Smart Chain.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers" class="is-current">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">CALIPERFORGE / PAPERS</div>
+    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">Research papers.</span></h1>
+    <p class="cf-hero-lede">
+      Formal specifications and methodology papers published by CaliperForge.
+      Each paper is a verifiable artifact: the invariants described are
+      CI-runnable and the claims are backed by a public repository.
+    </p>
+  </header>
+</div>
+
+<main class="cf-band--paper">
+  <div class="cf-article-shell">
+    <div class="cf-eyebrow" style="margin-bottom:22px;">01 / PUBLISHED PAPERS</div>
+    <h2 class="cf-h2 cf-h2--sm" style="margin-bottom:36px;max-width:680px;">Published papers</h2>
+
+    <article class="cf-card" style="max-width:840px;">
+      <div class="cf-card__head">
+        <div class="cf-card__title">BNB Smart Chain Invariants</div>
+        <span class="cf-chip">BNB Chain</span>
+      </div>
+      <p class="cf-card__body" style="font-size:15.5px;line-height:1.7;color:var(--ink-soft);">
+        A formal invariant specification for BNB Smart Chain DeFi protocols.
+        Covers five CI-runnable invariants for PancakeSwap v3 (fee-growth
+        monotonicity, tick bounds, sqrt-price bounds, liquidity-event
+        consistency, and fee-growth-outside consistency), a planted-twin
+        CI harness for the lead invariant, and the methodology for extending
+        the pattern to Venus and Stargate. Submitted in support of the BNB
+        Chain Ecosystem Grant application, 2026.
+      </p>
+      <div class="cf-chip-row" style="margin: 6px 0 18px;">
+        <span class="cf-chip">Solidity + Foundry</span>
+        <span class="cf-chip cf-chip--ci">CI ✓</span>
+      </div>
+      <div class="cf-card__foot">
+        <span>
+          <a href="/papers/bnb_invariants_whitepaper_2026-06-27.pdf" download type="application/pdf" style="color:var(--gold-deep);border-bottom:1px solid rgba(154,123,62,.35);">Download PDF</a>
+          &nbsp;·&nbsp;
+          <a href="https://github.com/caliperforge/bsc-invariants" rel="me" style="color:var(--gold-deep);border-bottom:1px solid rgba(154,123,62,.35);">bsc-invariants on GitHub</a>
+          &nbsp;·&nbsp;
+          <a href="/ai-disclosure" style="color:var(--gold-deep);border-bottom:1px solid rgba(154,123,62,.35);">AI-disclosed</a>
+        </span>
+      </div>
+    </article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+    <div class="cf-shell" style="padding-top:0;padding-bottom:36px;padding-left:0;padding-right:0;">
+      <p class="cf-prose cf-prose--navy" style="max-width:680px;font-size:13.5px;line-height:1.7;color:var(--cream-mute-4);margin-top:22px;padding-top:22px;border-top:1px solid rgba(255,255,255,.08);">
+        This contribution was produced by CaliperForge -- a crypto-protocol
+        contribution agency operated by Michael Moffett, who acts as the
+        named operator-of-record. The specification and implementation were
+        drafted with substantial AI assistance, then reviewed, tested in a
+        cold-environment reproduction, and submitted under Michael's name.
+        He is accountable for the code, the tests, and any follow-up
+        required. CaliperForge discloses AI involvement on every contribution
+        as a matter of policy. Contact: michael@caliperforge.com.
+      </p>
+    </div>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>

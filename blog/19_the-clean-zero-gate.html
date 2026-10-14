@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The clean=0 gate: why a planted bug is the minimum bar for invariant CI | CaliperForge</title>
+<meta name="description" content="An invariant test that fires on a planted bug tells you the property runs. It does not tell you the property catches anything. Only the second leg, the same property holding on the clean reference, makes the claim checkable. Wiring both legs as a CI gate, and what changes when you do.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="canonical" href="https://caliperforge.com/blog/19_the-clean-zero-gate">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<style>
+/* Page-scoped table support, lifted verbatim from 18_uniswap-v4-hook-census.html.
+   caliper.css carries no table rules, so a post with a table either ships this block
+   or ships an unstyled table; 18 set the precedent and uses the site's own tokens. */
+.cf-article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 24px;
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+.cf-article th, .cf-article td {
+  border: 1px solid var(--paper-rule-2);
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.cf-article th {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: .03em;
+  background: var(--paper-card);
+}
+</style>
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · DAY 31 · WRITTEN 2026-06-26 · MICHAEL MOFFETT</div>
+    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">The clean=0 gate: why a planted bug is the minimum bar for invariant CI.</span></h1>
+    <p class="cf-hero-lede">
+      <strong>An invariant test that fires on a planted bug tells you the property runs. It does not tell you
+      the property catches anything.</strong> Only the second leg, the same property holding on the clean
+      reference, makes the claim checkable. This post is about wiring both legs as a CI gate, and what changes
+      when you do.
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      <strong>When this was written.</strong> Day 31 of CaliperForge, 2026-06-26. It is published later than
+      that, out of a backlog. Day numbers on this site count the launch day inclusive from 2026-05-27, and the
+      counter on the front page computes the same way. Read the date above as the date the work described here
+      was true, not as the date this page went up.
+    </p>
+  </header>
+</div>
+
+<main class="cf-band--paper">
+  <div class="cf-article-shell">
+    <article class="cf-article">
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The asymmetry</p>
+        <h2>A green invariant test is one signal, not two.</h2>
+        <p>
+          A property-based test that finishes a fuzz campaign with no counterexample tells you a specific
+          thing: under the inputs the fuzzer reached, within the budget you gave it, the property you stated
+          did not produce a violation. That is a useful signal. It is also a one-sided signal.
+        </p>
+        <p>
+          There is a second thing you want to know, and the first leg cannot tell you. You want to know whether
+          the property would have caught a real violation if one had been present. A property that passes when
+          the code is correct and also passes when the code is broken is not a property; it is a comment.
+          Foundry, snforge, Echidna, and Medusa will all happily run a comment to green in CI on every push.
+        </p>
+        <p>
+          The asymmetry matters because the common failure modes of property tests are silent. A typo in an
+          assertion that elides the inequality. A precondition that quietly excludes the state where the bug
+          would surface. A fuzzer corpus that does not reach the relevant code path within the campaign budget.
+          None of these produce a CI failure. They produce a green badge on a property that is no longer
+          testing the thing it claims to test.
+        </p>
+        <p>
+          The check that exposes those failure modes is the planted twin, run alongside the clean reference,
+          asserted in CI.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The gate</p>
+        <h2>Two contracts, one property, both legs asserted.</h2>
+        <p>The structure is small. Take the contract you care about. Write two versions of it:</p>
+        <ul>
+          <li><strong>Clean.</strong> The version that actually satisfies the rule.</li>
+          <li><strong>Planted.</strong> The same code with exactly one localized defect that violates the rule.</li>
+        </ul>
+        <p>
+          Keep the property file byte-identical between the two. Run the same campaign against both. Expect two
+          outcomes:
+        </p>
+        <ul>
+          <li><strong>Planted leg:</strong> the campaign exits non-zero with at least one counterexample. A
+            deterministic violation marker on stdout is what CI grades on. The property catches the planted
+            bug.</li>
+          <li><strong>Clean leg:</strong> the campaign exits zero with no counterexamples and no violation
+            markers. The property holds on the version that is supposed to be correct.</li>
+        </ul>
+        <p>
+          CI asserts both on every push. A green run means both legs passed: the planted side broke when it was
+          supposed to, and the clean side held when it was supposed to. Either leg's failure is a real
+          regression. The planted leg falling silent means the property has stopped catching the bug class. The
+          clean leg failing means the property is firing on code that is supposed to satisfy the rule, which
+          usually means the property has drifted or the clean reference has acquired a real defect.
+        </p>
+        <p>
+          The reason this is a gate and not a recommendation is that it pins both edges. A property that only
+          ever has to pass on clean code has no test for whether it would catch anything. A property that only
+          ever has to fire on broken code has no test for whether it false-positives on correct code. The pair
+          is the gate. Either leg alone is a single-sided check, and single-sided checks tend to drift toward
+          the side you remembered to assert.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">A working example</p>
+        <h2>A 2&times;12 matrix, one source tree, two feature flags.</h2>
+        <p>
+          A concrete shape. The
+          <a href="https://github.com/caliperforge/cf-invariants-starknet" rel="noopener"><code>caliperforge/cf-invariants-starknet</code></a>
+          repository (Apache-2.0) carries twelve Cairo reference contracts, each with one invariant property,
+          each wired as a planted/clean pair. The CI workflow runs a 2&times;12 matrix:
+          <code>{planted, clean} &times; 12 references</code>. Every push has to land all of those jobs green.
+        </p>
+        <p>The wiring is feature-gated rather than two separate trees. Per reference:</p>
+<pre><code># Scarb.toml
+[features]
+clean = []
+</code></pre>
+<pre><code>// src/lib.cairo (sketch)
+#[cfg(feature: 'clean')]
+pub const CLEAN_TWIN: bool = true;
+
+#[cfg(not(feature: 'clean'))]
+pub const CLEAN_TWIN: bool = false;
+
+// ... in the body, the planted line is wrapped:
+if CLEAN_TWIN {
+    // the corrected behavior
+} else {
+    // the planted defect
+}
+</code></pre>
+        <p>The test driver runs the same property in both configurations:</p>
+        <table>
+          <thead>
+            <tr><th>Leg</th><th>Command</th><th>CI assertion</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>planted</td><td><code>snforge test</code></td><td>exit code <code>!= 0</code> AND <code>INVARIANT VIOLATED</code> marker present on stdout</td></tr>
+            <tr><td>clean</td><td><code>snforge test --features clean</code></td><td>exit code <code>== 0</code> AND zero markers on stdout</td></tr>
+          </tbody>
+        </table>
+        <p>Two things are worth noting about this shape.</p>
+        <p>
+          First, the test file is byte-identical between the two legs. The only thing that changes is which
+          branch of the <code>CLEAN_TWIN</code> const is compiled in. That is what makes the comparison honest.
+          A property that fires on the planted leg and not on the clean leg is responding to one localized code
+          difference, not to two test files that happen to differ in subtle ways.
+        </p>
+        <p>
+          Second, the violation marker on stdout is the artifact, not the CI badge. Anyone who clones the repo
+          and runs <code>snforge test</code> against a planted reference gets the same
+          <code>INVARIANT VIOLATED</code> line whether or not they trust the CI. The deterministic record is
+          what makes the claim checkable without re-running the CI infrastructure.
+        </p>
+        <p>
+          The pattern is in tree on <code>main</code> and is what every push has to land. The first paired
+          matrix run landed in June 2026 (PR #2, commit <code>0bff2c4</code>, "CI: paired clean=0 / planted&gt;=1
+          across 12 references"). The workflow is in
+          <a href="https://github.com/caliperforge/cf-invariants-starknet/blob/main/.github/workflows/ci.yml" rel="noopener"><code>.github/workflows/ci.yml</code></a>
+          and the references are under
+          <a href="https://github.com/caliperforge/cf-invariants-starknet/tree/main/references" rel="noopener"><code>references/</code></a>.
+          Readers can fork it and adopt the shape directly; the structure is small enough to lift.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What you miss without it</p>
+        <h2>Property tests existed. The gate did not.</h2>
+        <p>
+          The argument for the second leg is easier to make against the published record than in the abstract.
+          A recurring pattern across post-mortems of the last two years: the protocol had a property test or
+          invariant suite covering an adjacent rule, and the rule that the exploit actually violated either was
+          not stated as a runnable property, was stated but never asserted on a known-bad reference, or was
+          stated, asserted, and then quietly stopped firing under a corpus that no longer reached the relevant
+          state.
+        </p>
+        <p>
+          You can read this pattern across the
+          <a href="/blog/07_exploit-invariant-atlas">Exploit&rarr;Invariant Atlas</a> entries: an oracle
+          freshness check that was present in spec prose but never compiled into a property; a conservation
+          rule that was a comment in the bridge contract; a solvency bound that was tested under preconditions
+          that the exploit path stepped around. In each case the harness, where one existed, would have passed
+          the clean-side leg. None of them had a planted-side leg that would have failed if the property had
+          drifted away from the bug class.
+        </p>
+        <p>
+          The point is not that a planted twin would have caught every one of these. It would not have. A
+          planted twin catches the bug class it encodes, and only that class. The point is that without the
+          planted leg, you cannot tell, on the day of the push, whether your invariant test is still testing
+          the thing you wrote it to test. The next time the bug class shows up in production, the property
+          either fires or it does not, and you find out which by reading the post-mortem.
+        </p>
+        <p>
+          A gate that catches drift on every push, against a known-bad reference, is cheaper than a gate that
+          catches drift on the day of the incident.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Non-claims</p>
+        <h2>Three things the clean=0 gate does not give you.</h2>
+        <p>
+          This is a narrow discipline. It is worth stating the non-claims plainly so the gate does not get
+          oversold in either direction.
+        </p>
+        <p>
+          <em>It is not an audit.</em> The planted leg only catches the bug class the property encodes against
+          the planted defect. Bug classes that no property in the suite encodes are not covered, whether or not
+          the suite is green. A full-surface audit reads code that the property file does not test. These two
+          things are complementary, not substitutes.
+        </p>
+        <p>
+          <em>It is not a runtime monitor.</em> These properties run pre-deploy, in CI, against a fuzz campaign
+          with a finite budget. They do not watch chain state after deployment. Catching a post-deploy state
+          violation is a different lane: a different cadence, different infrastructure, different signal.
+        </p>
+        <p>
+          <em>It is not formal verification.</em> A fuzzer that finds zero violations in fifty thousand calls
+          under a campaign is evidence the property holds under that input distribution, not proof that no
+          input violates it. Symbolic and SMT-backed tools (Halmos on the EVM side and Move Prover on
+          the Move side) sit in a different point on the cost/coverage curve.
+          Where they fit, they sit on top of the fuzz layer; they do not replace the planted-twin check that
+          the property is testing what it claims.
+        </p>
+        <p>
+          What the gate does claim, narrowly: for each invariant class the suite encodes, a property exists
+          that produces a deterministic violation marker on known-bad code and produces no marker on the clean
+          reference, asserted on every push. That claim is checkable by <code>git clone</code> and
+          <code>snforge test</code>. It is also the smallest claim that lets you know, on the day of the push,
+          that your invariant suite has not silently stopped doing its job.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Repos</p>
+        <h2>Clone it, run both legs, read the markers.</h2>
+        <p>
+          The pattern is in the open under Apache-2.0. Three pointers if you want to lift the shape into your
+          own CI:
+        </p>
+        <ul>
+          <li><a href="https://github.com/caliperforge/cf-invariants-starknet" rel="noopener"><code>caliperforge/cf-invariants-starknet</code></a>
+            carries the 2&times;12 Cairo matrix. Workflow at
+            <a href="https://github.com/caliperforge/cf-invariants-starknet/blob/main/.github/workflows/ci.yml" rel="noopener"><code>.github/workflows/ci.yml</code></a>;
+            references at
+            <a href="https://github.com/caliperforge/cf-invariants-starknet/tree/main/references" rel="noopener"><code>references/</code></a>.
+            PR #2 (commit <code>0bff2c4</code>) is the first push with both legs asserted; the run page is
+            reachable from the repo's Actions tab.</li>
+          <li><a href="https://github.com/caliperforge/hyperevm-safety" rel="noopener"><code>caliperforge/hyperevm-safety</code></a>
+            carries the same shape on a Foundry stack: paired clean and planted twins for HyperCore-boundary
+            lending invariants, including the JELLY (March 2025) mark-price manipulation reproduction.</li>
+          <li><a href="https://github.com/caliperforge/cf-invariants-verus-bridge-conservation" rel="noopener"><code>caliperforge/cf-invariants-verus-bridge-conservation</code></a>
+            is a single-property, single-pair reference anchored on the Verus&ndash;Ethereum bridge incident of
+            2026-05-18 (Halborn post-mortem cited in the repo README). It is small enough to read end to end in
+            a session, which is the point if you are deciding whether to adopt the pattern.</li>
+        </ul>
+        <p>
+          To verify the gate without the badge: clone, run the planted leg, confirm you see the violation
+          marker on stdout; switch to the clean leg, confirm the marker is absent and the exit code is zero.
+          That is the whole check. The CI runs the same two commands; everything else is plumbing.
+        </p>
+        <p>
+          If you adopt this and you would like to compare notes on shapes that did and did not work, the
+          contact for invariant-testing CI discussions is
+          <a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a>.
+        </p>
+
+        <p class="cf-article__meta">
+          Written on day 31, 2026-06-26. Published from the backlog on a later date. Changes made between
+          those dates: the piece was converted from its authoring outline into this page, the canonical URL was
+          set, and this dating note was added. No claim, number, command or repository reference was altered.
+        </p>
+
+        <p class="cf-article__meta">
+          This post was drafted with AI assistance, as were the invariant properties and the planted/clean twin
+          reconstructions in the linked repositories. Authored and reviewed by Michael Moffett, operator at
+          CaliperForge. Full policy at <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>

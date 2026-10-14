@@ -1,0 +1,10 @@
+{
+  "id": "FN-1",
+  "headline": "Governance-pack email policy missed at code review gate",
+  "gate_missed": "§4b",
+  "gate_pass_iso": "2026-06-10",
+  "caught_by": "§4a community-health regate",
+  "caught_iso": "2026-06-12",
+  "fix_ref": "commit 0bff2c4",
+  "frame": "The §4b reviewer audited the cf-invariants community-health pack (CODE_OF_CONDUCT, CONTRIBUTING, GOVERNANCE, SECURITY -- 455 lines across 4 files) for canonical-string consistency, including email, and passed it. Two days later, the §4a community-health gate caught <code>michael@caliperforge.com</code> at 4 sites in violation of the feedback-email-only policy and contradicting the live README's published security contact, <code>michael@caliperforge.com</code>. Email-string consistency was declared in §4b's scope; the policy mismatch was a §4b miss. Fix landed at commit <code>0bff2c4</code> via the §4a community-health regate."
+}

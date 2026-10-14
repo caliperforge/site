@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The audit already had it, in Rust this time: Blend V2 H-01 as a Soroban twin, CaliperForge</title>
+<meta name="description" content="Blend V2 is one of Stellar's money-market protocols on Soroban. Code4rena/Certora surfaced H-01, a flash-loan d_supply accounting corruption. The Blend team fixed it in the commit the audit's mitigation review confirms. This post walks the invariant that names the class and the clean/planted twin in caliperforge/soroban-invariant-atlas that fires on it: stateful proptest-style campaign against a minimal original soroban-sdk pool that isolates the identity, deterministic regression, both required legs green on CI run 29200845466.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="canonical" href="https://caliperforge.com/blog/23_flashloan-solvency-blendv2-soroban-invariant-atlas">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · DAY 48 · 2026-07-13 · MICHAEL MOFFETT</div>
+    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">The audit already had it, in Rust this time: Blend V2 H-01 as a Soroban twin.</span></h1>
+    <p class="cf-hero-lede">
+      <strong>From the backlog.</strong> Written on day 48,
+      2026-07-13, counting 2026-05-27 as day 1. It was held at our
+      own content gate the same day on three named items and goes up
+      only now that they have cleared, so the publication date this
+      page carries is later than the date the work happened. The
+      body was written on day 48 and was corrected at our own
+      content gate before publication. What changed between the
+      two dates is listed at the foot of the post.
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      Blend V2 is one of Stellar's money-market protocols on
+      Soroban, the smart-contract runtime that ships as WebAssembly
+      executed by a Rust host. It carries a public expert audit
+      report from Code4rena and Certora, and its live audit
+      findings are the first I have been able to encode as
+      clean/planted twins under CI on Soroban's runtime.
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      The property in this case is what the Code4rena / Certora
+      Blend V2 audit named H-01: a reserve's <code>d_supply</code>
+      is incorrectly updated and stored after flash-loan execution.
+      The invariant the report names, and the Blend team restored,
+      is that for a reserve the sum of every user's liability must
+      equal that reserve's <code>d_supply</code>. If a flash-loan
+      round-trip leaves the two out of step, the pool's aggregate
+      debt figure no longer matches the debts it is tracking.
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      I did not find this class. Code4rena wardens named it in their
+      published Blend V2 review; the Blend team fixed it in the
+      commit the audit's mitigation review confirms. What I did was
+      encode the property as a runnable clean/planted twin pair on a
+      minimal original <code>soroban-sdk</code> pool that isolates
+      the identity, and wire both twins into CI on every commit.
+      Repo:
+      <a href="https://github.com/caliperforge/soroban-invariant-atlas" rel="noopener"><code>caliperforge/soroban-invariant-atlas</code></a>,
+      case <code>blendv2-h01</code>.
+    </p>
+  </header>
+</div>
+
+<main class="cf-band--paper">
+  <div class="cf-article-shell">
+    <article class="cf-article">
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The mechanism</p>
+        <h2>The mechanism, in plain terms.</h2>
+        <p>
+          A reserve carries an aggregate debt figure,
+          <code>d_supply</code>, which is meant to equal the sum of
+          every user's liability against that reserve. A flash-loan
+          round-trip owns four writes to that pair: the borrow leg
+          increments the user's liability and increments
+          <code>d_supply</code>, and the repay leg decrements each
+          of them again.
+        </p>
+        <p>
+          The class the H-01 finding names is an asymmetry between
+          those four writes. In the reported case the reserve was
+          loaded from storage on the repay action while still
+          carrying its pre-flash-loan <code>d_supply</code>; the
+          repay subtracted from that stale value and stored the
+          result. The user's liability came back to zero, the
+          reserve's <code>d_supply</code> did not, and the call
+          exited with the two out of step.
+        </p>
+        <p>
+          The fix makes the repay leg operate on the reserve the
+          borrow leg wrote. In the case source, the twin diff seeds
+          that same asymmetry deliberately: three lines of storage
+          mutation, the <code>Reserve</code> read, decrement and
+          write, dropped from the flash-loan repay leg. Every other
+          line in <code>flash_loan</code>, including the borrow
+          leg's <code>d_supply</code> increment, is byte-identical
+          between the twins.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The invariant</p>
+        <h2>The invariant that catches the class.</h2>
+        <p>
+          The property is stated per-pool, across the flash-loan
+          boundary:
+        </p>
+        <blockquote>
+          After any sequence of supply, borrow, flash-loan, and
+          repay operations, the sum of every user's liability
+          against the reserve equals that reserve's aggregate debt
+          supply (<code>d_supply</code> in the case source, the
+          value the H-01 finding corrupts).
+        </blockquote>
+        <p>Concretely:</p>
+        <pre><code>blendv2_h01_dsupply_identity:
+    for every contract state s reachable from initialize() via any
+    sequence of {supply, borrow, repay, flash_loan},
+    sum over users u of s.user_liability(u) == s.d_supply</code></pre>
+        <p>
+          The clean twin holds this invariant on every fuzzed
+          sequence over the case's flash-loan-inclusive handler
+          surface. The planted twin fires the invariant marker
+          <code>INVARIANT VIOLATED blendv2_h01_dsupply_identity</code>
+          on any sequence that runs a flash loan, and
+          <code>proptest</code> shrinks it to a single operation,
+          <code>FlashLoan { user_ix: 0, amount: 1 }</code>.
+        </p>
+        <p>
+          The case source is Rust; the fuzz harness is a stateful
+          proptest-style campaign against a minimal original
+          <code>soroban-sdk</code> lending pool that isolates the
+          H-01 identity, invoked through the Soroban host. No Blend
+          V2 source is vendored. Numbers reported below are from CI
+          run 29200845466 on repo HEAD.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The twin</p>
+        <h2>The clean/planted twin, and what CI showed.</h2>
+        <p>
+          The clean twin at <code>cases/blendv2-h01/clean/</code> is
+          a minimal original <code>soroban-sdk</code>
+          <code>LendingPool</code> carrying the H-01 identity on all
+          four flash-loan writes; the planted twin at
+          <code>cases/blendv2-h01/planted/</code> is that same
+          source with one hunk changed in the flash-loan repay leg.
+        </p>
+        <p>
+          CI runs both twins as two required jobs on every commit.
+          The clean job is a standard required-green: the invariant
+          must hold on every fuzzed sequence. The planted job is
+          inverted: the property test must FAIL on the planted
+          twin, and CI succeeds only when it does. If a
+          well-meaning refactor were to accidentally suppress the
+          marker on the planted twin, the CI job would fail green,
+          and the receipt would break loudly.
+        </p>
+        <p>
+          On CI run 29200845466 (repo HEAD <code>2976d8dd</code>),
+          both required legs passed on the first push. The
+          <code>cargo fmt</code> and <code>cargo clippy</code>
+          hygiene jobs also passed. The paired-gate design is the
+          standing rule across the CaliperForge invariant catalogs:
+          same-source clean/planted pair, both in CI, standing
+          proof the property catches the class.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What I claim</p>
+        <h2>What I actually claim, and where I stop.</h2>
+        <p>
+          This is a defender-side regression fixture on a bug class
+          already caught, disclosed, and fixed in public. Code4rena wardens
+          named the class in their published Blend V2 review; the
+          Blend team fixed it in the commit the audit's mitigation
+          review confirms. The current Blend V2 source at that commit
+          already carries the fix. This post does not claim
+          CaliperForge audited Blend V2, does not claim anything
+          currently deployed is exposed at this class, and does not
+          claim a stateful invariant is a substitute for an audit.
+        </p>
+        <p>
+          What it does provide, if you build a lending pool on
+          Soroban or fork the V2 flash-loan boundary: a
+          name-recognizable pre-deploy CI gate for the H-01 class.
+          The case is public, and both twins run in CI on every
+          commit.
+        </p>
+        <p>
+          Credit for the class goes to the Code4rena wardens
+          (finding H-01 in the published Blend V2 review) and to the
+          Blend team (protocol and fix commit). Case sources, twin
+          diff, and CI legs live in
+          <a href="https://github.com/caliperforge/soroban-invariant-atlas" rel="noopener"><code>caliperforge/soroban-invariant-atlas</code></a>.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Reproducing</p>
+        <h2>Running it.</h2>
+        <p>
+          The case is at <code>cases/blendv2-h01/</code>. Both
+          twins are runnable with the pinned Rust toolchain
+          declared in the repo <code>rust-toolchain.toml</code>:
+        </p>
+        <pre><code>cargo test -p blendv2_h01_clean     # required green
+cargo test -p blendv2_h01_planted  # detection leg; CI inverts</code></pre>
+        <p>
+          For the CI legs, the workflow at
+          <code>.github/workflows/ci.yml</code> runs the paired
+          gate on every push. The planted leg is inverted at the
+          job level: it succeeds when the test fails, so a change
+          that quietly stops the property test from firing shows up
+          as a CI red on the planted job. The receipt does not
+          degrade silently.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Sources</p>
+        <h2>Primary references and case artifacts.</h2>
+        <ul>
+          <li>
+            Code4rena / Certora, Blend V2 formal-verification audit
+            (February 2025):
+            <a href="https://code4rena.com/reports/2025-02-blend-v2-audit-certora-formal-verification" rel="noopener">code4rena.com/reports/2025-02-blend-v2-audit-certora-formal-verification</a>
+          </li>
+          <li>
+            Blend V2 protocol source (Blend Capital):
+            <a href="https://github.com/blend-capital/blend-contracts-v2" rel="noopener">github.com/blend-capital/blend-contracts-v2</a>
+          </li>
+          <li>
+            The H-01 fix commit, as named in the mitigation-review
+            table of the audit report above:
+            <a href="https://github.com/blend-capital/blend-contracts-v2/commit/e4ed914e45433f160bb4f066fd517667b7d8907b" rel="noopener">github.com/blend-capital/blend-contracts-v2/commit/e4ed914</a>
+          </li>
+          <li>
+            Location of the H-01 identity in the pool source, pinned
+            at that commit:
+            <a href="https://github.com/blend-capital/blend-contracts-v2/blob/e4ed914e45433f160bb4f066fd517667b7d8907b/pool/src/pool/submit.rs" rel="noopener">blend-contracts-v2/pool/src/pool/submit.rs at e4ed914</a>
+          </li>
+          <li>
+            Our case, <code>cases/blendv2-h01/README.md</code>:
+            <a href="https://github.com/caliperforge/soroban-invariant-atlas/blob/main/cases/blendv2-h01/README.md" rel="noopener">github.com/caliperforge/soroban-invariant-atlas/blob/main/cases/blendv2-h01/README.md</a>
+          </li>
+          <li>
+            CI run 29200845466 (both required legs green):
+            <a href="https://github.com/caliperforge/soroban-invariant-atlas/actions/runs/29200845466" rel="noopener">github.com/caliperforge/soroban-invariant-atlas/actions/runs/29200845466</a>
+          </li>
+          <li>
+            Repo root:
+            <a href="https://github.com/caliperforge/soroban-invariant-atlas" rel="noopener">github.com/caliperforge/soroban-invariant-atlas</a>
+          </li>
+          <li>
+            Method anchor (planted-twin methodology):
+            <a href="/blog/08_planted-twin-methodology">caliperforge.com/blog/08_planted-twin-methodology</a>
+          </li>
+        </ul>
+        <p class="cf-article__meta">
+          <strong>Dating disclosure.</strong> Work completed 2026-07-13 &middot;
+          written up 2026-08-22.
+          Written day 48 (2026-07-13); published later, from the
+          backlog, on the date this page carries. Changes made
+          between those dates: the Sources block now names the H-01
+          fix commit <code>e4ed914</code> from the mitigation-review
+          table of the audit report, and pins the pool source at
+          that commit rather than at branch <code>main</code>; the
+          header date moved from 2026-07-14 to the day the post was
+          written; this dating note and the one under the title were
+          added. Corrected at review before publication, against the
+          published Code4rena / Certora report and the case source:
+          the description of the H-01 mechanism, the invariant
+          statement, the marker string, the reproduce command and
+          the credit line; what the fuzz harness is described as
+          running against, which said vendored Blend V2 pool source
+          and now says a minimal original pool that vendors none;
+          the attribution of the fix commit, which said Blend's
+          release notes and now says the audit's mitigation review;
+          a sentence about a funding relationship that had lapsed,
+          removed; the credit for the class at two further places in
+          the body, which said Certora and now says Code4rena
+          wardens; the twin-diff line count, which said two lines
+          of storage mutation and now says three; and the credit
+          line's attribution for the finding, which said Code4rena
+          and Certora and now says the Code4rena wardens.
+        </p>
+        <p class="cf-article__meta">
+          This writeup was drafted with AI assistance. Authored and
+          reviewed by Michael Moffett, operator at CaliperForge.
+          Full policy at
+          <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>

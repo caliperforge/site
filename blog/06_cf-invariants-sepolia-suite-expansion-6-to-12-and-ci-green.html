@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>cf-invariants on Starknet Sepolia | twelve references, paired clean/planted CI green | CaliperForge</title>
+<meta name="description" content="The cf-invariants reference suite on Starknet Sepolia is now twelve contracts. Lending, staking, vesting, timelock, payment splitter, and oracle joined the original six. GitHub Actions runs paired clean=0 / planted≥1 across all twelve, plus a Caracal static-analysis pre-flight.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-07 · MICHAEL MOFFETT</div>
+    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">cf-invariants on Starknet Sepolia, twelve references, paired clean/planted CI green.</span></h1>
+    <p class="cf-hero-lede">
+      The cf-invariants reference suite grew from six Cairo
+      references to twelve on 2026-06-04. Six new contract
+      families joined the set, lending, staking, vesting,
+      timelock, payment splitter, oracle, each with its
+      own invariant class and a planted-bug twin. Three days
+      later, a paired GitHub Actions matrix went green: every
+      reference is now asserted as clean=0 on its clean variant
+      and planted&ge;1 on its planted variant, with a Caracal
+      static-analysis pre-flight running alongside. Twenty-six
+      CI jobs, twelve Voyager-verified Sepolia deployments,
+      Apache-2.0.
+    </p>
+  </header>
+</div>
+
+<main class="cf-band--paper">
+  <div class="cf-article-shell">
+    <article class="cf-article">
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The suite at twelve</p>
+        <h2>Six new contract families, the most-shipped Cairo shapes not in the original six.</h2>
+        <p>
+          The
+          <a href="/blog/01_caliperforge-origins">Day-1 launch post</a>
+          stood up
+          <a href="https://github.com/caliperforge/cf-invariants-starknet" rel="noopener">cf-invariants</a>
+          as a Rust sidecar that adds stateful invariant testing on
+          top of <a href="https://github.com/foundry-rs/starknet-foundry" rel="noopener">snforge</a>
+          for Cairo 2.x, with three Voyager-verified references on
+          Starknet Sepolia. The
+          <a href="/blog/03_cairo-references-expansion-and-chimera-template-pack">three-to-nine expansion</a>
+          took the suite to nine on 2026-06-02. As of 2026-06-04 the
+          suite is twelve. The six new families fill in the
+          most-shipped Cairo shapes the original six did not cover.
+        </p>
+        <p>
+          The original six (per
+          <code>git ls-tree 679a5ac references/</code> at the
+          OSS-launch commit on 2026-06-01):
+          <code>erc20_planted_bug</code>,
+          <code>erc4626_ref</code>,
+          <code>erc721_ref</code>,
+          <code>governance</code>,
+          <code>multisig_ref</code>,
+          <code>single_side_amm</code>.
+          The six added in this expansion:
+          <code>lending_ref</code>,
+          <code>oracle_ref</code>,
+          <code>payment_splitter_ref</code>,
+          <code>staking_ref</code>,
+          <code>timelock_ref</code>,
+          <code>vesting_ref</code>.
+          All twelve are on-chain on Starknet Sepolia and
+          Voyager source-verified, with addresses + verification
+          links in
+          <a href="https://github.com/caliperforge/cf-invariants-starknet/blob/main/STARKNET_SEPOLIA_DEPLOYMENTS.md" rel="noopener"><code>STARKNET_SEPOLIA_DEPLOYMENTS.md</code></a>.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">One invariant, one planted bug per new family</p>
+        <h2>Each reference is small enough to read end-to-end.</h2>
+        <p>
+          The discipline that carried the original six carries
+          through here: a single hand-authored or AI-proposed
+          invariant per reference, a single planted bug sitting at
+          named lines in <code>src/lib.cairo</code>, and an
+          <code>scorecard.expected.md</code> that names what the
+          harness is expected to surface on the buggy variant.
+        </p>
+        <ul>
+          <li>
+            <strong><code>lending_ref</code></strong> ,
+            per-user solvency. The clean lending market enforces
+            an LTV cap on both borrow and withdraw.
+            <code>withdraw_collateral</code> in the planted
+            variant correctly debits the caller's collateral and
+            <code>total_collateral</code> but skips the post-write
+            LTV re-check; a borrower can borrow up to cap, then
+            withdraw collateral to zero while still holding the
+            quote. The invariant
+            <code>invariant_per_user_solvency</code> fires.
+            (<a href="https://github.com/caliperforge/cf-invariants-starknet/blob/main/references/lending_ref/README.md" rel="noopener">README</a>.)
+          </li>
+          <li>
+            <strong><code>staking_ref</code></strong> ,
+            stake/slash conservation across the staking pool and
+            the slashed pool.
+            <code>slash(victim)</code> zeroes the victim's stake
+            and debits <code>total_staked</code> but never credits
+            <code>slashed_pool</code>; the slashed funds vanish
+            from accounting. The conservation invariant catches
+            the LHS/RHS drift.
+            (<a href="https://github.com/caliperforge/cf-invariants-starknet/blob/main/references/staking_ref/README.md" rel="noopener">README</a>.)
+          </li>
+          <li>
+            <strong><code>vesting_ref</code></strong> ,
+            claimed &le; vested at any time. The clean linear
+            vesting contract gates <code>claim()</code> on
+            <code>vested_at(now)</code>; the planted
+            <code>claim()</code> pays out
+            <code>total_grant - claimed</code> regardless of
+            schedule. The first claim before <code>end_ts</code>
+            drives <code>claimed &gt; vested_at(now)</code> and
+            breaks the supply cap.
+            (<a href="https://github.com/caliperforge/cf-invariants-starknet/blob/main/references/vesting_ref/README.md" rel="noopener">README</a>.)
+          </li>
+          <li>
+            <strong><code>timelock_ref</code></strong> ,
+            delay respected. The clean timelock requires
+            <code>now &ge; queued_at(tx_id) + delay</code> at
+            execute time. The planted
+            <code>execute(tx_id)</code> checks admin and
+            tx-existence but drops the delay gate; the admin can
+            queue and execute in the same block.
+            <code>invariant_delay_respected</code> fires.
+            (<a href="https://github.com/caliperforge/cf-invariants-starknet/blob/main/references/timelock_ref/README.md" rel="noopener">README</a>.)
+          </li>
+          <li>
+            <strong><code>payment_splitter_ref</code></strong>
+           , proportional release. The clean three-recipient
+            splitter pays each caller their share-weighted
+            entitlement. The planted <code>release()</code> pays
+            the caller <code>total_received - released[caller]</code>
+            outright, the entire un-released pool to whoever
+            calls first, ignoring share weights.
+            <code>invariant_proportional_release</code> catches
+            the over-payment.
+            (<a href="https://github.com/caliperforge/cf-invariants-starknet/blob/main/references/payment_splitter_ref/README.md" rel="noopener">README</a>.)
+          </li>
+          <li>
+            <strong><code>oracle_ref</code></strong> ,
+            <code>last_update_ts</code> monotonicity. The clean
+            push-update oracle gates each write on
+            <code>new_ts &gt; last_update_ts</code>; the planted
+            <code>update_price</code> enforces publisher access
+            but skips the freshness check, so a stale push
+            rewinds the freshness clock backward.
+            <code>invariant_last_update_ts_monotone</code> fires.
+            (<a href="https://github.com/caliperforge/cf-invariants-starknet/blob/main/references/oracle_ref/README.md" rel="noopener">README</a>.)
+          </li>
+        </ul>
+        <p>
+          Each reference is a single
+          <code>src/lib.cairo</code> plus a single
+          <code>tests/cf_invariant_&hellip;.cairo</code> driver.
+          The corrected line in each planted variant is preserved
+          in a comment block at the end of the function, so the
+          diff between clean and planted is one paragraph long and
+          readable on a phone.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The CI green light</p>
+        <h2>Paired clean/planted across all twelve, plus a Caracal pre-flight.</h2>
+        <p>
+          The repo did not have a GitHub Actions workflow when the
+          three-to-nine expansion shipped, the proof was
+          local <code>snforge test</code> output plus the Voyager
+          verification links. The first end-to-end CI workflow
+          landed on 2026-06-04 and went green on run
+          <a href="https://github.com/caliperforge/cf-invariants-starknet/actions/runs/26971094124" rel="noopener">26971094124</a>
+          at commit <code>5ac98a9</code>, 13/13 jobs. That first
+          shape asserted the planted leg only: every reference's
+          snforge test was expected to exit non-zero with the
+          <code>INVARIANT VIOLATED</code> marker on stdout. It did
+          not yet assert that the clean twin runs clean.
+        </p>
+        <p>
+          That gap closed on 2026-06-07 when
+          <a href="https://github.com/caliperforge/cf-invariants-starknet/pull/2" rel="noopener">PR #2</a>
+          squash-merged. The PR adds a <code>clean</code> scarb
+          feature to every reference's <code>Scarb.toml</code> and a
+          <code>CLEAN_TWIN: bool</code> const gated on
+          <code>#[cfg(feature: 'clean')]</code> in each contract
+          module, so the same source tree compiles in two variants.
+          CI now runs a 24-leg matrix (twelve references
+          &times; two variants), plus the Rust workspace
+          tests and a Caracal static-analysis pre-flight job in
+          advisory mode. The expectation per leg:
+        </p>
+        <ul>
+          <li>
+            <strong>Planted leg</strong>, default scarb
+            build; snforge test is expected to fail with
+            <code>INVARIANT VIOLATED &lt;reason&gt;</code> on
+            stdout. CI inverts the exit code and asserts the
+            marker is present.
+          </li>
+          <li>
+            <strong>Clean leg</strong> ,
+            <code>scarb build --features clean</code> +
+            <code>snforge test --features clean</code>. CI
+            asserts <code>rc == 0</code> AND no
+            <code>INVARIANT VIOLATED</code> marker on stdout.
+          </li>
+        </ul>
+        <p>
+          Run
+          <a href="https://github.com/caliperforge/cf-invariants-starknet/actions/runs/27075213962" rel="noopener">27075213962</a>
+          at commit
+          <a href="https://github.com/caliperforge/cf-invariants-starknet/commit/0bff2c4" rel="noopener"><code>0bff2c4</code></a>
+          is 26 of 26 green: the workspace job, the Caracal
+          advisory job, and the 24 reference legs. The workflow
+          file is
+          <a href="https://github.com/caliperforge/cf-invariants-starknet/blob/main/.github/workflows/ci.yml" rel="noopener"><code>.github/workflows/ci.yml</code></a>
+          and is the substantive reference an external Cairo dev
+          can lift. The clean-variant convention, one
+          <code>clean</code> scarb feature gating one
+          <code>CLEAN_TWIN</code> branch per reference, is
+          the pattern the
+          <a href="https://github.com/foundry-rs/starknet-foundry/pull/4409" rel="noopener">snforge docs PR #4409</a>
+          (opened 2026-06-04, pending first-time-contributor
+          maintainer approval) proposes for upstream as a worked
+          recipe. The PR is opened, not merged; the CI on it is
+          pending maintainer approval.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The sibling ship</p>
+        <h2>Third real Jito program harnessed on the same Crucible rails.</h2>
+        <p>
+          One day after the suite expansion,
+          <a href="https://github.com/caliperforge/cf-invariants-jito-priorityfee" rel="noopener">cf-invariants-jito-priorityfee</a>
+          went public, the third real
+          <a href="https://www.jito.network/" rel="noopener">Jito Foundation</a>
+          program harnessed on
+          <a href="https://github.com/asymmetric-research/crucible" rel="noopener">Crucible</a>,
+          on the same anchor-lang 1.0.1 / platform-tools v1.52 /
+          Crucible v0.2.0 rails as
+          <a href="/blog/04_cf-invariants-jito-first-real-protocol-harnessed">cf-invariants-jito</a>
+          (tip-distribution) and
+          <a href="/blog/05_jito-tippayment-and-ai-invariant-suggester-live">cf-invariants-jito-tippayment</a>
+          (tip-payment). One hand-authored invariant
+          (<code>transfer_increments_total_state_update</code>),
+          paired clean/planted, CI green on the first push at
+          commit <code>a32c1d3</code>, run
+          <a href="https://github.com/caliperforge/cf-invariants-jito-priorityfee/actions/runs/26919123180" rel="noopener">26919123180</a>.
+          Three Jito programs, one rail, the
+          specialization-velocity claim as an existence proof, not
+          a forecast. Bundled hand-off via
+          <a href="https://github.com/jito-foundation/jito-programs/issues/163" rel="noopener">Jito intro issue #163</a>
+          (opened 2026-06-04, awaiting maintainer reply).
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What this is not</p>
+        <h2>Not a fork. Not an audit. Not autonomous discovery. Not formal verification.</h2>
+        <p>
+          Four framings each repo's README is explicit about,
+          mirrored here so this post does not drift:
+        </p>
+        <ul>
+          <li>
+            <strong>Not a fork of snforge.</strong> snforge is the
+            stateful-invariant test runner. cf-invariants is the
+            Rust sidecar that orchestrates references, drives the
+            clean-vs-planted twin convention, and scores results.
+            Credit for the Cairo invariant testing engine and the
+            <code>INVARIANT VIOLATED</code> marker contract
+            belongs to the starknet-foundry team. The repo
+            pulls snforge as an external dependency; nothing is
+            vendored.
+          </li>
+          <li>
+            <strong>Not an audit of these contract patterns.</strong>
+            Each reference is a deliberately small implementation
+            shaped around one invariant and one planted bug. The
+            planted bugs are authored in our reference copies for
+            the harness to fire on; no claim is made about the
+            security of any production lending / staking /
+            vesting / timelock / payment splitter / oracle
+            contract on Starknet.
+          </li>
+          <li>
+            <strong>Not autonomous AI discovery.</strong> The
+            invariants in the new six were drafted with AI
+            assistance under operator review, then frozen as
+            hand-authored fixtures, each reference's
+            test-driver header names the AI source and the
+            scorecard carries an AI-disclosure block. The harness
+            is what <em>checks</em> them; no candidate reaches a
+            CI assertion without an operator pass.
+          </li>
+          <li>
+            <strong>Not formal verification.</strong> Stateful
+            randomized invariant testing under snforge's fuzzer
+            budget, not proofs. The CI green light is evidence
+            that the harness surfaces each planted bug within
+            budget on the planted variant and finds no violation
+            on the clean variant, not a proof that no
+            violation exists under any input.
+          </li>
+        </ul>
+        <p>
+          Repo:
+          <a href="https://github.com/caliperforge/cf-invariants-starknet" rel="noopener">github.com/caliperforge/cf-invariants-starknet</a>.
+          Sepolia deployment + Voyager verification index:
+          <a href="https://github.com/caliperforge/cf-invariants-starknet/blob/main/STARKNET_SEPOLIA_DEPLOYMENTS.md" rel="noopener"><code>STARKNET_SEPOLIA_DEPLOYMENTS.md</code></a>.
+          Apache-2.0. Issues and PRs are open.
+        </p>
+        <p class="cf-article__meta">
+         , Michael Moffett. Built with AI assistance; the harness scaffolds, the reference fixtures, and the AI-suggester orchestration were drafted with an AI coding assistant under operator review, with full repo attribution. AI policy at <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>

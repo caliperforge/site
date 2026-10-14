@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Right denom, wrong channel: Secret Network, IBC source validation, and the conservation invariant, CaliperForge</title>
+<meta name="description" content="Written on activity day 34. Around June 10, 2026, roughly $4.67M was drained from a wrapped-token contract on Secret Network. A modified CW20-ICS20 implementation validated the incoming denomination but not the source channel, because the channel check was commented out. This post names the invariant class the mechanism belongs to, states the two-counter property a stateful test would assert, and says plainly where our CI-verified coverage stops.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="canonical" href="https://caliperforge.com/blog/22_right-denom-wrong-channel-ibc-source-validation">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · WRITTEN ON ACTIVITY DAY 34 · 2026-06-29 · MICHAEL MOFFETT</div>
+    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">Right denom, wrong channel: Secret Network, IBC source validation, and the conservation invariant.</span></h1>
+    <p class="cf-hero-lede">
+      Around June 10, 2026, an attacker drained approximately $4.67M
+      from a wrapped token contract on Secret Network (The Block,
+      Cryptopolitan; sources below). The contract minted
+      Secret-wrapped versions of Axelar-bridged assets: saUSDC,
+      saUSDT, saDAI, saWETH, saWBTC, saWBNB, and sawstETH. None of the
+      minted tokens were backed by real escrowed assets. The attack
+      went undetected for approximately seven days, because Secret
+      Network's privacy-by-default architecture hid the drained
+      balances. It was detected around June 17 and disclosed around
+      June 19. Axelar's emergency committee subsequently disabled the
+      Secret and Secret-SNIP bridge connections. The core Axelar
+      protocol and IBC were not compromised. The contract was not
+      developed, deployed, or maintained by Axelar (The Block).
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      This post is not a postmortem. The incident has been covered at
+      the links in the Sources block below. What this covers is the
+      invariant class the mechanism belongs to, and what a
+      property-test gate that holds that class would assert.
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      <strong>When this was written.</strong> The body below was
+      written on <strong>activity day 34</strong>, 2026-06-29,
+      counting the 2026-05-27 launch day as day 1, three weeks after
+      the incident and ten days after its disclosure. It is being
+      published later than it was written. Nothing in it has been
+      updated to reflect anything that happened after day 34, so the
+      state of the Axelar bridge connections, the status of any
+      recovery, and the scope of our own CI coverage are all stated as
+      they stood that day and not as they stand now.
+    </p>
+  </header>
+</div>
+
+<main class="cf-band--paper">
+  <div class="cf-article-shell">
+    <article class="cf-article">
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What happened</p>
+        <h2>What happened: the channel check that was not there.</h2>
+        <p>
+          The contract was a modified CW20-ICS20 (SNIP-20 ICS-20)
+          implementation. Its job: accept IBC token transfers from
+          Axelar-bridged assets and mint corresponding wrapped tokens
+          on Secret Network.
+        </p>
+        <p>
+          ICS-20 is the Inter-Blockchain Communication standard for
+          token transfers. When a transfer packet arrives at
+          <code>do_ibc_packet_receive</code>, the contract is supposed
+          to validate two things: the incoming denomination (which
+          asset) and the source channel (which connection the packet
+          came from). Validating the denomination is necessary, but not
+          sufficient. The source channel check is what binds "this
+          deposit came from the real Axelar channel" to "this contract
+          is authorized to mint." Without it, any IBC-capable chain can
+          open a new channel, send packets with the right denom string,
+          and claim to have deposited real assets.
+        </p>
+        <p>
+          The source channel check in this contract was a call to
+          <code>parse_voucher_denom</code>, which would have validated
+          the denomination's channel trace against the actual transfer
+          source. It was commented out.
+        </p>
+        <p>
+          The attacker set up a single-validator Cosmos SDK chain,
+          opened a new IBC channel to the Secret contract, and sent
+          forged deposit packets. The packets carried the right
+          denomination strings, so the denom check passed. The channel
+          trace check that would have caught the mismatch was not
+          there. The contract minted genuine saTokens against zero
+          backing. Those tokens were then redeemed over the legitimate
+          Axelar channel, draining the real escrowed assets.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The pattern</p>
+        <h2>The pattern: supply issued without a valid authorization.</h2>
+        <p>
+          The system-level property this contract needed to enforce:
+          minted wrapped supply must at all times be fully backed by
+          assets actually escrowed, received over the authorized
+          channel, on the correct denomination trace.
+        </p>
+        <p>
+          That property has two components. Denomination validation
+          alone says the asset type is what it claims to be. Channel
+          validation says the asset came from where it claims to have
+          come from. Both must hold for a deposit to authorize a mint.
+          Commenting out the source-channel check drops the second
+          component. Supply can then be minted on any channel that
+          speaks the right denomination string, regardless of whether
+          real assets were ever moved.
+        </p>
+        <p>
+          This is the mint-from-thin-air shape: a minting event
+          proceeds without the authorization condition being genuinely
+          satisfied. The authorization condition, a valid inbound
+          transfer over the registered channel, was checked
+          incompletely. Supply was issued anyway. The binding between
+          "what was deposited, on the right channel" and "what gets
+          minted" was severed.
+        </p>
+        <p>
+          This is the same family as
+          <a href="/blog/10_cross-layer-conservation-aztec">blog post 10</a>
+          (Aztec's <code>numRealTxs</code> settlement boundary, Jun-21
+          writeup) and
+          <a href="/blog/11_syscoin-conservation-mint-without-burn">blog post 11</a>
+          (Syscoin's SPV proof validation bypass, Jun-22 writeup). The
+          runtime differs, IBC channels and CosmWasm instead of ZK
+          proofs on EVM or SPV proofs on a Solidity bridge, but the
+          class identity is the same. A state change (minting) that
+          requires a genuine authorizing condition (a valid,
+          fully-validated inbound transfer) proceeds when that
+          condition is only partially satisfied. The minted supply is
+          then unbacked.
+        </p>
+        <p>
+          The franchise thesis holds: this class is not exotic. It
+          recurs across ecosystems, in different forms, on different
+          runtimes.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The invariant</p>
+        <h2>What the invariant asserts.</h2>
+        <p>
+          The property, expressed for a stateful property test:
+        </p>
+        <p>
+          Track two counters. <code>authorized_inbound</code>
+          increments only when an incoming packet passes both denom
+          validation AND source channel validation, meaning the channel
+          trace is verified against the registered Axelar channel, not
+          just any IBC peer. <code>tokens_minted</code> increments on
+          every successful mint call.
+        </p>
+        <p>Assert after every mint transition:</p>
+        <pre><code>tokens_minted &lt;= authorized_inbound</code></pre>
+        <p>
+          The planted twin replicates the actual bug: comment out the
+          <code>parse_voucher_denom</code> call. A forged-channel
+          deposit now reaches the mint path.
+          <code>tokens_minted</code> increments.
+          <code>authorized_inbound</code> does not. The invariant fires
+          on the first such packet.
+        </p>
+        <p>
+          The clean variant leaves the channel check intact. A
+          forged-channel deposit fails before reaching the mint path.
+          <code>tokens_minted</code> and
+          <code>authorized_inbound</code> stay in sync across every
+          valid transition. The invariant does not fire.
+        </p>
+        <p>
+          That is the clean&thinsp;=&thinsp;0 /
+          planted&thinsp;&gt;=&thinsp;1 shape: zero violation markers
+          on the correct implementation, at least one marker when the
+          bug is present. A property-test gate that asserts this
+          invariant in a pre-deploy CI run fires immediately on the
+          planted twin and stays silent on the clean contract. This is
+          exactly the structure cf-invariants ships for each of its 12
+          conservation-and-other-class references on Cairo/Starknet.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Where we stop</p>
+        <h2>What we cover, and where we stop.</h2>
+        <p>
+          cf-invariants (Cairo/Starknet) carries the conservation class
+          across a 12-reference suite. Each reference has a clean
+          variant and a planted-bug variant; each pair asserts
+          planted&thinsp;&gt;=&thinsp;1 markers AND
+          clean&thinsp;=&thinsp;0 markers in CI. PR #2 squash-merged
+          2026-06-07 at commit <code>0bff2c4</code>, CI run
+          <code>27096594873</code>, 26/26 green. All twelve references
+          are deployed and source-verified on Starknet Sepolia. The
+          public developer cookbook (PR #3, commit <code>7f94b08</code>,
+          public since 2026-06-11) is at
+          <a href="https://github.com/caliperforge/cf-invariants-starknet/tree/main/docs/cookbook" rel="noopener">github.com/caliperforge/cf-invariants-starknet/tree/main/docs/cookbook</a>.
+        </p>
+        <p>
+          The method (express the conservation property as a two-counter
+          assertion, plant the authorization bypass, verify the
+          invariant fires) is chain-agnostic. The live harnesses are
+          Cairo/Starknet. Secret Network runs CosmWasm. We have not
+          harnessed a CosmWasm contract; that surface is not in our
+          current stack. CosmWasm is a plausible future rail, not one
+          that exists in our CI today.
+        </p>
+        <p>
+          The honest framing is the same one this franchise has used
+          across both prior posts: the value is the method,
+          demonstrated on the chains we do cover. A CosmWasm-native
+          harness targeting <code>do_ibc_packet_receive</code> would
+          carry the same invariant structure: two counters, the
+          forged-channel callpath in scope, the conservation assertion.
+          The design is portable. The CI-verified artifact on that
+          runtime does not exist yet.
+        </p>
+        <p>
+          We name the class, show the invariant shape, and state the
+          gap plainly. The same boundary the Aztec post drew for the
+          EVM-L1-ZK-settlement surface; the same boundary the Syscoin
+          post drew for the Solidity bridge runtime.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Sources</p>
+        <h2>Sources.</h2>
+        <ul>
+          <li>The Block (incident coverage, amount, timeline, exploit mechanism):
+            <a href="https://www.theblock.co/post/405459/secret-networks-axelar-bridge-drained-for-4-67-million-in-infinite-mint-exploit-that-went-unnoticed-for-seven-days" rel="noopener">theblock.co/post/405459</a></li>
+          <li>crypto.news (Axelar response, bridge disabling):
+            <a href="https://crypto.news/axelar-shuts-down-secret-network-bridge-routes-after-4-7m-exploit/" rel="noopener">crypto.news/axelar-shuts-down-secret-network-bridge-routes-after-4-7m-exploit</a></li>
+          <li>Cryptopolitan (incident coverage, asset types drained):
+            <a href="https://www.cryptopolitan.com/axelar-bridged-tokens-worth-4-67-million-drained-in-secret-network-contract-exploit/" rel="noopener">cryptopolitan.com/axelar-bridged-tokens-worth-4-67-million-drained-in-secret-network-contract-exploit</a></li>
+          <li>cf-invariants repo:
+            <a href="https://github.com/caliperforge/cf-invariants-starknet" rel="noopener">github.com/caliperforge/cf-invariants-starknet</a></li>
+          <li>cf-invariants developer cookbook:
+            <a href="https://github.com/caliperforge/cf-invariants-starknet/tree/main/docs/cookbook" rel="noopener">github.com/caliperforge/cf-invariants-starknet/tree/main/docs/cookbook</a></li>
+        </ul>
+
+        <p class="cf-article__meta">
+          <strong>Dating disclosure.</strong> This post was written on
+          <strong>activity day 34</strong>, 2026-06-29, counting the
+          2026-05-27 launch day as day 1. It reached publication later.
+          The body is the day-34 text. The changes made between those
+          dates are these and only these: the markdown source was
+          rendered into this page template; the day-34 marker was added
+          to the eyebrow above, to the opening block, and to this
+          paragraph; the double-hyphen dashes of the source were
+          resolved to commas, colons, parentheses and a semicolon to
+          match this site's punctuation, in seven places, with no
+          wording changed; the two references to blog posts 10 and 11
+          were made links; the bare source URLs were made links; the
+          repository status header was updated from its drafting state;
+          and the reviewer-routing notes that sat around the body in
+          the source file were not carried over. No sentence of the
+          body was rewritten, no figure or date was changed, and no
+          claim was added or removed.
+        </p>
+        <p class="cf-article__meta">
+          This writeup was drafted with AI assistance. Authored and
+          reviewed by Michael Moffett, operator at CaliperForge.
+          Full policy at
+          <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>

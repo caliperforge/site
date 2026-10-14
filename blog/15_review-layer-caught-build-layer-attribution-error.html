@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The review layer caught the build layer: a confident, wrong attribution, CaliperForge</title>
+<meta name="description" content="Written on activity day 41. A builder agent produced a clean twin and a planted twin that behaved exactly as they should, then wrote one sentence crediting the wrong line to an audit firm's published fix. An independent reviewer with no shared context went to the primary source and found the mismatch before anything public shipped. What the catch proves, and the three things it does not.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="canonical" href="https://caliperforge.com/blog/15_review-layer-caught-build-layer-attribution-error">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · WRITTEN ON ACTIVITY DAY 41 · 2026-07-06 · MICHAEL MOFFETT</div>
+    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">The review layer caught the build layer: a confident, wrong attribution.</span></h1>
+    <p class="cf-hero-lede">
+      Earlier today my builder agent was preparing a new invariant
+      case, a Uniswap v4 / OpenZeppelin fee-hook case. It did the
+      normal thing. It wrote a clean twin and a planted-bug twin. It
+      ran the stateful property test. The property stayed silent on the
+      clean twin and fired on the planted twin, which is the shape the
+      case is supposed to have. It then wrote a note that the specific
+      line it had omitted from the planted twin was the exact line
+      OpenZeppelin's public fix for that bug family had added.
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      <strong>That last part was wrong.</strong>
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      <strong>When this was written.</strong> The body below was
+      written on <strong>activity day 41</strong>, 2026-07-06, counting
+      the 2026-05-27 launch day as day 1. It is being published later
+      than it was written. Every "earlier today", "shortly" and present
+      tense in it is a day-41 statement, and none of them have been
+      updated. In particular, the corrected case the closing lines
+      promise had not shipped when this was written.
+    </p>
+  </header>
+</div>
+
+<main class="cf-band--paper">
+  <div class="cf-article-shell">
+    <article class="cf-article">
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What happened</p>
+        <h2>The check that caught it.</h2>
+        <p>
+          The reviewer agent, which reads the artifact with no shared
+          context with the builder, went to OpenZeppelin's actual
+          published source and checked. The line the builder pointed at
+          was not the line the published fix had changed. The real fix
+          was a different line, in the same function, in the same bug
+          family. Everything mechanical about the case worked. The
+          property fired on the planted twin. It held on the clean
+          twin. The class was real. The one thing that was wrong was
+          the credit line.
+        </p>
+        <p>
+          The case is being rebuilt so that claim is true. The
+          corrected case ships shortly, on its own. This post is not
+          that case. This post is about the process beat that caught
+          the mistake before anything public went out.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The failure mode</p>
+        <h2>Why this is the failure mode I built for.</h2>
+        <p>
+          An attribution error is the dangerous kind. It is not a typo.
+          It is not a broken test. It is not a compiler error. It reads
+          correct on the page. The words hang together. The firm's name
+          is spelled right. The line number sits inside the right
+          function. A reader skimming will nod and move on.
+        </p>
+        <p>
+          That is the shape of the mistake I am most afraid of
+          shipping. Output that sounds like it knows what it is talking
+          about, that follows a real firm's real reasoning about a real
+          bug family, and that gets one specific claim wrong in a way
+          only a source-check would catch. If you are reading a
+          technical post and you see "the firm's fix was this line," the
+          load on you as a reader is high. You are trusting the author
+          to have checked. Most readers do not pull the primary source,
+          diff it against the version before the fix, and confirm the
+          specific line the author pointed at was the one that changed.
+          You have other things to do with your afternoon.
+        </p>
+        <p>
+          That is the surface where a confident, wrong claim lives.
+          Everything else about the artifact could be right, and this
+          one line still makes the post dishonest. The structure I have
+          been building is aimed at exactly that surface.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Independence</p>
+        <h2>Why an independent reviewer, and why no shared context.</h2>
+        <p>
+          The build agent writes the artifact. The review agent reads
+          it and checks it. Both are agents. Both run on the same
+          underlying model. The difference between them is not raw
+          capability. The difference is that the reviewer does not see
+          the builder's plan, its framing, its confidence, or the chain
+          of reasoning that got it to the claim.
+        </p>
+        <p>
+          If the reviewer had shared context, it would be anchored by
+          how the builder framed the claim. Anchoring is the failure
+          mode. A reviewer that already believes the claim is looking
+          for confirmation, and finding confirmation on a plausible
+          claim is not hard. A reviewer that has never seen the claim
+          before is looking at the source cold, and the artifact
+          separately. The check is closer to what a careful stranger
+          would do, if that stranger were rigorous and had the primary
+          source open in the next tab.
+        </p>
+        <p>
+          That is what caught this. The reviewer did not read the
+          builder's writeup and think "that sounds right." It went to
+          OpenZeppelin's source, found the commit the fix landed in,
+          read what changed, and compared. The comparison did not
+          match. It said so, in the review note that came back to me
+          before the case was staged for its own writeup. That is the
+          entire mechanism.
+        </p>
+        <p>
+          The mechanism has to be boring. If it depended on cleverness,
+          it would fail the day the mistake was too subtle for
+          cleverness to see through. It depends on independence, and on
+          going to the primary source. Those two properties, held
+          together, make the check harder to fool than a smart reviewer
+          with shared context would be.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Honest scope</p>
+        <h2>What this does not prove.</h2>
+        <p>
+          I want to be clear about what one catch is and is not.
+        </p>
+        <p>
+          It is not proof the structure catches every mistake. It is
+          one catch. The reviewer looked at one specific claim, in one
+          specific artifact, and got the check right that time. On
+          other artifacts, on other days, the reviewer will miss. The
+          confidence of the mechanism has to come from many catches
+          over time, and from an honest log of the misses. I keep both.
+          When something wrong ships and I catch it later, or someone
+          else catches it, that goes into the miss log the builder and
+          reviewer read at the top of every run. The log is not a
+          reputation asset. It is the training surface for the next
+          run.
+        </p>
+        <p>
+          It is not proof that independence solves the general problem
+          either. Independence solves one shape of failure, the
+          anchored review. There are shapes of failure it does not
+          solve. If the primary source is itself wrong, the reviewer
+          will not know. If the class of mistake is one both agents
+          make in the same way, the review will confirm the mistake.
+          Those are real gaps. The structure does not close them today.
+        </p>
+        <p>
+          And it is not proof that agents can be trusted without a
+          human in the loop. I am in the loop. The draft that would
+          have gone out had a wrong claim in it. The reviewer caught it
+          before I saw the case as ready to stage. That is the flow I
+          have been building toward, and it is the flow I trust for
+          public output. Not because the agents are infallible. Because
+          the layers are independent, and the layers are checked, and
+          the operator with his name on the artifact sees what the
+          layers produced.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The beat</p>
+        <h2>The beat, in one line.</h2>
+        <p>
+          A confident, plausible, wrong claim. An independent check
+          against the primary source. A correction before anything
+          public shipped. That is the structure earning its cost on a
+          specific day, on a specific artifact, in a way that is easy
+          to describe and hard to fake.
+        </p>
+        <p>
+          The corrected case ships shortly, credited straight.
+          <em>[Editor's note, 2026-09-04: it did. It shipped four days
+          after this was written, on 2026-07-10, as
+          <a href="/blog/13_fee-direction-integrity-uniswap-v4-hook">blog
+          post 13</a>.]</em>
+        </p>
+        <p>
+          Michael Moffett, operator.<br>
+          CaliperForge.
+        </p>
+
+        <p class="cf-article__meta">
+          <strong>Dating disclosure.</strong> Work completed 2026-07-06 &middot;
+          written up 2026-08-22. This post was written on
+          <strong>activity day 41</strong>, 2026-07-06, counting the
+          2026-05-27 launch day as day 1. It reached publication later.
+          The body is the day-41 text. The changes made between those
+          dates are these and only these: the markdown source was
+          rendered into this page template; the day-41 marker was added
+          to the eyebrow above, to the opening block, and to this
+          paragraph; the post's original number prefix of 13 was
+          dropped, because slot 13 had been taken by another post, and
+          the page's number and canonical URL are assigned at
+          publication; the source's
+          Medium-mirror byline and origin line were not carried onto
+          this page, which is the origin; a heading was added over the
+          first body section, which the source left unlabelled, because
+          this template's sections carry headings; the repository status
+          header was updated from its drafting state; and the
+          reviewer-routing notes and self-check tables that sat around
+          the body in the source file were not carried over; and three
+          dated additions were made at review, an editor's note at the
+          closing line recording that the corrected case shipped on
+          2026-07-10 as blog post 13, the removal of one sentence of
+          commentary about the post's own honesty, and the correction of
+          the contact address to the operator's. No sentence of the
+          day-41 body was rewritten, no claim of the day-41 body was
+          added or removed, and no forward-looking statement of the
+          day-41 body was updated to reflect what has happened since.
+        </p>
+        <p class="cf-article__meta">
+          This writeup was drafted with AI assistance. Authored and
+          reviewed by Michael Moffett, operator at CaliperForge.
+          Full policy at
+          <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>

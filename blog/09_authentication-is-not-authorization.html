@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Authentication is not authorization: the TrustedVolumes access_control class | CaliperForge</title>
+<meta name="description" content="TrustedVolumes lost a reported $5.87M because the settlement contract keyed its signature lookup on the caller instead of the order's maker. The invariant that catches the class, and the CI-verified reference pairs that hold it.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-19 · MICHAEL MOFFETT</div>
+    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">Authentication is not authorization: the TrustedVolumes access_control class.</span></h1>
+    <p class="cf-hero-lede">
+      On May 7, 2026, TrustedVolumes lost a reported $5.87M
+      (rekt.news) to a bug that reads as obvious after the fact: the
+      contract checked whether a signer was authorized for the wrong
+      principal. The code that validated the signature was doing
+      exactly what it appeared to be doing, looking up a key
+      in a map, and was wrong because the map was indexed on
+      the caller&rsquo;s address instead of the order&rsquo;s maker
+      address. That is the load-bearing bug for the access_control
+      class. The full attack chained three more bugs the QuillAudits
+      writeup linked below breaks down (permissionless registration,
+      the contract&rsquo;s use of the <code>taker</code> field as the
+      <code>from</code> address combined with unlimited ERC-20
+      approvals on the proxy, and a broken replay guard); this post
+      stays on the access_control leg.
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      This post is not a postmortem. banteg published a runnable
+      Foundry reproduction (block-pinned to 25039669) that lets you
+      replay the exploit sequence on the actual pre-exploit state.
+      That is the definitive technical artifact for the attack. What
+      this post covers is the other leg: the invariant property the
+      contract should have enforced, what it asserts, and how a
+      stateful test that carries that property would have caught the
+      class before mainnet.
+    </p>
+  </header>
+</div>
+
+<main class="cf-band--paper">
+  <div class="cf-article-shell">
+    <article class="cf-article">
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What happened</p>
+        <h2>The contract asked the wrong question.</h2>
+        <p>
+          TrustedVolumes is an off-chain order book with on-chain
+          settlement. Makers sign orders off-chain. Takers bring those
+          signed orders on-chain to execute. The settlement contract
+          verifies the maker&rsquo;s signature before moving funds.
+        </p>
+        <p>
+          The signature verification looked up a per-principal
+          allowed-signers map: <code>_allowedSigners[key_1][key_2]</code>,
+          where the presence of <code>key_2</code> under
+          <code>key_1</code> means &ldquo;key_2 is an authorized signer
+          for key_1.&rdquo; The bug was in which address played the role
+          of <code>key_1</code>.
+        </p>
+        <p>
+          Per SlowMist&rsquo;s root-cause breakdown, quoted in the
+          rekt.news writeup:
+        </p>
+        <blockquote>
+          <p>
+            <em>&ldquo;Signature validation checks
+            <code>_allowedSigners[msg.sender][signer]</code> using
+            caller (taker) instead of order&rsquo;s maker as
+            key&hellip;&rdquo;</em>
+          </p>
+        </blockquote>
+        <p>
+          The contract asked &ldquo;is <code>signer</code> an allowed
+          signer for <code>msg.sender</code>?&rdquo; where
+          <code>msg.sender</code> is the taker executing the settlement.
+          It should have asked &ldquo;is <code>signer</code> an allowed
+          signer for the order&rsquo;s maker?&rdquo; The question is
+          structurally identical; the lookup subject is wrong.
+        </p>
+        <p>
+          The second leg made the first leg drainable.
+          <code>registerAllowedOrderSigner</code> was a permissionless
+          entry point, any address could register any key as an
+          allowed signer for itself. So the attack required no privileged
+          access and no prior position:
+        </p>
+        <ol>
+          <li>
+            Call <code>registerAllowedOrderSigner</code> to register
+            the attacker&rsquo;s own key as an allowed signer for the
+            attacker account.
+          </li>
+          <li>
+            Sign a fake order with that key, authorizing transfers from
+            a victim maker&rsquo;s balance.
+          </li>
+          <li>
+            Call settle with the attacker as <code>msg.sender</code>.
+            The contract looked up
+            <code>_allowedSigners[attacker][attacker_key]</code>, found
+            a match, and processed the transfer.
+          </li>
+        </ol>
+        <p>
+          The victim maker never signed anything. The contract asked the
+          wrong question.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The pattern</p>
+        <h2>Authentication used as authorization.</h2>
+        <p>
+          The contract had two distinct functions: a registration
+          function (&ldquo;tell me which key you control ,
+          authentication&rdquo;) and a settlement function (&ldquo;this
+          key is allowed to spend this maker&rsquo;s balance ,
+          authorization&rdquo;). The settlement function keyed its
+          authorization lookup on <code>msg.sender</code>, which is
+          correct for authentication (&ldquo;am I who I say I am?&rdquo;)
+          and wrong for authorization (&ldquo;am I allowed to act on this
+          resource owned by someone else?&rdquo;). Authentication answers
+          &ldquo;who are you&rdquo;; authorization answers &ldquo;are you
+          allowed to do this thing to this resource.&rdquo; The contract
+          substituted the first for the second.
+        </p>
+        <p>
+          This is the pattern the <code>access_control</code> invariant
+          class is built to catch: an unauthorized principal causing a
+          state change reserved for an authorized one. The state change
+          here is a maker&rsquo;s balance moving without the
+          maker&rsquo;s genuine authorization.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The property</p>
+        <h2>What the invariant asserts.</h2>
+        <p>
+          The property the settlement contract should have enforced is:
+        </p>
+        <blockquote>
+          <p>
+            <em>No caller can cause a maker&rsquo;s balance to move
+            unless the maker&rsquo;s own key, not the
+            caller&rsquo;s key, has signed the order.</em>
+          </p>
+        </blockquote>
+        <p>
+          Expressed as a stateful test property:
+        </p>
+        <ul>
+          <li>
+            Set up the contract with a known maker <code>M</code> and a
+            fresh attacker keypair <code>A</code> that <code>M</code>
+            has never authorized.
+          </li>
+          <li>
+            Generate call sequences including
+            <code>registerAllowedOrderSigner(attacker_key)</code> from
+            <code>A</code> and <code>settle(order_from_M)</code> from
+            <code>A</code>.
+          </li>
+          <li>
+            After every transition, check: did <code>M</code>&rsquo;s
+            balance decrease without <code>M</code>&rsquo;s key
+            appearing in the set of authorized signers for
+            <code>M</code>?
+          </li>
+        </ul>
+        <p>
+          The violating sequence is short. A stateful fuzzer that carries
+          an attacker keypair in its call space, one the
+          authorized principal never granted anything to, is
+          designed to find this shape quickly.
+          <code>registerAllowedOrderSigner</code> is available in the
+          callspace; <code>settle</code> is available in the callspace;
+          the attacker keypair is the unauthorized subject. The fuzzer
+          picks both up, sequences them, and the property fires.
+        </p>
+        <p>
+          banteg&rsquo;s Foundry repro is exploit-shaped: reconstruct the
+          exact attacker call sequence and replay it against block
+          25039669. That is a valuable artifact, it confirms the
+          attack surface on the real pre-exploit contract. Our framing is
+          orthogonal. State the property the contract should have
+          enforced. Show a reference where the property holds on the clean
+          variant (zero markers) and fires on a planted twin where the
+          constraint is removed (at least one marker). Wire both legs in
+          CI. The property fires before you get to the replay step.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">CI-verified evidence</p>
+        <h2>Map to CI-verified reference pairs.</h2>
+        <p>
+          Three reference artifacts carry an <code>access_control</code>
+          reference pair verified in CI today. All three are CI-verified
+          per the build squad&rsquo;s proof register. The two incidents
+          are EVM; the reference pairs are Anchor/Solana and
+          Cairo/Starknet, the property is rail-agnostic, and we
+          note the gap on the Solidity rail honestly at the end.
+        </p>
+        <p>
+          <strong>cf-invariants-anchor, Anchor / Solana,
+          <code>access_control</code> class
+          (<code>admin_ref</code> / <code>admin_ref_planted</code>).</strong>
+          The clean variant holds a vault with Anchor&rsquo;s
+          <code>has_one = depositor</code> constraint and PDA seeds
+          derived from <code>depositor.key()</code>. The planted variant
+          drops both constraints, Anchor will then accept any
+          account owned by the program in the vault slot regardless of the
+          signer. The access_control invariant fuzzes with a fresh
+          attacker keypair every round; any successful unauthorized call
+          sets a sticky flag the invariant asserts against. Clean = 0
+          markers, planted &ge; 1 marker. CI-verified, commit
+          <code>aee4136</code>. Repo:
+          <a href="https://github.com/caliperforge/cf-invariants-anchor" rel="noopener">github.com/caliperforge/cf-invariants-anchor</a>.
+        </p>
+        <p>
+          The shape of what the planted <code>admin_ref</code> drops is
+          structurally equivalent to what TrustedVolumes&rsquo;s
+          settlement function did not check: the planted version omits the
+          binding between &ldquo;the account slot accepted&rdquo; and
+          &ldquo;the authorized principal.&rdquo; The invariant then finds
+          the call sequence that violates the property, same as the
+          TrustedVolumes shape. The bug class is the same; the language
+          and runtime are different.
+        </p>
+        <p>
+          <strong>cf-invariants-jito, Anchor / Solana,
+          <code>admin_gating</code> class on the real Jito
+          tip-distribution program.</strong> The planted twin drops the
+          <code>UpdateConfig::auth(&amp;ctx)?</code> call from
+          <code>update_config</code>, so any signer (not just the recorded
+          <code>Config.authority</code>) can rewrite the Config&rsquo;s
+          authority field. This is the same invariant class: an
+          unauthorized principal causing a state change reserved for an
+          authorized one. The invariant
+          <code>invariant_update_config_requires_authority</code> fires on
+          the planted variant and stays silent on the clean. Clean = 0,
+          planted &ge; 1, CI-verified at commit <code>e683c5a</code>.
+          Repo:
+          <a href="https://github.com/caliperforge/cf-invariants-jito" rel="noopener">github.com/caliperforge/cf-invariants-jito</a>.
+        </p>
+        <p>
+          The Jito reference harnessed a <em>real</em> on-chain
+          program&rsquo;s access-control gate, not a synthetic example.
+          That is the same framing the TrustedVolumes invariant would
+          need: harness the real settlement contract&rsquo;s settler
+          &rarr; verify the signer-validation logic &rarr; plant the
+          wrong-principal lookup &rarr; show the invariant fires.
+        </p>
+        <p>
+          <strong>cf-invariants, Cairo / Starknet, 12-class
+          matrix.</strong> The 12-class reference suite includes
+          governance and multisig under the access-control / monotonicity
+          pattern. Twelve reference contracts &times; twelve invariant
+          classes, each with a planted bug, each compile-twinned to a
+          clean variant via a <code>clean</code> scarb feature, each
+          asserting <code>planted &ge; 1</code> AND <code>clean = 0</code>
+          in CI. PR #2 squash-merged 2026-06-07 at commit
+          <code>0bff2c4</code>, CI run <code>27075213962</code> 26/26
+          green. All twelve references deployed and source-verified on
+          Starknet Sepolia. Repo:
+          <a href="https://github.com/caliperforge/cf-invariants-starknet" rel="noopener">github.com/caliperforge/cf-invariants-starknet</a>.
+          Developer cookbook (public since 2026-06-11, PR #3
+          squash-merged at <code>7f94b08</code>):
+          <a href="https://github.com/caliperforge/cf-invariants-starknet/tree/main/docs/cookbook" rel="noopener">github.com/caliperforge/cf-invariants-starknet/tree/main/docs/cookbook</a>.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Design</p>
+        <h2>What a TrustedVolumes-specific invariant harness would look like.</h2>
+        <p>
+          The exercise is design rather than a shipped harness.
+          TrustedVolumes is an EVM contract; our CI-verified
+          access_control reference pairs are Anchor/Solana and Cairo. A
+          TrustedVolumes-specific twin would live on the Solidity/Foundry
+          rail, and a Solidity-rail <code>access_control</code> bundle
+          does not exist in the current toolkit (hyperevm-safety v0.1
+          ships six HyperCore-boundary classes: oracle staleness, oracle
+          deviation, decimals scaling, gas DoS, solvency window, broken
+          Chainlink adapter, none access_control-shaped).
+        </p>
+        <p>
+          The invariant design is clear regardless:
+        </p>
+        <ol>
+          <li>
+            Identify the principal whose authorization gates settlement:
+            the order&rsquo;s maker, not the caller.
+          </li>
+          <li>
+            Express the property: after any call to <code>settle</code>,
+            if the maker&rsquo;s balance decreased, the signer must be
+            present in <code>_allowedSigners[maker]</code>, not
+            <code>_allowedSigners[msg.sender]</code>.
+          </li>
+          <li>
+            Test setup: one clean maker <code>M</code>, one attacker
+            <code>A</code>. Include
+            <code>registerAllowedOrderSigner</code> and
+            <code>settle</code> in the call space. Include
+            <code>A</code>&rsquo;s keypair as the unauthorized signer.
+          </li>
+          <li>
+            Assert after every transition: no decrease in
+            <code>M</code>&rsquo;s balance without <code>M</code>-keyed
+            authorization.
+          </li>
+        </ol>
+        <p>
+          The violating sequence in step 4 is exactly the attack sequence.
+          A stateful test reaches it without being told the exact
+          sequence; it only needs to know the property and the callspace.
+        </p>
+        <p>
+          This is &ldquo;invariant design, not yet harnessed&rdquo;
+          framing. A Solidity-rail <code>access_control</code> reference
+          pair does not exist today, and we will not stretch v0.1&rsquo;s
+          bundles to claim shape they do not have. The design above is
+          offered as a reference for teams building Solidity-rail
+          harnesses against this class.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Calibration</p>
+        <h2>What this writeup does not claim.</h2>
+        <ul>
+          <li>
+            We did not discover this bug. SlowMist and CertiK identified
+            the root cause, cited in the rekt.news writeup. banteg
+            published the runnable reproduction.
+          </li>
+          <li>
+            We do not claim our tooling would have automatically
+            generated the right invariant from the ABI. The AI
+            suggester proposes candidates; an operator reviews; the
+            harness verifies. The framing we use elsewhere ,
+            &ldquo;assistive, human-reviewed suggester&rdquo; ,
+            applies here.
+          </li>
+          <li>
+            We do not claim audit equivalence. Stateful invariant
+            testing is one layer in a defense-in-depth pre-deploy
+            pipeline.
+          </li>
+          <li>
+            We do not claim a Solidity-rail access_control reference
+            pair exists. It does not. Our CI-verified pairs are
+            Anchor/Solana (cf-invariants-anchor, cf-invariants-jito) and
+            Cairo (cf-invariants). We will say so on every EVM-adjacent
+            piece until it ships.
+          </li>
+          <li>
+            We did not replay this in CI against TrustedVolumes
+            specifically. The design above is the invariant that would
+            have caught the class; the reference pairs are the closest
+            CI-verified evidence we have.
+          </li>
+          <li>
+            We do not claim this writeup covers every TrustedVolumes
+            bug. The exploit chained four bugs (the wrong-principal
+            lookup we focus on, plus permissionless registration,
+            taker-as-from with unlimited proxy approvals, and a broken
+            replay guard). The QuillAudits and banteg sources below
+            carry the full mechanism.
+          </li>
+        </ul>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Sources</p>
+        <h2>Primary post-mortems and CaliperForge artifacts.</h2>
+        <ul>
+          <li>
+            rekt.news writeup (article body, includes SlowMist
+            root-cause quote and CertiK first-flag attribution):
+            <a href="https://rekt.news/trustedvolumes-rekt" rel="noopener">rekt.news/trustedvolumes-rekt</a>
+          </li>
+          <li>
+            banteg&rsquo;s runnable Foundry reproduction (reconstructed
+            Solidity + D2 flow diagram + on-chain evidence, confirmed
+            against a fork of block 25039669):
+            <a href="https://gist.github.com/banteg/3475d43a80fb6e0ab81f2fa549b88c1b" rel="noopener">gist.github.com/banteg/3475d43a80fb6e0ab81f2fa549b88c1b</a>
+          </li>
+          <li>
+            QuillAudits hack analysis (fuller four-bug breakdown ,
+            wrong-principal fillOrder check + permissionless
+            registration + taker-as-from-address with unlimited proxy
+            approvals + broken replay guard):
+            <a href="https://www.quillaudits.com/blog/hack-analysis/trustedvolumes-rfq-hack" rel="noopener">quillaudits.com/blog/hack-analysis/trustedvolumes-rfq-hack</a>
+          </li>
+        </ul>
+        <p>
+          <strong>CaliperForge artifacts cited:</strong>
+        </p>
+        <ul>
+          <li>
+            <a href="https://github.com/caliperforge/cf-invariants-anchor" rel="noopener">cf-invariants-anchor</a>
+           , Anchor / Solana, <code>access_control</code>
+            reference pair, CI-verified <code>aee4136</code>.
+          </li>
+          <li>
+            <a href="https://github.com/caliperforge/cf-invariants-jito" rel="noopener">cf-invariants-jito</a>
+           , Anchor / Solana, <code>admin_gating</code> class on
+            real Jito tip-distribution, CI-verified
+            <code>e683c5a</code>.
+          </li>
+          <li>
+            <a href="https://github.com/caliperforge/cf-invariants-starknet" rel="noopener">cf-invariants</a>
+           , Cairo / Starknet, 12-class matrix, CI-verified
+            <code>0bff2c4</code>, run <code>27075213962</code>.
+          </li>
+          <li>
+            <a href="https://github.com/caliperforge/cf-invariants-starknet/tree/main/docs/cookbook" rel="noopener">cf-invariants developer cookbook</a>
+           , see also, public since 2026-06-11,
+            <code>7f94b08</code>.
+          </li>
+        </ul>
+        <p class="cf-article__meta">
+          Operator of record: Michael Moffett ,
+          <a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a>
+          ,
+          <a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a>.
+          This writeup was drafted with AI assistance; the invariant
+          framing, the same-source reference mapping, and this post were
+          all reviewed by the operator. See
+          <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>
+          for the full disclosure register.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  CaliperForge brand mark v2
+  Owner: Identity Lead
+  Locked: 2026-05-29 (T-010 v2 — supersedes v1)
+
+  Concept: Outside-caliper jaws — the iconic machinist's measuring tool.
+  Two mirrored hook-jaws hang from a horizontal spine and curve toward
+  each other, leaving a precision measurement gap at the bottom-center.
+
+  Why v2 supersedes v1:
+  - v1 used a single C-form with a horizontal interior crossbar; that
+    silhouette reads as the Euro symbol (€) at every size. Fatal in
+    crypto context where currency-symbol collisions confuse reviewers,
+    bounty issuers, and on-chain identity scans.
+  - v2 abandons the single-letter monogram entirely. The mark is now
+    pure tool metaphor: symmetric mirrored jaws on a spine. No letter
+    form is being approximated, so no currency-symbol approximation
+    is possible.
+
+  Currency-symbol collision scan (mandatory v2 check):
+    € — single C + horizontal bars. We have TWO symmetric jaws + a top
+        beam, not a single C. PASS.
+    $ — S-form + vertical stroke. No S, no through-vertical. PASS.
+    ₿ — B-form + double vertical. No B. PASS.
+    ¥ — Y-form + horizontal bars. No Y. PASS.
+    £ — L-form + curl + crossbar. No L. PASS.
+    ₹ — R-form + horizontal bar. No R. PASS.
+    ₺ — L-form + double crossbar. No L. PASS.
+    ₽ — P-form + horizontal bar. No P. PASS.
+
+  Crypto-protocol-logo collision scan:
+    Base (solid blue square) — we're symmetric jaws, not a square. PASS.
+    Optimism (red O) — wrong color, wrong shape (open, not closed). PASS.
+    Solana (gradient stripes) — no gradient, no diagonals. PASS.
+    Arbitrum (blue gear) — no teeth, no rotational symmetry. PASS.
+    Ethereum (diamond/rhombus) — no diamond. PASS.
+    Polygon (purple P) — no P, wrong color. PASS.
+    Avalanche (red triangle) — no triangle. PASS.
+
+  Two-color palette: paper #fafaf7 background, workshop blue #1d3557 mark.
+  Square 1024 viewBox. Rounded outer (rx=192) for circular-avatar masks.
+
+  Avoids: letterforms entirely, gradients, hex fills, chains, diamonds,
+  rockets, abstract orbs, faces, living creatures.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" role="img" aria-label="CaliperForge">
+  <title>CaliperForge</title>
+
+  <!-- Background: paper -->
+  <rect x="0" y="0" width="1024" height="1024" rx="192" ry="192" fill="#fafaf7"/>
+
+  <!--
+    Anvil silhouette — the iconic workshop / blacksmith form.
+    Components (left to right):
+      - Tapered horn on the left (rounded conical tip).
+      - Flat top face (the working surface).
+      - Square heel block on the right (chisel/swage step).
+      - Concave waist (the underside curve).
+      - Splayed trapezoidal base / foot.
+
+    Why this silhouette wins:
+      - Asymmetric profile (pointed left, flat-blocky right) = no
+        letterform of any kind. Cannot be misread as C, E, S, B, Y,
+        L, P, R, $, €, ¥, £, ₿, ₹, ₽, ₺, ₽, ₩, etc.
+      - Universally recognizable as "anvil" / "workshop" — strongest
+        possible "forge" metaphor.
+      - Solid pure silhouette = identity holds at 24px.
+      - No crypto-protocol logo collision (no closed shapes, no
+        rotational symmetry, no diamond, no hexagon, no gradient,
+        no orb, no rounded square).
+
+    Pure solid fill (no strokes) — silhouette identity, not "outline
+    drawing" — keeps the workshop-tool register heavy and confident.
+  -->
+
+  <!--
+    Anvil profile path. Single closed shape, traced clockwise from
+    upper-left of the horn:
+
+       horn_tip → top_left_corner → top_right_corner_above_heel
+       → heel_top → heel_right → heel_bottom (underside step)
+       → waist_underside → base_top_right → base_bottom_right
+       → base_bottom_left → base_top_left → waist_underside_left
+       → horn_underside → horn_tip
+
+    Coordinates tuned for 1024 canvas with comfortable padding so
+    the silhouette holds at 24px and the rounded-square avatar mask
+    doesn't crop the horn tip or base corners.
+  -->
+  <path fill="#1d3557" d="
+      M 152 412
+      L 380 380
+      L 736 380
+      L 736 300
+      L 872 300
+      L 872 460
+      L 712 460
+      L 656 540
+      L 760 540
+      L 856 720
+      L 856 808
+      L 168 808
+      L 168 720
+      L 264 540
+      L 368 540
+      L 312 460
+      L 220 460
+      Z
+  "/>
+</svg>

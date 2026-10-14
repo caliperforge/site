@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Can a stranger's Uniswap v4 hook actually be put through an invariant harness? CaliperForge</title>
+<meta name="description" content="A census of ten hooks drawn by pre-declared rule from the live v4 hook population, run cold, twice. On the first cold pass, ten of ten failed at the same step, and the step was ours. After two repairs the number held at 0 / 10, and every failure is now a measured property of the live hook population: its compiler pragmas, its dependency tails, its import-prefix conventions, its constructor shapes.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="canonical" href="https://caliperforge.com/blog/18_uniswap-v4-hook-census">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<style>
+/* Page-scoped table support for this census; uses the site's existing tokens only. */
+.cf-article table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 0 24px;
+  font-size: 14.5px;
+  line-height: 1.55;
+}
+.cf-article th, .cf-article td {
+  border: 1px solid var(--paper-rule-2);
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+.cf-article th {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  letter-spacing: .03em;
+  background: var(--paper-card);
+}
+</style>
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-08-01 · MICHAEL MOFFETT</div>
+    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">Can a stranger's Uniswap v4 hook actually be put through an invariant harness?</span></h1>
+    <p class="cf-hero-lede">
+      <strong>A census of ten hooks drawn by pre-declared rule from the live v4 hook population, run cold, twice.</strong>
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      <strong>Provenance discipline.</strong> Per <code>D-31-05</code>, every number on this page is followed
+      by the tool output line it came from, or is marked <code>UNPROBEABLE</code>. There is no document-level
+      "verified" banner. Numbers produced by the S1 re-run are marked as such and carry a pointer to the S1
+      result section and its output line rather than a restatement of that work as mine.
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      <strong>A note on the invocation name.</strong> The tool's current working name is not settled and no
+      replacement has been chosen. It is referred to on this page neutrally as "the harness" or "the
+      one-command adopter entry point". Quoted tool output lines retain whatever string the binary printed,
+      verbatim, because a quoted output line that has been edited is not a quoted output line. The string that
+      appears inside those quoted output and command blocks is the binary's current internal name; no product
+      name is proposed here, and it is not redacted because, unlike the two log filenames redacted later on
+      this page, it is covered by no decision.
+    </p>
+  </header>
+</div>
+
+<main class="cf-band--paper">
+  <div class="cf-article-shell">
+    <article class="cf-article">
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Sections</p>
+        <h2>Sections</h2>
+        <ol>
+          <li>What this measures, and why it exists</li>
+          <li>The headline, and it is our own defect</li>
+          <li>The sampling rule, published in place of the table</li>
+          <li>The two numbers: cold before repair, cold after repair</li>
+          <li>The wall taxonomy W1 through W7, before and after</li>
+          <li>What each wall costs to retire</li>
+          <li>What the harness actually covers</li>
+          <li>What the repairs did, and what they did not do</li>
+          <li>What this census does not assert</li>
+          <li>Limits, UNPROBEABLE items, and the provenance ledger</li>
+        </ol>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What this measures</p>
+        <h2>1. What this measures, and why it exists</h2>
+        <p>
+          Uniswap's own v4 security guidance, section 7, Security Best Practices Checklist, under Accounting
+          safety, says this verbatim (read live 2026-08-01 from
+          <a href="https://developers.uniswap.org/docs/protocols/v4/security" rel="noopener"><code>developers.uniswap.org/docs/protocols/v4/security</code></a>):
+        </p>
+        <blockquote>
+          "Invariant &amp; Integration Testing use invariant and stateful fuzz testing (e.g., with Foundry or
+          Echidna) to check properties such as delta conservation, fee bounds, and balance consistency across
+          full PoolManager flows."
+        </blockquote>
+        <p>
+          That is a recommendation addressed to every hook author. Nobody appears to have measured whether it
+          is actually achievable. This census is that measurement, on one specific and narrow reading of it:
+          <strong>take a harness that exists, point it at hooks nobody involved chose, and count how many
+          complete an invariant run.</strong>
+        </p>
+        <p>
+          The question is not "are these hooks good". The question is "can the tooling reach them at all", and
+          the answer turns out to be dominated by properties of tooling and of packaging, not by properties of
+          hooks.
+        </p>
+        <p>
+          <strong>Scope of the claim, stated before the numbers so it cannot be read wider afterwards.</strong>
+          This measures one harness against ten hooks under a strict no-edit rule. It is not a survey of v4
+          hook quality and it is not a security review of anything. It also does not establish that other
+          harnesses would fare the same; only one was run. It establishes a floor: on the population as it
+          actually exists, a generic invariant harness pointed at an unchosen hook does not currently run.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The headline</p>
+        <h2>2. The headline, and it is our own defect</h2>
+        <p>
+          <strong>On the first cold pass, ten of ten hooks failed at the same step, and the step was
+          ours.</strong>
+        </p>
+        <p>
+          Our own one-command adopter entry point generates a Solidity test file for the hook under test. It
+          emitted a hard-pinned pragma that our own compiler pin could not satisfy. Every run died there,
+          before the harness ever reached the hook. Verbatim, the failure that appeared in all ten logs:
+        </p>
+        <pre><code>caliper: FAIL at step 'adopter-clean-leg' (rc=1).
+Error: Encountered invalid solc version in test/bring-your-hook/adopters/CaliperRun.t.sol: No solc version exists that matches the version requirement: =0.8.26
+clean-passes: FAIL (forge test rc=1)</code></pre>
+        <p>Source: <code>T-P034-A</code> §4.1. The generator's line, verbatim:</p>
+        <pre><code>$ grep -n "pragma solidity" caliper
+334:pragma solidity 0.8.26;</code></pre>
+        <p>
+          against a project pinning <code>solc_version = "0.8.33"</code>. In Solidity a bare
+          <code>pragma solidity 0.8.26;</code> means exactly <code>=0.8.26</code>, so the generator produced a
+          file the project's own compiler could not accept, for every input, including inputs that were
+          otherwise fine.
+        </p>
+        <p>
+          <strong>Why we did not know.</strong> Our continuous integration was green and had been green. It was
+          green because no job on the branch invoked the generator. The bundled no-argument demo generates
+          nothing. The two hand-written adopter suites generate nothing. The one code path that a stranger's
+          hook would travel was the only path nothing exercised, so it could break and stay green.
+        </p>
+        <p>
+          <strong>That last sentence was subsequently proven by measurement.</strong> An independent reviewer
+          (<code>T-P034-S2</code>) ran five mutations against the repaired tree, two of the reviewer's own
+          design. Mutation M2 reverted one of the two repairs and then ran BOTH legs on a tree matching a fresh
+          checkout. Verbatim from the S2 result, §1, mutation M2:
+        </p>
+        <pre><code>M2_EXIT=1
+434:Error (6275): Source "lib/v4-hooks-public/lib/v4-periphery/src/utils/BaseHook.sol" not found: File not found.
+     [the line continues with a searched-locations list; trimmed here because it carries an absolute
+      local path containing the operator's name. Untrimmed in the T-P034-S2 result, line 102.]
+445:adopter-generator-leg: FAIL (./caliper run rc=1)</code></pre>
+        <pre><code>$ rm -rf src/adopters/caliper-run test/bring-your-hook/adopters
+$ ./ci/clean_leg.sh
+M2_CLEAN_LEG_EXIT=0
+[one per-suite result line omitted here; T-P034-S2 line 116]
+Ran 9 test suites in 6.93s (42.71s CPU time): 43 tests passed, 0 failed, 0 skipped (43 total tests)
+clean-passes: OK</code></pre>
+        <p>
+          <strong>The pre-existing repo-wide clean leg stayed green, 43 tests passed, 0 failed, while the new
+          leg that exercises the generator went red, exit 1, on the same tree.</strong> That is a direct
+          demonstration that the existing green was structurally blind to this class of defect. It is not an
+          inference from the defect's survival; it is the blindness reproduced on demand.
+        </p>
+        <p>
+          <strong>One more result belongs here, because the first objection to any CI-based claim is that a
+          green means nothing.</strong> Mutation M3, of the reviewer's own design, changed the generator to
+          emit an exact <code>0.8.33</code> pin. That still compiles under the project's pin and still
+          completes the full walk. The new leg went red anyway, on an artifact assertion rather than on the
+          exit code. Verbatim from the S2 result, §1, mutation M3:
+        </p>
+        <pre><code>M3_EXIT=1
+442:[PASS] invariant_byoh_observables_match_ledgers() (runs: 256, calls: 12800, reverts: 0)
+482:adopter-generator-leg: FAIL (generated pragma is an exact pin again; W1 regression):
+483:2:pragma solidity 0.8.33;</code></pre>
+        <p>
+          The process exited 0, the 12,800-call walk passed, and the leg still failed. So the leg is provably
+          not exit-code-only.
+        </p>
+        <p>
+          <strong>The honest scope of that CI leg, at the depth it was measured and not at the depth it was
+          described.</strong> The reviewer's mutation M4 truncated the harness's import-graph walker to depth 1
+          and the leg stayed green:
+        </p>
+        <pre><code>M4_EXIT=0
+adopter-generator-leg: OK (generator ran, generated pragma is ranged, sibling vendored, BYOH walk passed)</code></pre>
+        <p>
+          The fixture's own import graph is depth 1, so recursion past depth 1 is not covered by the leg, and
+          two source comments in the repair describing the vendoring as "recursive" over-claim. That is the
+          reviewer's finding F1, non-blocking. This census is partly a document about CI legs that look like
+          they prove more than they prove. Separately, the reviewer's finding F2 records that the repair's
+          prediction of WHICH assertion would catch a vendoring regression was wrong: the compile fails first.
+          The leg still goes red; only the prose prediction was inaccurate.
+        </p>
+        <p>
+          <strong>Nothing in this section names a hook, and nothing in it is about a hook.</strong> The largest
+          single wall in this census, hitting ten of ten, is our own generator's pragma.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The sampling rule</p>
+        <h2>3. The sampling rule, published in place of the table</h2>
+        <p>
+          <strong>We do not print the ten hooks by name or by address. We print the rule that produces them
+          instead, and the rule is deterministic, so a reader regenerates the exact same ten.</strong>
+        </p>
+        <p>
+          This is a method choice, not a withholding. The value of a named table is reproducibility.
+          Reproducibility is fully preserved by a deterministic rule, and the rule carries something a table
+          cannot: it is checkable that the selection was not steered. A table of ten hooks proves nothing about
+          how those ten were picked. A rule written down before the data was fetched proves exactly that.
+        </p>
+        <p>
+          <strong>The rule was written and committed to its result file BEFORE any hook data was fetched or
+          inspected.</strong> That is the fact that makes this number a measurement rather than a selection.
+          Had the rule been written after the data was seen, no amount of transparency about the rule would
+          recover that property.
+        </p>
+
+        <h3>The rule as pre-declared, with four clauses redacted in place</h3>
+        <p>
+          The four redactions below are name-removals only: two hook names, an internal invocation string with
+          its repo path and branch, an internal environment-variable prefix, and an internal escalation target.
+          R1 through R4, which are the clauses that determine which ten hooks the rule produces, are
+          unmodified, so the regenerability argument above survives the redactions intact.
+        </p>
+        <blockquote>
+          <p>
+            <strong>R1. Frame definition.</strong><br>
+            Frame = every entry in
+            <code>https://raw.githubusercontent.com/Uniswap/hooklist/main/hooklist.json</code> that satisfies
+            BOTH:
+          </p>
+          <ul>
+            <li>(a) carries at least one permission/flag whose key matches the case-insensitive regex
+              <code>.*returnsdelta$</code> with a truthy value. Concretely the four v4 delta flags:
+              <code>beforeSwapReturnsDelta</code>, <code>afterSwapReturnsDelta</code>,
+              <code>afterAddLiquidityReturnsDelta</code>, <code>afterRemoveLiquidityReturnsDelta</code>.</li>
+            <li>(b) whose hook address, lowercased, does NOT appear anywhere in the raw text of
+              <code>https://raw.githubusercontent.com/Uniswap/routing-api/main/lib/util/hooksAddressesAllowlist.ts</code>.</li>
+          </ul>
+          <p>
+            <strong>R2. Dedup key.</strong> Lowercased <code>0x</code>-prefixed hook address. One row per
+            unique address. A hook deployed on several chains counts once. Frame size F = count of unique
+            surviving addresses.
+          </p>
+          <p>
+            <strong>R3. Ordering.</strong> Frame sorted by hook address interpreted as an unsigned integer,
+            ascending. Deterministic, no ties possible (addresses are unique by R2).
+          </p>
+          <p>
+            <strong>R4. Stride selection.</strong> Target N = 10. Stride <code>s = floor(F / 10)</code>.
+            Primary candidate indices (0-indexed into the sorted frame) are <code>i_j = j * s</code> for
+            <code>j = 0..9</code>.
+          </p>
+          <p>
+            <strong>R5. Replacement / skip rule.</strong> A candidate is SKIPPED and replaced ONLY for one of
+            these reasons, each of which is logged:
+          </p>
+          <ul>
+            <li><code>NO_SOURCE</code>: no discoverable public source repo AND no verified source on a block
+              explorer. That is, no compilable file set can be assembled at all.</li>
+            <li><code>PRIOR_HANDPICKED</code>: the candidate is [two hook names redacted], the two hooks the
+              org already hand-picked. Including them would inflate <code>k</code>. They are excluded by
+              rule.</li>
+            <li><code>DUPLICATE_IMPL</code>: the candidate's source is byte-identical to an already-selected
+              sample member (same contract redeployed at a new address). Counting it twice would double-count
+              one result.</li>
+          </ul>
+          <p>
+            Replacement walks upward from the skipped index (<code>i+1</code>, <code>i+2</code>, ...) to the
+            next address not already used or skipped.
+          </p>
+          <p>
+            <strong>R6. No judgement skips.</strong> A hook with assemblable source ENTERS THE RUN regardless
+            of how unpromising it looks: unusual shape, exotic dependencies, unfamiliar solc, huge file count,
+            no tests, no docs. Its outcome is whatever bucket it lands in. "This one will obviously fail" is
+            not a skip reason. This is the whole point of the ticket.
+          </p>
+          <p>
+            <strong>R7. Cold run.</strong> Fresh clone or fresh source assembly of the target. Zero edits to
+            target source. Invocation is exactly [internal invocation string, repo path and branch redacted;
+            it is the harness's documented one-command adopter entry point against the hook's entry file].
+            Environment overrides ([internal environment-variable prefix redacted]) are permitted ONLY where
+            the wrapper's own documented adopter path requires them, and every override used is recorded
+            verbatim per hook; a hook needing overrides beyond the documented set is <code>WALL_SHAPE</code>,
+            not a pass.
+          </p>
+          <p>
+            <strong>R8. Buckets.</strong> Exactly one per hook: <code>RAN_CLEAN</code>,
+            <code>RAN_FLAGGED</code>, <code>WALL_DEPS</code>, <code>WALL_SHAPE</code>,
+            <code>WALL_SOURCE</code>, <code>OTHER</code>. <code>k</code> = count of <code>RAN_CLEAN</code> +
+            <code>RAN_FLAGGED</code>, i.e. runs that completed end to end and produced a meaningful invariant
+            result.
+          </p>
+          <p>
+            <strong>R9. Disclosure rail.</strong> Any <code>RAN_FLAGGED</code> on live deployed third-party
+            code halts investigation of that hook immediately, is NOT written up in detail here, and escalates
+            to [internal escalation target redacted].
+          </p>
+        </blockquote>
+        <p>
+          R5's <code>PRIOR_HANDPICKED</code> clause never fired: neither previously hand-picked hook landed on
+          a stride index. The sample contains zero hooks this project had previously touched.
+        </p>
+
+        <h3>The frame, recomputed</h3>
+        <p>
+          Both source files were fetched 2026-08-01 by the measuring ticket and not inherited from any prior
+          count:
+        </p>
+        <pre><code>HTTP:200 BYTES:597390    (hooklist.json)
+HTTP:200 BYTES:24787     (hooksAddressesAllowlist.ts)</code></pre>
+        <p>Applying R1 through R3, verbatim script output:</p>
+        <pre><code>TOTAL ENTRIES: 476
+UNIQUE ADDRESSES ALL: 415
+ENTRIES WITH ANY DELTA FLAG: 331
+UNIQUE DELTA ADDRESSES: 280
+DELTA ADDRESSES PRESENT IN ROUTING ALLOWLIST: 67
+FRAME SIZE F: 213</code></pre>
+        <p>
+          <strong>F = 213.</strong> The subtraction producing it is <code>280 - 67 = 213</code>, both operands
+          from the lines above. Stride, verbatim:
+        </p>
+        <pre><code>F= 213 STRIDE s=floor(F/10)= 21</code></pre>
+        <p>
+          <strong>So: stride 21, indices 0, 21, 42, 63, 84, 105, 126, 147, 168 and 189 into the
+          address-ascending frame.</strong> Those ten indices, applied to the frame the rule defines, are the
+          ten hooks in this census. Anyone can regenerate them.
+        </p>
+
+        <h3>Skips required: zero</h3>
+        <pre><code>Skips required to reach N = 10: ZERO.</code></pre>
+        <p>
+          All ten primary stride candidates had verified source retrievable from a public Blockscout instance
+          (<code>eth.blockscout.com</code>) with no API key, on the first try. Source availability was NOT a
+          binding constraint on this sample. Whether the frame members this census did not sample are equally
+          reachable is <code>UNPROBEABLE</code> from n=10; they were not fetched.
+        </p>
+
+        <h3>One consequence of withholding the table</h3>
+        <p>
+          Because the rule is deterministic and published, publishing per-index outcomes ("the hook at index 63
+          failed at X") would re-identify each hook exactly as effectively as printing the table. <strong>So
+          this page carries aggregate counts only, and no per-index breakdown.</strong> The per-index detail
+          exists internally and is not published. That is the same decision as the table decision, applied
+          consistently.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The two numbers</p>
+        <h2>4. The two numbers: cold before repair, cold after repair</h2>
+        <p>
+          Both numbers are the same ten hooks, the same invocation, the same branch, the same strict cold rails
+          (zero edits to target source, no per-hook remapping, no per-hook compiler pin, no hand-supplied
+          constructor arguments).
+        </p>
+        <table>
+          <thead>
+            <tr><th></th><th>Cold BEFORE repair</th><th>Cold AFTER repair</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>k / N</strong></td><td><strong>0 / 10</strong></td><td><strong>0 / 10</strong></td></tr>
+            <tr><td>Source</td><td><code>T-P034-A</code> §4.1</td><td><code>T-P034-S1</code> §4</td></tr>
+            <tr><td><code>RAN_CLEAN</code></td><td>0</td><td>0</td></tr>
+            <tr><td><code>RAN_FLAGGED</code></td><td>0</td><td>0</td></tr>
+            <tr><td><code>WALL_DEPS</code></td><td>0</td><td>7</td></tr>
+            <tr><td><code>WALL_SHAPE</code></td><td>0</td><td>3</td></tr>
+            <tr><td><code>WALL_SOURCE</code></td><td>0</td><td>0</td></tr>
+            <tr><td><code>OTHER</code> (our own defect)</td><td><strong>10</strong></td><td><strong>0</strong></td></tr>
+          </tbody>
+        </table>
+
+        <h3>Cold before repair: 0 / 10</h3>
+        <p>
+          Every one of the ten exited 1 at the same step, on our generator's pragma, quoted in §2 above.
+          Verbatim exit codes, all ten, from <code>T-P034-A</code> §4.1 (hook labels replaced by their stride
+          index <code>j</code>, per §3's consistency rule; the labels are in the internal appendix):
+        </p>
+        <pre><code>EXIT=1 j=0
+EXIT=1 j=1
+EXIT=1 j=2
+EXIT=1 j=3
+EXIT=1 j=4
+EXIT=1 j=5
+EXIT=1 j=6
+EXIT=1 j=7
+EXIT=1 j=8
+EXIT=1 j=9</code></pre>
+        <p>
+          Bucket tally at this pass, verbatim from <code>T-P034-A</code> §5: <code>OTHER</code> 10, all the
+          same harness-side pragma defect.
+        </p>
+
+        <h3>Cold after repair: 0 / 10</h3>
+        <p>
+          <strong>This number was produced by the S1 re-run, not by me.</strong> It is pointed at rather than
+          restated as my own work: <code>T-P034-S1</code> §4, headline line <code>k / N = 0 / 10</code>, with
+          the per-hook exit codes at the same section printing <code>EXIT=1</code> for all ten indices. The
+          bucket tally line, quoted from <code>T-P034-S1</code> §4:
+        </p>
+        <pre><code>Tally: WALL_DEPS 7, WALL_SHAPE 3, WALL_SOURCE 0, RAN_CLEAN 0, RAN_FLAGGED 0, OTHER 0.</code></pre>
+        <p>
+          <strong>The number did not move. What moved is where the ten runs die.</strong> Before the repair,
+          all ten died on our code before reaching the hook. After the repair, <code>OTHER</code> is empty and
+          all ten failures are measured properties of the live hook population: its exact compiler pragmas, its
+          dependency tails, its import-prefix conventions, its constructor shapes.
+        </p>
+        <p>Two proofs that the repairs actually took, both quoted from <code>T-P034-S1</code> §4:</p>
+        <pre><code>$ grep -l 'No solc version exists that matches the version requirement: =0.8.26' /tmp/p034s1/logs/*.log
+W1_STRING_FILES=[two log filenames redacted; they name their hooks. Unredacted in the internal appendix
+                 per D-P034-census-publish-2026-08-01. The count is two.]</code></pre>
+        <p>
+          Zero of ten now die on the generated test file. The two logs still carrying that error string carry
+          it against the TARGET's own file, because those two hooks pin that exact compiler version themselves.
+          And:
+        </p>
+        <pre><code>$ grep -c 'BaseHook.sol" not found' /tmp/p034s1/logs/*.log</code></pre>
+        <p>
+          returns <code>0</code> for all ten logs. The second repaired wall is gone from the entire sample.
+        </p>
+
+        <h3>The 2 / 10 that is available and why it is not reported</h3>
+        <p>
+          <strong>0 / 10 after repair is the finding.</strong> It would be easy to lead with "2 / 10 after
+          cumulative hand repair", which is a real number from a diagnostic pass in <code>T-P034-A</code> §4.3,
+          and it would be misleading, for two reasons. First, that 2 / 10 required a wrapper change, a
+          remapping redirect, and hand-supplied constructor arguments per hook, which is not a cold run and is
+          not what an adopter would experience. Second, and worse, both of those greens checked no
+          hook-specific property at all, for the reason §7 of this page sets out.
+        </p>
+        <p>
+          The census is valuable precisely because it is the only dataset anyone appears to hold on whether
+          Uniswap's own guidance is achievable in practice on the live hook population. A flattering version of
+          it would be worth nothing.
+        </p>
+
+        <h3>What the number does and does not support</h3>
+        <ul>
+          <li><strong>Supported:</strong> on a systematic, pre-registered sample of a 213-member frame, a
+            generic invariant harness pointed at an unchosen hook under no-edit rails completed zero runs, both
+            before and after two repairs to the harness.</li>
+          <li><strong>Not supported, marked <code>UNPROBEABLE</code>:</strong> the exact rate over all 213
+            frame members. n = 10 gives a point estimate and this page computes no confidence interval. The
+            frame members outside the sample were not run.</li>
+          <li><strong>Not supported:</strong> any statement about other harnesses, other tools, or other
+            approaches. This measures one harness.</li>
+        </ul>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The wall taxonomy</p>
+        <h2>5. The wall taxonomy W1 through W7, before and after</h2>
+        <p>
+          Seven distinct walls stop a generic harness from reaching an unchosen hook. They were named in
+          <code>T-P034-A</code> §5 and §6 and re-counted on the post-repair cold run in <code>T-P034-S1</code>
+          §4 and §5.
+        </p>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Wall</th><th>Whose problem it is</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>W1</strong></td><td>The harness's generator emits a hard-pinned compiler pragma the project's own pin cannot satisfy</td><td><strong>Ours</strong></td></tr>
+            <tr><td><strong>W2</strong></td><td>A dependency prefix in the harness points at a checkout that does not contain the file the population imports</td><td><strong>Ours</strong></td></tr>
+            <tr><td><strong>W3</strong></td><td>A library the hook imports is absent from the harness's tree entirely</td><td>Environmental, unbounded</td></tr>
+            <tr><td><strong>W4</strong></td><td>Import-prefix collision: the hook and the harness use the same prefix rooted differently</td><td><strong>Architectural</strong></td></tr>
+            <tr><td><strong>W5</strong></td><td>The hook's constructor takes arguments the scaffold does not supply</td><td>Population shape</td></tr>
+            <tr><td><strong>W6</strong></td><td>The hook reverts because the default pool does not satisfy an access gate it enforces</td><td>Population shape</td></tr>
+            <tr><td><strong>W7</strong></td><td>The hook's own source pins an exact compiler version older than the harness's substrate</td><td><strong>Architectural</strong></td></tr>
+          </tbody>
+        </table>
+
+        <h3>Counting method, stated before the counts</h3>
+        <p>Two different countings are reported and they are not interchangeable:</p>
+        <ul>
+          <li><strong>Binding count.</strong> The one wall that actually stopped that run. Exactly one per
+            hook, so the column sums to 10. This is what "how many hooks did this wall stop" means.</li>
+          <li><strong>Affected count.</strong> Hooks where the wall is present at all, including where it sits
+            queued behind an earlier wall and would have fired next. This column does not sum to 10 and is not
+            meant to.</li>
+        </ul>
+        <p>Per-index breakdowns are withheld per §3. Only counts appear here.</p>
+
+        <h3>The table</h3>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Binding, cold BEFORE repair</th><th>Binding, mask-removed diagnostic</th><th>Binding, cold AFTER repair</th><th>Affected, cold AFTER repair</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>W1</strong></td><td><strong>10 / 10</strong></td><td>0 (removed by the diagnostic probe)</td><td><strong>0</strong></td><td><strong>0</strong></td></tr>
+            <tr><td><strong>W2</strong></td><td>masked by W1</td><td>2</td><td><strong>0</strong></td><td><strong>0</strong></td></tr>
+            <tr><td><strong>W3</strong></td><td>masked by W1</td><td>4</td><td>4</td><td>4 binding, plus one queued behind W7</td></tr>
+            <tr><td><strong>W4</strong></td><td>masked by W1</td><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td><strong>W5</strong></td><td>masked by W1</td><td>1</td><td>3</td><td>3</td></tr>
+            <tr><td><strong>W6</strong></td><td>masked by W1</td><td>0</td><td>0</td><td>queued behind W5 on one hook</td></tr>
+            <tr><td><strong>W7</strong></td><td>masked by W1</td><td>2</td><td>2</td><td>2</td></tr>
+            <tr><td></td><td><strong>10</strong></td><td><strong>10</strong></td><td><strong>10</strong></td><td></td></tr>
+          </tbody>
+        </table>
+        <p><strong>Provenance for each column.</strong></p>
+        <ul>
+          <li><strong>Cold before repair, binding.</strong> All ten stopped at W1. Source:
+            <code>T-P034-A</code> §4.1, tally line "Pass 1 tally ... <code>OTHER</code> 10, all the same
+            harness-side pragma defect", plus the ten <code>EXIT=1</code> lines quoted in §4 above.</li>
+          <li><strong>Mask-removed diagnostic, binding.</strong> This column is a CLASSIFICATION I made, one
+            row at a time, from the verbatim first-fatal error line recorded for each hook in
+            <code>T-P034-A</code> §5. The error lines are verbatim tool output; the assignment of each line to
+            a wall class is mine and is marked as such rather than presented as a tool result. The bucket tally
+            underneath it is verbatim: "Pass 2 tally: <code>WALL_DEPS</code> 9, <code>WALL_SHAPE</code> 1,
+            <code>WALL_SOURCE</code> 0, <code>RAN_CLEAN</code> 0, <code>RAN_FLAGGED</code> 0,
+            <code>OTHER</code> 0."</li>
+          <li><strong>Cold after repair, binding and affected.</strong> Lifted, not re-derived, from
+            <code>T-P034-S1</code> §5's own summary sentence, which states the counts directly: W3 4 hooks with
+            1 more queued behind W7, W4 1 hook, W5 3 hooks, W6 queued behind W5 on 1 hook, W7 2 hooks, and W1
+            and W2 zero hooks because they are repaired and CI-pinned. <strong>The source sentence is
+            index-keyed and is therefore quoted verbatim in the internal appendix rather than here</strong>,
+            per §3: an index-keyed result is a named result once the sampling rule is published. The counts
+            above are that sentence's own counts, not a recount. The affected column restates that sentence's
+            enumeration and adds no total.</li>
+        </ul>
+
+        <h3>What the shape of the table says</h3>
+        <p>
+          <strong>Before the repair, the census could not see the population at all.</strong> One defect of
+          ours sat in front of everything and returned the same answer ten times. A number produced in that
+          state carries no information about hooks; it carries information about us.
+        </p>
+        <p>
+          <strong>After the repair, the census sees the population, and the population is what stops
+          it.</strong> Ten failures, four distinct wall classes, and not one of them is the defect that
+          produced the first number. Two of the four are our architecture. That is the dataset. The number is
+          identical and its meaning is completely different.
+        </p>
+        <p>
+          <strong>Two of the four remaining wall classes cannot be retired by adding more
+          configuration.</strong> W4 was proven mutually exclusive by direct probe rather than argued. Setting
+          the harness's import prefix to a hook's convention breaks the harness's own files:
+        </p>
+        <pre><code>Error (6275): Source "lib/v4-core/src/src/libraries/FullMath.sol" not found: File not found.
+Error (6275): Source "lib/v4-core/src/src/interfaces/IHooks.sol" not found: File not found.</code></pre>
+        <p>
+          The doubled <code>src/src</code> is the collision. These two configurations cannot coexist in one
+          Foundry project. W7 is the same shape in the compiler dimension: a single global compiler pin
+          excludes every hook whose own source pins a different exact version, and any single global pin
+          excludes somebody.
+        </p>
+        <p>
+          <strong>After repair W4 binds 1 hook and W7 binds 2.</strong> The conclusion that follows is an
+          architecture statement, not a bug list: <strong>one fixed project with one import table and one
+          compiler pin is the wrong container for an arbitrary hook population.</strong> Serving the population
+          needs a generated per-hook project with its own import table and its own compiler, taken from the
+          hook's own source. That is a rebuild, not a patch.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Cost to retire</p>
+        <h2>6. What each wall costs to retire</h2>
+        <p>
+          Costs are in agent wall-clock, taken from <code>T-P034-A</code> §6. The calibration base stated
+          there: building the frame, fetching ten hooks, running three passes and writing the result up was
+          work of the order of one agent session, so "one session" below means work of that order. These are
+          estimates, not measurements, and are labelled as such. Two of the seven have since been executed and
+          their real cost is noted.
+        </p>
+        <table>
+          <thead>
+            <tr><th>#</th><th>Fixable?</th><th>Estimated cost</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><strong>W1</strong></td><td>Yes, trivially</td><td>Under 15 agent-minutes for the edit; about half an agent session including the CI leg that stops the class recurring</td><td><strong>DONE.</strong> Executed in <code>T-P034-S1</code>. One character class in the generator. Reviewed and passed in <code>T-P034-S2</code>.</td></tr>
+            <tr><td><strong>W2</strong></td><td>Yes</td><td>Under 30 agent-minutes</td><td><strong>DONE.</strong> Executed in <code>T-P034-S1</code>. One import-prefix line redirected to a checkout already present in the tree. Full clean re-run showed no regression: <code>Ran 9 test suites ... 43 tests passed, 0 failed, 0 skipped (43 total tests)</code>.</td></tr>
+            <tr><td><strong>W3</strong></td><td>Yes for any one library, never as a class</td><td>One agent session for the specific library; <strong>unbounded</strong> as a class</td><td>Open. Every new hook can introduce a new dependency. This tail does not converge.</td></tr>
+            <tr><td><strong>W4</strong></td><td><strong>No, not by pinning</strong></td><td>Not fixable in the current architecture. A real fix is 3 to 5 agent sessions</td><td>Open, structural. Requires either a generated per-hook project with its own import table, or rewriting the hook's import lines, which means editing the target and changes what the tool is.</td></tr>
+            <tr><td><strong>W5</strong></td><td>Partly</td><td>10 to 30 agent-minutes per hook, forever; 1 to 2 agent sessions to partly automate</td><td>Open. The documented override exists and works. Knowing what to put in it is per-hook judgement, and it cannot cover arguments that must be live contracts.</td></tr>
+            <tr><td><strong>W6</strong></td><td>Only per hook</td><td>Half an agent session per hook, no general fix</td><td>Open. Any access-gated hook does this. The documented overrides exist; knowing what to put in them means reading the hook.</td></tr>
+            <tr><td><strong>W7</strong></td><td><strong>No, not without editing the target</strong></td><td>Not fixable under the no-edit rule. A multi-compiler build is roughly 1 to 2 agent sessions</td><td>Open, structural. Foundry supports per-file compiler selection, so this is tractable, but it means dropping the single global pin.</td></tr>
+          </tbody>
+        </table>
+        <p>
+          <strong>The shape of the cost.</strong> W3, W5 and W6 are per-hook taxes that never stop being paid.
+          W4 and W7 are the structural pair: they cannot be retired by adding more pins, and they are the
+          reason the honest recommendation out of this census is a different container rather than a longer
+          configuration file.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Actual coverage</p>
+        <h2>7. What the harness actually covers</h2>
+        <p>
+          This is the section a reader should check first, because it is the one where a tool in this category
+          is most likely to overstate itself.
+        </p>
+        <p><strong>The only coverage language this project uses, and it is used here verbatim:</strong></p>
+        <blockquote>
+          one generic property (settlement liveness / the delta screen, 256 runs at depth 50, 12,800 calls
+          through the real <code>PoolManager</code>) plus a declared-property harness with seven worked cases.
+        </blockquote>
+        <p>
+          <strong>Out of the box, with no adopter declaration, the declared-property harness asserts
+          nothing.</strong> That is not a figure of speech. The default observables list is empty. Verbatim,
+          from <code>test/bring-your-hook/BYOHInvariantBase.sol:132</code>:
+        </p>
+        <pre><code>    function _observables() internal view virtual returns (Observable[] memory) {
+        return new Observable[](0);
+    }</code></pre>
+        <p>
+          The one generic invariant function iterates that array. With zero declared observables it compares
+          zero pairs. It is not weak; it is vacuous until an adopter declares something.
+        </p>
+        <p>
+          <strong>So what actually runs for free is the settlement screen</strong>, and it is real: the
+          invariant configuration sets <code>runs = 256</code>, <code>depth = 50</code>,
+          <code>fail_on_revert = true</code>, which is 12,800 fuzzed calls through the real
+          <code>PoolManager</code> with no mock and no fork. That is coverage-guided search, not exhaustive
+          proof. Any call the hook reverts, leaves unsettled (<code>CurrencyNotSettled</code>), or answers with
+          a wrong selector fails the run. The harness's own docstring has always said this, verbatim:
+        </p>
+        <pre><code>///   settlement liveness. `fail_on_revert = true` means any fuzzed
+///   swap or liquidity modification your hook reverts, leaves
+///   unsettled (`CurrencyNotSettled`), or answers with a wrong
+///   selector fails the run. That is the flash-accounting protocol
+///   check (the H3 class) for free.</code></pre>
+        <p>
+          <strong>The practical consequence.</strong> A hook author who runs this tool and sees green has been
+          told that their hook does not break <code>PoolManager</code> settlement under a two-token pool with
+          no hook data. They have not been told that their hook's accounting is correct. Declaring the
+          properties that would tell them that is the bespoke work, and it is theirs to write. The seven worked
+          cases exist to be copied from, not inherited.
+        </p>
+
+        <h3>On Uniswap's section 7, and what it is not</h3>
+        <p>
+          Uniswap's section 7 says <em>"properties such as"</em> and its section 3 says <em>"e.g."</em>.
+          <strong>It is an illustrative list, not a closed conformance specification, and this page does not
+          render it as one.</strong> Framing it as a three-item spec that a tool can tick would misrepresent
+          Uniswap as well as the tool. The wording invites hook authors to fuzz for the properties that matter
+          to their hook; it does not enumerate a fixed set.
+        </p>
+        <p>
+          That distinction cuts against us as much as for us. It removes any basis for claiming conformance to
+          a spec, because there is no spec to conform to.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What the repairs did</p>
+        <h2>8. What the repairs did, and what they did not do</h2>
+        <p>
+          Two walls were repaired between the two cold runs on this page. Being precise about what that bought
+          matters, because there is a wrong framing available in each direction.
+        </p>
+        <p>
+          <strong>The wrong framing in one direction: that the repairs would raise the number.</strong> They
+          did not, and an earlier internal projection that they would was falsified by measurement. The
+          projection had silently assumed the hand-repair override set from a diagnostic pass. Under strict
+          cold rails, the hooks the second repair unblocks are stopped immediately afterwards by constructor
+          arguments, which is W5. The correction is on the record.
+        </p>
+        <p>
+          <strong>The wrong framing in the other direction: that the repairs were therefore a null.</strong>
+          They were not. Before them, the census had no view of the population; every run died on our code.
+          After them, <code>OTHER</code> is empty, every one of the ten failures is a measured property of the
+          live population, and the defect class is pinned by a CI leg proven to go red on demand (§2, mutations
+          M2 and M3).
+        </p>
+        <p>
+          <strong>The true statement, and it is the one this page makes:</strong> the repairs landed, both
+          repaired walls left the sample entirely, and the number held at its floor because what remains is the
+          population.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What is not asserted</p>
+        <h2>9. What this census does not assert</h2>
+        <p>
+          <strong>No security finding is made against any protocol, project, contract or team, named or
+          unnamed.</strong> It is a description of what was measured.
+        </p>
+        <ul>
+          <li><strong>Zero <code>RAN_FLAGGED</code> occurred at any pass, in either cold run or in any
+            diagnostic pass.</strong> The disclosure rail R9 never fired at any point.</li>
+          <li><strong>Seven of the ten failures are compile-time or configuration-time</strong>
+            (<code>WALL_DEPS</code> 7, from the after-run tally in §4). They are our harness failing to
+            assemble a buildable project around someone else's code. A file that our tree does not contain is a
+            fact about our tree.</li>
+          <li><strong>The other three are <code>setUp()</code> failures</strong> (<code>WALL_SHAPE</code> 3,
+            same tally), where a constructor takes arguments our cold invocation is not permitted to supply.
+            All three compiled clean first. A constructor taking arguments is normal engineering, not a
+            defect.</li>
+          <li><strong>No hook's logic was reviewed, reasoned about, or reached.</strong> In the after run, no
+            hook's invariant walk executed at all. There is nothing to have found.</li>
+        </ul>
+        <p>
+          <strong>The direction of every finding on this page points at the tool, not at the
+          population.</strong> Where a wall is environmental (a library our tree lacks, a prefix convention
+          that differs from ours), that is stated as a property of the interface between two projects, and the
+          interface is ours to build.
+        </p>
+        <p>
+          <strong>A reader who takes any sentence on this page as evidence about a specific protocol's security
+          has misread it, and we would rather say so here than be quoted that way later.</strong>
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Limits and provenance</p>
+        <h2>10. Limits, UNPROBEABLE items, and the provenance ledger</h2>
+
+        <h3>Marked UNPROBEABLE</h3>
+        <table>
+          <thead>
+            <tr><th>Claim</th><th>Why it is not probeable here</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>The completion rate over all 213 frame members</td><td>n = 10. The frame members outside the sample were not fetched or run. This page computes no confidence interval.</td></tr>
+            <tr><td>Whether the frame members outside the sample have retrievable source</td><td>Ten of ten did, on the first try. That is a bound on the sample, not on the frame.</td></tr>
+            <tr><td>The CI wall-clock of a full 12,800-call adopter walk on a hosted <code>ubuntu-latest</code> runner</td><td>Measuring it requires pushing the branch and letting a hosted runner execute. No push was permitted by any ticket in this chain. The only measured runtimes in this project are local, on Apple Silicon, with a warm compiler cache. Named here so that silence is not read as clearance.</td></tr>
+            <tr><td>How this harness compares to any other invariant harness</td><td>No other harness was run.</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Limits a reader should hold against the number</h3>
+        <ul>
+          <li><strong>n = 10.</strong> Systematic, pre-registered, unsteered, but ten.</li>
+          <li><strong>One frame.</strong> The frame is delta-flag hooks not in the routing allowlist. Hooks
+            without delta flags were out of frame by rule and are not represented.</li>
+          <li><strong>One harness, one branch, one host.</strong> A different toolchain pin would move W7's
+            count directly.</li>
+          <li><strong>The no-edit rule is strict by design.</strong> Permitting edits to target source would
+            raise the number and would measure something else, namely how much bespoke work a motivated
+            engineer can do per hook. The diagnostic pass that permitted hand repair reached 2 of 10, and what
+            those two greens actually screened is §7's subject. That is why the strict number is the one
+            reported.</li>
+          <li><strong>The CI leg proves its class at the depth it was mutated, not deeper.</strong>
+            Import-graph recursion past depth 1 is not covered (§2, mutation M4).</li>
+        </ul>
+
+        <h3>Provenance ledger</h3>
+        <p>Every number on this page and where it came from.</p>
+        <table>
+          <thead>
+            <tr><th>Number</th><th>Source</th></tr>
+          </thead>
+          <tbody>
+            <tr><td><code>HTTP:200 BYTES:597390</code>, <code>HTTP:200 BYTES:24787</code></td><td><code>T-P034-A</code> §2, fetch output</td></tr>
+            <tr><td><code>TOTAL ENTRIES: 476</code> through <code>FRAME SIZE F: 213</code></td><td><code>T-P034-A</code> §2, script output</td></tr>
+            <tr><td><code>F= 213 STRIDE s=floor(F/10)= 21</code></td><td><code>T-P034-A</code> §2, script output</td></tr>
+            <tr><td>Skips required: zero</td><td><code>T-P034-A</code> §3</td></tr>
+            <tr><td>Cold-before <code>k / N = 0 / 10</code>; <code>OTHER</code> 10</td><td><code>T-P034-A</code> §4.1 and §5</td></tr>
+            <tr><td>The generator pragma line <code>334:pragma solidity 0.8.26;</code></td><td><code>T-P034-A</code> §4.1, <code>grep -n</code> output</td></tr>
+            <tr><td>The pass-1 failure string</td><td><code>T-P034-A</code> §4.1, run log</td></tr>
+            <tr><td>Mask-removed diagnostic bucket tally, <code>WALL_DEPS</code> 9 / <code>WALL_SHAPE</code> 1</td><td><code>T-P034-A</code> §5</td></tr>
+            <tr><td>W1..W7 cost column</td><td><code>T-P034-A</code> §6. Estimates, labelled as such.</td></tr>
+            <tr><td>The <code>src/src</code> collision probe output</td><td><code>T-P034-A</code> §5.1</td></tr>
+            <tr><td><code>_observables()</code> default body</td><td><code>T-P034-B</code> §B4.2 and <code>T-P034-A</code> §4.4, both quoting <code>BYOHInvariantBase.sol:132</code></td></tr>
+            <tr><td><code>runs = 256</code>, <code>depth = 50</code>, <code>fail_on_revert = true</code></td><td><code>T-P034-B</code> §B4.2, <code>foundry.toml</code> lines 99-102</td></tr>
+            <tr><td>Uniswap §7 and §3 quotations</td><td><code>T-P034-B</code> §B4.1, read live 2026-08-01 from <a href="https://developers.uniswap.org/docs/protocols/v4/security" rel="noopener"><code>developers.uniswap.org/docs/protocols/v4/security</code></a></td></tr>
+            <tr><td>Cold-after <code>k / N = 0 / 10</code>; tally <code>WALL_DEPS 7, WALL_SHAPE 3 ...</code></td><td><code>T-P034-S1</code> §4. Not my run; pointed at, not restated.</td></tr>
+            <tr><td>Post-repair grep results for the two repaired error strings</td><td><code>T-P034-S1</code> §4</td></tr>
+            <tr><td><code>43 tests passed, 0 failed</code> clean-leg re-run</td><td><code>T-P034-S1</code> §2 and independently <code>T-P034-S2</code> §1 and §6</td></tr>
+            <tr><td>After-repair wall counts W3 4 / W4 1 / W5 3 / W7 2</td><td><code>T-P034-S1</code> §5, summary sentence, lifted verbatim</td></tr>
+            <tr><td>The §5 "Affected, cold AFTER repair" column</td><td><code>T-P034-S1</code> §5, same summary sentence. Its enumeration restated, no total added.</td></tr>
+            <tr><td><code>M2_EXIT=1</code>, <code>M2_CLEAN_LEG_EXIT=0</code></td><td><code>T-P034-S2</code> §1, mutation M2</td></tr>
+            <tr><td><code>M3_EXIT=1</code> with the passing 12,800-call line</td><td><code>T-P034-S2</code> §1, mutation M3</td></tr>
+            <tr><td><code>M4_EXIT=0</code></td><td><code>T-P034-S2</code> §1, mutation M4</td></tr>
+          </tbody>
+        </table>
+        <p>
+          <strong>The one derived column on this page</strong> is the mask-removed diagnostic binding-wall
+          column in §5. It is a classification of verbatim error lines, made by me, and marked as mine at the
+          point of use. Everything else is lifted.
+        </p>
+
+        <p class="cf-article__meta">
+          This census was drafted with AI assistance. Authored and
+          reviewed by Michael Moffett, operator at CaliperForge.
+          Full policy at
+          <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>32 days, one operator, an AI-agentic company, CaliperForge</title>
+<meta name="description" content="Written on activity day 32. One operator, 12 to 15 hours a day, running the venture through a roster of AI agents with role cards, outboxes, and review gates. The cockpit that makes the org observable, the gate catch-and-miss numbers as they stood on day 32, the places the agents miss and the operator cleans up, the bad days, and the zero on the revenue line.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="canonical" href="https://caliperforge.com/blog/21_32-days-one-operator-an-ai-agentic-company">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · WRITTEN ON ACTIVITY DAY 32 · 2026-06-27 · MICHAEL MOFFETT</div>
+    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">32 days, one operator, an AI-agentic company.</span></h1>
+    <p class="cf-hero-lede">
+      The bet I am running is simple. AI can take your job. Or AI can
+      let you stretch one idea, one focus, one operator's attention,
+      until you reach what it used to take a whole company to do. I am
+      pointing real time, real energy, real compute, and real money at
+      the second version of that for 32 days. 12 to 15 hours a day.
+      CaliperForge is the venture. This post is the first public look
+      at how it is actually going.
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      This is not "I made a million dollars with AI in a weekend, here
+      is the course." It is not a pitch. There is no waitlist. The
+      company is built and running. The receipts are real. What follows
+      includes the misses, because the misses are the part of the
+      build-in-public genre that usually goes missing.
+    </p>
+    <p class="cf-hero-lede" style="margin-top:14px;">
+      <strong>When this was written.</strong> The body below was
+      written on <strong>activity day 32</strong>, 2026-06-27, counting
+      the 2026-05-27 launch day as day 1. It is being published later
+      than it was written. <strong>Every number in it is a day-32
+      number</strong>, including the gate catch rates and the count of
+      blog posts, and none of them have been refreshed to the day of
+      publication. Where the live counters on this site disagree with
+      the numbers below, the live counters are current and the numbers
+      below are the state on day 32. That is the point of the marker.
+    </p>
+  </header>
+</div>
+
+<main class="cf-band--paper">
+  <div class="cf-article-shell">
+    <article class="cf-article">
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What the company is</p>
+        <h2>What the company actually is.</h2>
+        <p>
+          CaliperForge is an engineering and security agency for crypto.
+          Invariant-driven, CI-verified tooling across Cairo, Solana,
+          Move, and EVM. One named human operator on every artifact,
+          signed and disclosed. Around me sits a roster of AI agents
+          organized into departments: a Director that runs the day, an
+          AI HR Lead that hires and writes role specs, an AI Ops auditor
+          that watches for drift, a Pipeline Lead for opportunities, an
+          Engineering Lead, language specialists, a Grant Writer, a Blog
+          Writer, a Compliance Lead. They each have a role card. They
+          file to outboxes. They get reviewed before anything goes out.
+        </p>
+        <p>
+          In 32 days I have shipped a public site with about a dozen
+          blog posts; a planted-twin AI-safety eval harness with
+          cross-provider receipts on Anthropic, OpenAI, and Groq
+          (<a href="https://github.com/caliperforge/cf-modeleval" rel="noopener"><code>cf-modeleval</code></a>,
+          11 cells holding and 1 honest miss reported as such); a
+          growing portfolio of invariant suites across Cairo, Solana,
+          Move, and EVM; and a SwiftUI cockpit app I use to drive all of
+          it. Grant applications in motion. Outreach in motion. None of
+          it has earned a dollar yet. Money is the bottleneck, not
+          building, and I will come back to that.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The cockpit</p>
+        <h2>The cockpit, because black boxes do not last.</h2>
+        <p>
+          The thing I built earliest that I now would not work without
+          is a cockpit. It is a small SwiftUI app on my desktop, the
+          Atelier, talking to the repo. It shows me firing dispatches,
+          what is active right now, the recent runs with exit codes and
+          durations, the queue of decisions waiting on me, the
+          workstream pills per role, an effectiveness dashboard for the
+          review gates, the conversation tree per agent.
+        </p>
+        <p>
+          You cannot run an agentic company from a black box. If I
+          cannot see what every agent is doing, what just shipped, what
+          got caught, where the queue is backing up, I am gambling. The
+          cockpit makes the org observable. It is the difference between
+          this feeling like a real shop and feeling like a wishing well.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Gate catch-and-miss</p>
+        <h2>Gate catch-and-miss, real numbers.</h2>
+        <p>
+          The org has review gates before anything reaches the outside
+          world. CEO Hold for anything I personally need to bless. §4a
+          Content QA for written outbound. §4b Code Quality for code.
+          Across the evaluated outputs, the gates are catching 90
+          percent of defects. 27 true positives. Three false negatives.
+          Stop-rate of 6 percent, which means the gates are not so noisy
+          that they kill velocity.
+        </p>
+        <p>
+          By gate: CEO Hold at 100 percent (I am the conservative
+          ceiling). §4a Content QA at 92 percent. §4b Code Quality at 67
+          percent. That 67 is a number I want higher and it tells me
+          which gate is the next refactor.
+        </p>
+        <p>
+          On the adjudicated subset, 86 percent. 18 defects caught.
+          Three documented misses. Zero false positives, across 50
+          adjudicated §4a and §4b decisions. Those three misses are the
+          ones I caught myself, or that slipped to the outbox before I
+          noticed. Each miss gets a postmortem and a memory entry the
+          next run reads. The miss rate trends down because each miss
+          teaches the gates a new shape of error.
+        </p>
+        <p>
+          That is the loop. Build, run, catch, miss, postmortem, harden.
+          Then again.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Where the agents miss</p>
+        <h2>Where the agents miss and I clean up.</h2>
+        <p>
+          I want to be honest about what I do that the agents do not. I
+          have caught:
+        </p>
+        <ul>
+          <li><strong>Hallucinated facts about my own state.</strong> A
+            draft once cited a stat I never logged. The fix was a
+            discipline rule: write nothing the receipt does not say.</li>
+          <li><strong>Stale model names.</strong> A grant draft
+            referenced a deprecated Sonnet version. The §4a gate now
+            grep-flags any model string against a canonical list.</li>
+          <li><strong>Sanitized phrasing.</strong> Drafts that smoothed
+            the honest texture out of what we shipped get rewritten in
+            my voice or sent back.</li>
+          <li><strong>Zombie org cards.</strong> We had agent roles
+            defined that nothing fired and nobody read. I went through
+            the roster, killed the dead ones, merged duplicates, and
+            changed the cascade so a new role gets an activation trigger
+            or it does not get created.</li>
+          <li><strong>Loop drift.</strong> Two cron jobs that ran more
+            often than they earned. Disabled, reasoned about, queued for
+            a decision on whether to re-enable with a smaller scope.</li>
+        </ul>
+        <p>
+          Most of these are not about model capability. They are about
+          an org that lacks the friction-shaped feedback a real human
+          team builds up over years. So I am building the friction in
+          deliberately.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Bad days</p>
+        <h2>Bad days.</h2>
+        <p>
+          The week the site rebuild went wrong was a bad week. I tried
+          three template-shaped redesigns. I rejected all three myself
+          for being worse and more basic than what we already had. The
+          fix turned out to be slowing the loop down: a design reference
+          brief, then a render-tool QA pass, then a critique gate,
+          before anything reached me. The first three attempts cost time
+          and burned tokens. They also produced the constraints that
+          made the fourth attempt good.
+        </p>
+        <p>
+          A KYC step on a bounty I had built toward blocked me on a
+          deadline I missed by hours. Two maintainer threads I expected
+          to convert went cold and stayed cold for two weeks. A grant in
+          screening that I expected to hear back on is still in
+          screening.
+        </p>
+        <p>
+          Money receipts sit at zero. The build engine is proven; the
+          conversion half is the work, and that is where the next chunk
+          of operator time is going.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What compounds</p>
+        <h2>What gets better as days compound.</h2>
+        <p>
+          Memory. I am writing memory entries every day, indexed and
+          grep-able, and the agents read them at the top of every run.
+          Decisions about the brand voice, the operating model, the
+          review-gate philosophy, the way escalations are filed: these
+          are not in someone's head. They are in files the next dispatch
+          reads in five seconds.
+        </p>
+        <p>
+          The AI HR Lead writes role cards that get sharper as the
+          patterns repeat. The AI Ops auditor catches process drift the
+          same week the drift starts, instead of three weeks later when
+          the org has metastasized around it. The two roles iterate on
+          each other. An HR change surfaces an audit gap. The audit
+          catches a missing HR rule. The loop tightens.
+        </p>
+        <p>
+          I am not claiming any of this is novel research. I am claiming
+          it works for one operator and a real workload, and that the
+          daily texture of it is reproducible.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What this is not</p>
+        <h2>What this is not.</h2>
+        <p>
+          It is not "I built a fully autonomous company." I am in the
+          loop on every external send, every public ship, every grant
+          submission, every dollar move. The agentic part is the org
+          structure, the gate chain, the queue, the audit, the writing
+          and reviewing, the day-to-day operations. The
+          human-accountable part is me, by name, on the artifact.
+        </p>
+        <p>
+          It is also not a six-week sprint that ends in a screenshot. I
+          am 32 days in and the company is the work. I plan to be
+          running it on day 92 the same way I am running it on day 32,
+          with more memory, sharper gates, a wider portfolio of public
+          artifacts, and ideally an actual first dollar through the
+          door.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Why post this</p>
+        <h2>Why I am posting this.</h2>
+        <p>
+          Because the genre is full of people who built a clever demo
+          and then sold the course. I would rather show what a real
+          sustained shot at one of these looks like, including the bad
+          days, and let the work argue.
+        </p>
+        <p>
+          The blog will keep going. Weekly when there is something new
+          to say. Quietly when there is not. Receipts on everything I
+          can put receipts on. If you want the next one, the blog index
+          is at <a href="/blog/">caliperforge.com/blog</a>.
+        </p>
+        <p>
+          Michael Moffett, operator.<br>
+          CaliperForge, day 32.
+        </p>
+
+        <p class="cf-article__meta">
+          <strong>Dating disclosure.</strong> This post was written on
+          <strong>activity day 32</strong>, 2026-06-27, counting the
+          2026-05-27 launch day as day 1. It reached publication later.
+          The body is the day-32 text. The changes made between those
+          dates are these and only these: the markdown source was
+          rendered into this page template; the day-32 marker was added
+          to the eyebrow above, to the opening block, and to this
+          paragraph; a note was added to the opening block stating that
+          the figures below it are day-32 figures; the blog-index
+          mention in the closing paragraph was made a link; the
+          repository status header was updated from its drafting state;
+          and the drafting notes that sat below the body in the source
+          file were not carried over; and the sentence reporting the
+          adjudicated catch record was corrected at our own content
+          gate on 2026-09-04, from 84 percent on 16 defects to the
+          day-32 receipt's own 86 percent, 18 defects caught, three
+          documented misses and zero false positives across 50
+          adjudicated §4a and §4b decisions. Apart from that
+          correction, no sentence of the body was rewritten, no figure
+          was refreshed, and no claim was added or removed.
+        </p>
+        <p class="cf-article__meta">
+          This post was drafted with AI assistance. Authored and
+          reviewed by Michael Moffett, operator at CaliperForge.
+          Full policy at
+          <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
+        </p>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>

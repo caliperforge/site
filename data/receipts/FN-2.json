@@ -1,0 +1,10 @@
+{
+  "id": "FN-2",
+  "headline": "hyperevm-safety README over-claim shipped to public repo",
+  "gate_missed": "§4b",
+  "gate_pass_iso": "2026-06-11",
+  "caught_by": "§4a cascade",
+  "caught_iso": "2026-06-11",
+  "fix_ref": "commit e46fe9c",
+  "frame": "The §4b preflip-regate passed the hyperevm-safety README with the note \"20 referenced paths exist.\" The README was then pushed to the public repo at the flip carrying a factual over-claim -- \"each invariant paired with a planted-bug twin that fires on CI\" -- that was not tree-true (two of the six invariants ship with deterministic broken-reference tests, not planted twins; two more landed only at the M2 milestone). The over-claim text was live on the public GitHub README for roughly three hours before our own §4a cascade caught it (FAIL-WITH-FIXES, same day at 17:42). Root-cause fix pushed public 18:01 at commit <code>e46fe9c</code>. Caught by our own gates, fixed same-day -- but the public repo carried the over-claim for those three hours. That is the honest framing."
+}

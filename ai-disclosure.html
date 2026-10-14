@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI-involvement policy | CaliperForge</title>
+<meta name="description" content="CaliperForge's policy on AI-assisted contribution. We disclose AI involvement on every submission as a matter of policy.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="/ai-disclosure" class="is-current">AI policy</a>
+        <a href="/nine-gates-zero-facts">Nine gates</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">POLICY</div>
+    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">AI-involvement disclosure.</span></h1>
+    <p class="cf-hero-lede">
+      Disclosed on every contribution, as a matter of policy.
+    </p>
+    <div class="cf-hero-meta">Policy effective: 2026-06-01</div>
+  </header>
+</div>
+
+<main class="cf-band--paper">
+  <div class="cf-article-shell">
+    <article class="cf-article">
+
+      <section class="cf-article__section">
+        <p>
+          CaliperForge is an AI research studio specializing in security
+          and invariants: verifiable, auditable, correctable autonomous systems.
+          We disclose AI involvement on every contribution we file. This page
+          is the long-form version of that disclosure; every PR description,
+          grant application, and bounty claim we submit carries a short
+          canonical footer pointing readers here.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">In practice</p>
+        <h2>What this means.</h2>
+        <ul>
+          <li>
+            Specifications and implementations are drafted with substantial
+            AI assistance.
+          </li>
+          <li>
+            Every draft passes through a multi-gate internal review: a
+            content-quality gate (&sect;4a, anti-AI-ism lint,
+            factual register check, register compliance) and, for
+            code-bearing artifacts, a code-quality gate (&sect;4b).
+            Anti-bloat discipline is enforced: reviewer never equals
+            drafter. AI Ops runs nightly integrity sweeps on gate
+            verdicts; AI HR audits the oversight function itself. Model
+            selection is tiered, frontier models on judgment,
+            oversight, and gate work; mid-tier on volume and build.
+            After the gates, the operator reviews, verifies in a
+            cold-environment CI reproduction, and submits under the
+            named operator-of-record, <strong>Michael Moffett</strong>.
+          </li>
+          <li>
+            Michael is accountable for the code, the tests, and any
+            follow-up required by maintainers or grant programs.
+          </li>
+          <li>
+            We do not file against repositories whose maintainers have
+            stated an anti-AI-contribution policy. Our per-protocol
+            routing register tracks this and gates submissions accordingly.
+          </li>
+          <li>
+            AI-suggested invariants carry typed provenance in-tree at
+            the source level: <code>InvariantSource::AiSuggested {
+            model, prompt_version, timestamp_utc }</code>. Reviewers
+            can see which invariants were AI-proposed and which were
+            hand-authored at the point of the run, not from a footnote
+            added later.
+          </li>
+        </ul>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Rationale</p>
+        <h2>Why we disclose.</h2>
+        <p>
+          Disclosure protects maintainers, grant reviewers, and the broader
+          ecosystem from having to guess. It also protects us: anti-AI-PR
+          detection that surfaces an undisclosed contribution is a much bigger
+          problem than disclosed work that someone declines on policy.
+        </p>
+        <p>
+          We treat disclosure as the per-submission protective layer.
+          Visitors and reviewers who land on CaliperForge find an AI
+          research studio specializing in security and invariants. Every
+          submission we file carries an explicit, identical footer naming
+          the AI-augmented workflow and pointing back here. The brand-front
+          layer and the per-submission layer are decoupled by design:
+          tone calibration at one does not loosen disclosure at the other.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Routing</p>
+        <h2>How we route.</h2>
+        <p>
+          Before any submission, our workflow checks the target repo
+          or program against an internal per-protocol register marking
+          the maintainer's AI posture as friendly, case-by-case, or
+          hostile. We ship to friendly and case-by-case. We do not ship
+          to hostile, ever, not under a different framing, not
+          without the footer, not at all.
+        </p>
+        <p>
+          If a maintainer or program reviewer declines a submission on AI
+          grounds, we update the register entry, block future dispatch to
+          that program, and notify the operator. We treat the rejection
+          as information, not an obstacle to route around.
+        </p>
+      </section>
+
+      <section class="cf-article__section" id="contact">
+        <p class="cf-article__eyebrow">Contact</p>
+        <h2>Reach the operator.</h2>
+        <ul class="cf-speclist">
+          <li>
+            <span class="cf-speclist__label">Submission-specific</span>
+            <span><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+          </li>
+          <li>
+            <span class="cf-speclist__label">Policy questions</span>
+            <span><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+          </li>
+        </ul>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/">Back to CaliperForge</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>

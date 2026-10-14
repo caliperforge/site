@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nine gates, zero facts | CaliperForge</title>
+<meta name="description" content="An org learning. A CaliperForge document meant to be verified by strangers passed nine internal quality gates while committing, cryptographically, to two models that do not exist. How we caught it, why every gate had passed it, and the new seat we added to the pipeline.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="canonical" href="https://caliperforge.com/nine-gates-zero-facts">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nine gates, zero facts">
+<meta property="og:description" content="A CaliperForge document meant to be verified by strangers passed nine internal quality gates while committing, cryptographically, to two models that do not exist. The failure is ours. This is the record.">
+<meta property="og:url" content="https://caliperforge.com/nine-gates-zero-facts">
+<meta property="og:image" content="https://caliperforge.com/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Nine gates, zero facts">
+<meta name="twitter:description" content="A CaliperForge document meant to be verified by strangers passed nine internal quality gates while committing to two models that do not exist. The failure is ours.">
+<meta name="twitter:image" content="https://caliperforge.com/og.png">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="/ai-disclosure">AI policy</a>
+        <a href="/nine-gates-zero-facts" class="is-current">Nine gates</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">AN ORG LEARNING</div>
+    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">Nine gates, zero facts.</span></h1>
+    <p class="cf-hero-lede">
+      A CaliperForge document meant to be verified by strangers passed nine internal quality gates while committing, cryptographically, to two models that do not exist. The failure is ours. This page is the record of what happened, why every gate had passed it, and the seat we added to the pipeline so the class of defect stops here.
+    </p>
+  </header>
+</div>
+
+<main class="cf-band--paper">
+  <div class="cf-article-shell">
+    <article class="cf-article">
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The one-sentence version</p>
+        <p>
+          A document built specifically to be verified by hostile strangers passed nine consecutive quality gates while committing, cryptographically, to two models that do not exist.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What happened</p>
+        <h2>The artifact and the strings that broke it.</h2>
+        <p>
+          P032 is the Solana build-to-grant lane. Its first sprint, B0, produces a pre-registered benchmark protocol: a public, timestamped document that fixes the rules of a measurement before any result exists. That is the whole product. If a reader cannot verify the protocol was registered before the outcome, the benchmark is just us grading our own homework.
+        </p>
+        <p>
+          Section 7 of that protocol, commitment scheme C2(d), names the exact model each adjudicator will run on. Three panel seats plus the emitter:
+        </p>
+        <table class="cf-table">
+          <thead>
+            <tr><th>Seat</th><th>Committed identifier</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>A1</td><td><code>gpt-5.6-sol-20260701</code></td></tr>
+            <tr><td>A2</td><td><code>accounts/fireworks/models/deepseek-v4-pro</code></td></tr>
+            <tr><td>A3 + B1 emitter</td><td><code>claude-opus-5-20260714</code></td></tr>
+          </tbody>
+        </table>
+        <p>
+          On 2026-07-29 the CEO funded the Anthropic API account that had been blocking the B1 emitter's live run. Before dispatching anything, the COO fired one minimal metered probe to confirm the key worked and capture the model string the protocol needed.
+        </p>
+        <p>
+          The probe came back <strong>404. <code>model: claude-opus-5-20260714</code>.</strong>
+        </p>
+        <p>
+          The identifier did not exist. Anthropic publishes Opus 5 as <code>claude-opus-5</code>, flat, because from the 4.6 generation the vendor moved to dateless IDs that are themselves pinned snapshots. The <code>-20260714</code> suffix had been invented by pattern-matching a convention that had already been retired.
+        </p>
+        <p>
+          Checking the other two took four minutes. <strong><code>gpt-5.6-sol-20260701</code> does not exist either</strong>; OpenAI publishes <code>gpt-5.6-sol</code>. Only A2 was real.
+        </p>
+        <p>
+          That string was not merely sitting in prose. It had been written into <code>experiments/p032-emitter/manifests/parameters.json</code>, JCS-canonicalized, and SHA-256 hashed into <strong>commitment field 8</strong> of the B1 freeze package. We had produced a cryptographic commitment to a model we could not call.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The part that matters</p>
+        <h2>What it got past.</h2>
+        <p>This was not an unreviewed draft. Before the probe, the protocol had been through:</p>
+        <ol class="cf-numlist">
+          <li>Drafting pass, <code>spec_writer</code>.</li>
+          <li>Adversarial gameability review, <code>adversarial_research_lead</code>. <strong>FAIL, ten holes, four load-bearing.</strong></li>
+          <li>Fix pass closing all ten.</li>
+          <li>Adversarial re-review. PASS.</li>
+          <li>§4a anti-AI-ism gate, <code>content_qa_reviewer</code>. PASS.</li>
+          <li>§6 rewrite to the agent-panel design, <code>spec_writer</code>.</li>
+          <li>Second adversarial gameability re-review. <strong>Six more holes found and closed.</strong></li>
+          <li>Second §4a. PASS.</li>
+          <li>§4b code review on the emitter, <code>code_quality_reviewer</code>. PASS, including a byte-level audit of the very manifest containing the string.</li>
+        </ol>
+        <p>
+          <strong>Nine gates. Sixteen real defects found across two adversarial passes. Every gate read those identifiers. None asked whether they resolve.</strong>
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Root cause</p>
+        <h2>It is the gate design, not the drafter.</h2>
+        <p>
+          The instinct is to blame the seat that invented the string. That is the wrong lesson, and acting on it would leave the hole open.
+        </p>
+        <p>Look at what each gate is actually chartered to attack:</p>
+        <table class="cf-table">
+          <thead>
+            <tr><th>Gate</th><th>Attacks</th><th>Did its job?</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>adversarial_research_lead</code></td>
+              <td>the <strong>logic</strong> of the protocol: how could we still grade our own homework under these rules.</td>
+              <td>Yes. Found sixteen holes.</td>
+            </tr>
+            <tr>
+              <td><code>content_qa_reviewer</code> §4a</td>
+              <td><strong>register</strong> and <strong>factual accuracy, bounded to the working copy</strong>, with external-only claims passable as "trust assumption".</td>
+              <td>Yes. See the correction below.</td>
+            </tr>
+            <tr>
+              <td><code>code_quality_reviewer</code> §4b</td>
+              <td><strong>code</strong>. The strings were in prose and a JSON manifest, not in reviewed logic.</td>
+              <td>Yes.</td>
+            </tr>
+            <tr>
+              <td><code>completion_auditor</code></td>
+              <td><strong>ticket-contract compliance</strong>. Every ticket was complied with.</td>
+              <td>Yes.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>Every seat did its job. The artifact still shipped fiction, twice.</p>
+
+        <div class="cf-callout">
+          <p>
+            <strong>CORRECTION, 2026-07-29, after the CEO pushed back on the first draft of this document.</strong> The paragraph that stood here said "nobody was chartered to attack the facts." <strong>That was wrong, and the truth is worse.</strong>
+          </p>
+        </div>
+
+        <p>
+          <code>content_qa_reviewer</code> §4a <em>is</em> chartered to check facts. Its rubric runs three checks with no short-circuits, and the third is <strong>factual accuracy, five sub-checks</strong>. The gate ran. It passed. It passed <strong>correctly</strong>, and the clause that made it correct is this one, from the seat's own CARD:
+        </p>
+
+        <blockquote class="cf-quote">
+          <p>"Reconcile every load-bearing claim against <strong>the working copy</strong> (repo source tree, CI workflow YAML, README, NOTICE, on-explorer state when local); <strong>flag external-only claims with 'trust assumption' and the assumed source.</strong>"</p>
+        </blockquote>
+
+        <p>
+          Read what that actually authorises. §4a's verification boundary is <strong>the working copy</strong>. <code>claude-opus-5-20260714</code> was <em>in</em> the working copy. It sat in <code>experiments/p032-emitter/manifests/parameters.json</code>, and the protocol prose agreed with the manifest. §4a reconciled prose against manifest, found them consistent, and passed. <strong>The document was internally consistent and externally false, and internal consistency is the only thing any gate we own was measuring.</strong>
+        </p>
+        <p>
+          The second half of the clause is the load-bearing part: an external-only claim is permitted to pass <strong>labelled</strong> rather than <strong>verified</strong>. "Trust assumption" is a passing state. That is not a reviewer failing its rubric; that is the rubric working as designed.
+        </p>
+        <p>
+          Proof that it is still live: on 2026-07-29, <em>after</em> this finding, the §4a pass on the corrected text (<code>T-P032-B0j</code>) recorded verbatim:
+        </p>
+
+        <blockquote class="cf-quote">
+          <p>"Did not re-verify factual accuracy of the Anthropic or OpenAI URLs against the live pages."</p>
+        </blockquote>
+
+        <p>Correct under its charter. Still no external verification.</p>
+        <p>
+          So the honest root cause is not an unowned question. It is a <strong>scope boundary</strong>: no gate in the cascade verifies anything outside the working copy, and every gate is permitted to pass external claims with a label. The defect was never going to be caught by running the existing gates harder.
+        </p>
+        <p>
+          There is a second-order version of the same point. Adversarial review is our strongest gate and it is <em>specifically</em> the gate least likely to catch this, because a reviewer hunting for ways the protocol could be gamed reads an identifier as a fixed given and moves on to the interesting question. <strong>The harder a gate is thinking, the more it takes the trivially-checkable for granted.</strong>
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Why one of the three was right</p>
+        <h2>Naming an artifact versus following a pattern.</h2>
+        <p>A2 came out correct. It is worth understanding why, because it generalises.</p>
+        <p>
+          <code>accounts/fireworks/models/deepseek-v4-pro</code> and its weights repo <code>deepseek-ai/DeepSeek-V4-Pro</code> <strong>point at an artifact</strong>. There is a thing at the end of the string, and the string is how you get to the thing. There was nothing to invent.
+        </p>
+        <p>
+          The two wrong identifiers <strong>followed a convention</strong>. <code>claude-opus-5-20260714</code> and <code>gpt-5.6-sol-20260701</code> were generated from a pattern (real model name plus plausible release date), and a pattern can be reproduced faithfully while pointing at nothing.
+        </p>
+        <blockquote class="cf-quote">
+          <p><strong>Where a choice exists, prefer an identifier that names an artifact over one that follows a pattern.</strong> The first fails loudly. The second fails silently, and looks correct while doing it.</p>
+        </blockquote>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Cost of the catch, cost of the miss</p>
+        <h2>The asymmetry is the lesson.</h2>
+        <p><strong>Cost of the catch:</strong> two API calls. About four minutes.</p>
+        <p>
+          <strong>Cost of the miss:</strong> the protocol was one dispatch from publication to a public repo with a Bitcoin block-hash timestamp. A reader who found one invented identifier in a pre-registration document would rationally assume there were others, and on that day they would have been right. The document's only asset is that a stranger can check it. An unresolvable string in it is not a typo, it is a free kill on the whole artifact, and through it on the $20K Solana grant the artifact exists to support.
+        </p>
+        <p>Four minutes against the credibility of the lane.</p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The rule, now standing</p>
+        <h2>Documentation is not evidence. A 200 is.</h2>
+        <blockquote class="cf-quote">
+          <p><strong>Every externally-resolvable identifier in a publishable artifact is probed against its live source before publish. Documentation is not evidence. A 200 is.</strong></p>
+        </blockquote>
+        <p>
+          Applies to: model IDs, program IDs, contract addresses, repo paths, package names, revision SHAs, URLs, DOIs, and any name or title the artifact asserts about a real person or organisation.
+        </p>
+        <p>Five clauses that travel with it:</p>
+        <ol class="cf-numlist">
+          <li><strong>Enumerate first.</strong> List every externally-resolvable string in the artifact. If the drafting seat did not supply the list, the reviewer builds it. A missing list is not a reason to pass.</li>
+          <li><strong>Probe each one.</strong> Cheapest possible call against the live source.</li>
+          <li><strong>Negative controls are mandatory.</strong> A passing probe on the corrected string does not prove the original was wrong. On 2026-07-29 it was the deliberate 404 on the dead string that turned suspicion into fact. Record both.</li>
+          <li><strong>Documentation describing a naming convention is not sufficient.</strong> That is precisely the evidence class that failed here.</li>
+          <li><strong>An unprobeable string stays <code>pending</code> and the artifact does not publish.</strong> Never a placeholder, never a documentation-derived value.</li>
+        </ol>
+        <p>
+          The receipt (<code>string → probe method → response → verdict</code>) publishes with the artifact. On a pre-registration document that receipt is itself an asset, because it is exactly the work a skeptic would otherwise have to do themselves.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">What the org changed</p>
+        <h2>A new seat, with its name on the question.</h2>
+        <p>
+          A new seat: <code>external_claims_reviewer</code>, running gate <strong>§4c</strong> in the publish cascade, positioned after §4a and §4b and before the CEO text gate. CEO approved the spin-up 2026-07-29; scope filed by COO as <code>HF-3</code>, CARD authored by <code>ai_hr_lead</code>.
+        </p>
+        <p>
+          The seat owns one question and no others: <strong>is it true, and can a stranger confirm it in one call.</strong> Logic stays with <code>adversarial_research_lead</code>. Register stays with <code>content_qa_reviewer</code>. Code stays with <code>code_quality_reviewer</code>. Reviewer is never the drafter.
+        </p>
+        <p>Two design notes worth preserving:</p>
+        <ul>
+          <li>The seat needs <strong>live write-capable web and API access</strong>, not a read-only doc grant. A documentation page describing a naming convention is the exact evidence that failed us. Narrowing this seat into a doc-reader would reproduce the defect inside the fix.</li>
+          <li>It is deliberately <strong>not</strong> called <code>fact_check_reviewer</code>. The research lane already runs a fact-check chain, and the standing rule is that the two chains are never conflated. Different moment, different object: research fact-check validates findings before a deck; §4c validates an artifact before it leaves the building.</li>
+        </ul>
+        <p>
+          <strong>Retro-application is part of the spin-up.</strong> Everything gated before §4c existed was gated to a weaker standard. <code>P032_B0_BENCHMARK_PROTOCOL.md</code> gets swept in full. We have checked only its model identifiers, and it also asserts program IDs, tool names, repo paths, analyzer capabilities and an exploit corpus. None of that has been probed.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">The uncomfortable read</p>
+        <h2>A rule addressed to everyone is owned by no one.</h2>
+        <p>
+          We had a rule that would have caught this. <code>feedback_feasibility_precheck_before_build</code> says verify before you build on an assumption. We had a second one: <code>feedback_gate_green_is_not_evidence_strong</code>, logged 07-25, four days before this. We had a third: <code>feedback_unverified_labeling_discipline</code>.
+        </p>
+        <p>
+          None of them fired, because all three are addressed to whoever happens to be reading, and <strong>a rule addressed to everyone is owned by no one.</strong> That is the actual difference between this fix and the previous three: §4c has a seat's name on it.
+        </p>
+        <p>The corollary is that this document is not the fix either. The seat is.</p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Provenance</p>
+        <h2>Every figure is from a recorded observation.</h2>
+        <ul class="cf-speclist">
+          <li>
+            <span class="cf-speclist__label">404 on <code>claude-opus-5-20260714</code></span>
+            <span><code>req_011CdWhWKR34mFqofVpUfKMr</code></span>
+          </li>
+          <li>
+            <span class="cf-speclist__label">200 on <code>claude-opus-5</code></span>
+            <span><code>msg_011CdWhWM9TvWpA6Z4dzsy8b</code>, <code>resp.model == "claude-opus-5"</code></span>
+          </li>
+          <li>
+            <span class="cf-speclist__label">B1 live emitter run</span>
+            <span>Anchor <code>basic-0</code> canary, <code>msg_011CdWjMejrrdhoXtQxN7k4R</code>, 39,961 input tokens, 3,065 output tokens, <code>api_model_field_returned == "claude-opus-5"</code>, recorded in <code>experiments/p032-emitter/out/anchor-run-metadata.json</code>.</span>
+          </li>
+          <li>
+            <span class="cf-speclist__label">OpenAI, Fireworks, Hugging Face IDs</span>
+            <span>Checked against the providers' own published model listings, 2026-07-29.</span>
+          </li>
+        </ul>
+        <p class="cf-prose cf-prose--sm">
+          The dollar cost of the B1 run is deliberately not stated. It depends on a list price the COO has not probed, and this is a page about not asserting unverified values.
+        </p>
+      </section>
+
+      <section class="cf-article__section">
+        <p class="cf-article__eyebrow">Internal references</p>
+        <h2>For the tally-file crowd.</h2>
+        <ul class="cf-speclist">
+          <li>
+            <span class="cf-speclist__label">Tally row</span>
+            <span><code>D-29-01</code> in <code>ops/CATCH_AND_LEARNINGS_TALLY.md</code>.</span>
+          </li>
+          <li>
+            <span class="cf-speclist__label">Decision rows</span>
+            <span><code>D-P032-B1-emitter-model-id-is-dateless-claude-opus-5-2026-07-29</code>; <code>D-P032-B0d-panel-model-identifiers-verified-2026-07-29</code>.</span>
+          </li>
+          <li>
+            <span class="cf-speclist__label">Tickets</span>
+            <span><code>HF-2</code> (the question); <code>HF-3</code> (the seat).</span>
+          </li>
+          <li>
+            <span class="cf-speclist__label">Related policy</span>
+            <span><a href="/ai-disclosure">AI-involvement disclosure</a>, <a href="/what-we-caught">What we caught</a>.</span>
+          </li>
+        </ul>
+      </section>
+
+    </article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a> · <a href="/">Back to CaliperForge</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>

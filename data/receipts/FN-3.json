@@ -1,0 +1,10 @@
+{
+  "id": "FN-3",
+  "headline": "verus-bridge writeup source-quality issues passed initial gate",
+  "gate_missed": "§4a",
+  "gate_pass_iso": "2026-06-11",
+  "caught_by": "§4a sources-regate",
+  "caught_iso": "2026-06-12",
+  "fix_ref": "commit cfb0677",
+  "frame": "The §4a preflip-regate on the verus-bridge writeup confirmed that 10 prior fix-loop items had landed (API-arity mismatches, broken twins, etc.) and passed. The same writeup still carried sourcing issues -- an ExVul citation that did not resolve (sweep returned zero hits), Blockaid and PeckShield wording that over-stated firm advisories as post-mortems, and an imprecise count framing. Caught next day by a follow-on §4a sources-regate. Fix landed at commit <code>cfb0677</code>: ExVul dropped, the firm advisories downgraded with pinned URLs and dates, the count framing removed. Factual-accuracy and source-verification were declared in §4a's scope; this was a §4a-scope miss."
+}

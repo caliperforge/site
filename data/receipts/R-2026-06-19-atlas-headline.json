@@ -1,0 +1,9 @@
+{
+  "id": "R-2026-06-19-atlas-headline",
+  "headline": "Unsupported \"6 exploits reproduced\" homepage headline, pulled pre-deploy.",
+  "gate": "§4a",
+  "verdict_iso": "2026-06-19",
+  "fix_ref": "pre-deploy edit",
+  "frame": "A §4a content-QA gate stopped the homepage Atlas headline because the source repo README did not carry the count. The line was rewritten to the structural framing before the deploy -- so this defect never reached the public site.",
+  "writeup_url": null
+}

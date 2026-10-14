@@ -1,0 +1,20 @@
+{
+  "exit_code": 0,
+  "verdict": "PASS",
+  "summary": "PASS: all 0 extracted claims are sourced and supported (or labeled [UNVERIFIED]).",
+  "generated_at": "2026-06-01T12:57:33",
+  "report_path": "site/blog/posts/01_caliperforge-origins.md",
+  "elapsed_s": 0.0,
+  "performance_warn": false,
+  "counts": {
+    "total_claims": 0,
+    "hard_fail": 0,
+    "warn": 0,
+    "supported": 0,
+    "unverified_labeled": 0,
+    "unsourced": 0,
+    "not_supported": 0
+  },
+  "claims": [],
+  "url_fetch_results": {}
+}
