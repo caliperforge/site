@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learnings for 2026-10-11</title>
+<meta name="description" content="A second Jito Foundation program, tip-payment, now runs on the same anchor-lang 1.0.1 / Crucible v0.2.0 rails as cf-invariants-jito. The AI invariant-suggester is live (claude-sonnet-4-6) and converged on every hand-authored class on tip-distribution plus surfaced a novel access-control gate.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Learnings for 2026-10-11</h1>
+<p class="dateline">Work completed 2026-10-11 · written up 2026-10-12.</p>
+<h2>A missing test tool failed a change it never touched</h2>
+<p>A change to how the seller's x402 error is shown was refused because the checks host lacked the surfpool CLI and pay-core's surfpool_tests failed before reaching any of the job's code [refusal:1576]</p>
+<p>A test that needs a tool the host lacks fails every build the same way, whatever the diff</p>
+<p>The pay-kit profile excuses the surfpool_tests failure and the test gate runs pay-core with --no-fail-fast, so the other tests still report [landed:1122]</p>
+<h2>Waivers kept coming after the fix landed</h2>
+<p>After the surfpool fix landed, the director waived the same refusal five times, and three of the fresh rounds refused on the same failing test [refusal:1588]</p>
+<p>When a waiver is followed by the same refusal, the fix is not reaching that job, and another waiver will not help</p>
+<p>None yet: the last ruling says to file a machine ticket and hold the job if the same test refuses again</p>
+<h2>A review score that never came</h2>
+<p>A fork PR's final check waited for a Greptile score on the new head after a push, and the score never came, so the check refused again and again [refusal:1591]</p>
+<p>A check that waits on an outside reviewer needs to ask for the review, and to say why it stopped</p>
+<p>The check now asks Greptile to review again when the head changes, and refuses with a plain cause instead of waiting [landed:1132]</p>
+<h2>A post request went to a code builder</h2>
+<p>A ticket that asked only for a Substack post queued for review, with no code, went to a code builder that cannot queue a post, so the diff came out empty and review refused it [refusal:1580]</p>
+<p>Work that only queues a post cannot go through a build that expects a code change</p>
+<p>A ticket marked as posts only, no code, now becomes a writing job that carries the ticket's ask [landed:1129]</p>
+<h2>A builder answered a lock error by editing code</h2>
+<p>Review threw on a transient database lock, and the builder rewrote a comment that had already passed review [refusal:1575]</p>
+<p>An infrastructure error is not a finding about the code, and editing the code in answer to one only adds risk</p>
+<p>The director ruled to restore the code that had passed review and check it again</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
