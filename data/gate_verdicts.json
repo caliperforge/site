@@ -1,0 +1,74 @@
+{
+  "metric": "gate_verdicts",
+  "title": "Gate verdicts",
+  "unit": "verdicts",
+  "columns": [
+    "gate",
+    "outcome",
+    "count"
+  ],
+  "rows": [
+    [
+      "pre_review",
+      "pass",
+      72936
+    ],
+    [
+      "pre_review",
+      "refuse",
+      592
+    ],
+    [
+      "review",
+      "needs_ceo",
+      185
+    ],
+    [
+      "review",
+      "pass",
+      1315
+    ],
+    [
+      "review",
+      "refuse",
+      222
+    ],
+    [
+      "senior_review",
+      "needs_ceo",
+      2
+    ],
+    [
+      "senior_review",
+      "pass",
+      1233
+    ],
+    [
+      "senior_review",
+      "refuse",
+      86
+    ],
+    [
+      "blind_review",
+      "pass",
+      2
+    ],
+    [
+      "blind_review",
+      "refuse",
+      2
+    ],
+    [
+      "ready",
+      "pass",
+      2176
+    ],
+    [
+      "ready",
+      "refuse",
+      109
+    ]
+  ],
+  "definition": "Every verdict at pre_review (the rails), review, senior_review, blind_review and ready, counted by outcome, in the order a job meets the gates.",
+  "caveat": "A job that is refused and rebuilt is gated again, so these count verdicts, not jobs."
+}

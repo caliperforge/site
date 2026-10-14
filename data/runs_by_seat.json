@@ -1,0 +1,97 @@
+{
+  "metric": "runs_by_seat",
+  "title": "Runs by seat",
+  "unit": "runs",
+  "columns": [
+    "seat",
+    "runs"
+  ],
+  "rows": [
+    [
+      "typescript_specialist",
+      2189
+    ],
+    [
+      "brief_writer",
+      1911
+    ],
+    [
+      "senior_review",
+      1041
+    ],
+    [
+      "code_quality",
+      958
+    ],
+    [
+      "director",
+      293
+    ],
+    [
+      "swift_specialist",
+      283
+    ],
+    [
+      "orchestrator",
+      208
+    ],
+    [
+      "fixer",
+      183
+    ],
+    [
+      "kotlin_specialist",
+      75
+    ],
+    [
+      "rust_specialist",
+      72
+    ],
+    [
+      "coo_lite",
+      60
+    ],
+    [
+      "text_review",
+      35
+    ],
+    [
+      "outside_specialist",
+      34
+    ],
+    [
+      "writer",
+      33
+    ],
+    [
+      "python_specialist",
+      23
+    ],
+    [
+      "php_specialist",
+      19
+    ],
+    [
+      "design_lead",
+      18
+    ],
+    [
+      "researcher",
+      13
+    ],
+    [
+      "ruby_specialist",
+      7
+    ],
+    [
+      "blind_review",
+      5
+    ],
+    [
+      "growth_lead",
+      2
+    ]
+  ],
+  "definition": "Every agent run, counted by the seat that ran it, highest first.",
+  "caveat": "A retried or reworked step counts as another run."
+}

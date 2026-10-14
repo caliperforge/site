@@ -1,0 +1,54 @@
+{
+  "metric": "plan_outcomes",
+  "title": "Plan outcomes",
+  "unit": "plans",
+  "columns": [
+    "template",
+    "state",
+    "count"
+  ],
+  "rows": [
+    [
+      "comms",
+      "done",
+      15
+    ],
+    [
+      "pr_path",
+      "blocked_on_ceo",
+      5
+    ],
+    [
+      "pr_path",
+      "done",
+      1117
+    ],
+    [
+      "pr_path",
+      "queued",
+      6
+    ],
+    [
+      "pr_path",
+      "refused",
+      91
+    ],
+    [
+      "pr_path",
+      "running",
+      7
+    ],
+    [
+      "research",
+      "done",
+      3
+    ],
+    [
+      "research",
+      "refused",
+      8
+    ]
+  ],
+  "definition": "Every plan, counted by its template and the state it is in now.",
+  "caveat": "A plan still queued or running counts in that state until it ends."
+}

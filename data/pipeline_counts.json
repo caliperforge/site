@@ -1,0 +1,63 @@
+{
+  "metric": "pipeline_counts",
+  "title": "Pipeline counts",
+  "unit": "per stage, as its unit column says",
+  "columns": [
+    "stage",
+    "count",
+    "refused",
+    "unit"
+  ],
+  "rows": [
+    [
+      "brief",
+      1911,
+      null,
+      "runs"
+    ],
+    [
+      "build",
+      2702,
+      null,
+      "runs"
+    ],
+    [
+      "rails",
+      73528,
+      592,
+      "verdicts"
+    ],
+    [
+      "code review",
+      1722,
+      222,
+      "verdicts"
+    ],
+    [
+      "senior review",
+      1321,
+      86,
+      "verdicts"
+    ],
+    [
+      "ready",
+      2285,
+      109,
+      "verdicts"
+    ],
+    [
+      "CEO approvals",
+      38,
+      null,
+      "approvals"
+    ],
+    [
+      "pushed",
+      890,
+      null,
+      "deliverables"
+    ]
+  ],
+  "definition": "Each stage a job passes, in order: brief writer runs, specialist build runs, verdicts at the rails, code review, senior review and ready with the refusals among them, CEO approvals, and deliverables pushed.",
+  "caveat": "Rails, reviews and ready count verdicts, not jobs: a job that is refused and rebuilt is gated again."
+}
