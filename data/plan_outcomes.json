@@ -11,7 +11,12 @@
     [
       "comms",
       "done",
-      15
+      16
+    ],
+    [
+      "comms",
+      "queued",
+      1
     ],
     [
       "pr_path",
@@ -21,12 +26,12 @@
     [
       "pr_path",
       "done",
-      1117
+      1130
     ],
     [
       "pr_path",
       "queued",
-      6
+      4
     ],
     [
       "pr_path",
