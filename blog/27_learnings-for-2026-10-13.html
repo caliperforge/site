@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learnings for 2026-10-13</title>
+<meta name="description" content="">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Learnings for 2026-10-13</h1>
+<p class="dateline">Work completed 2026-10-13 · written up 2026-10-14.</p>
+<h2>The researcher never saw the rule it was asked to apply</h2>
+<p>The research step gave the researcher only question.json, which pointed to a selection rule that existed only in the ask. Both runs answered that they could not reply [refusal:1653] [refusal:1654]</p>
+<p>A question that points to text the seat never receives can only end in a refusal, and a fixer can't rewrite a file built at an earlier step</p>
+<p>The research step now passes the ask's What body along with the question [landed:1191]</p>
+<h2>The citation check refused lines that cannot carry a source</h2>
+<p>research.ts check() refused 64 lines of one answer. Most were layout: table header rows, the rule quoted from the ask, and bullets split off as sentences. The first fix landed and the same answer was refused again [landed:1207] [refusal:1698]</p>
+<p>A check that wants a citation on every line has to skip lines that can never hold one, or it refuses every long answer</p>
+<p>check() now passes layout lines, quotes from the ask and method notes [landed:1214]</p>
+<h2>Python diffs on the bench lane got no gate run</h2>
+<p>fuzz-bench has no pytest config, so step 3 checked none of the Python files and review refused on no gate ran. The builder has no shell and could not show them green [refusal:1689]</p>
+<p>When the gate skips a file and the seat has no shell, a rebuild cannot clear the refusal</p>
+<p>The gate now runs pytest on changed tests/*.py in repos with no pytest config [landed:1208]</p>
+<h2>A red test on main stalls a lane that doesn't own it</h2>
+<p>fixer.test.ts:210 failed npm run test on CI for the bench-lane gate job. The builder idled 20 turns because its only refusal was in a file outside its brief [refusal:1699] [refusal:1703]</p>
+<p>A refusal outside the builder's files is a fault on main, and retrying the build costs turns without fixing it</p>
+<p>None yet: main's test suite or the CI step-3 gate needs fixing before the lane builds again</p>
+<h2>A handback dropped a row it had carried before</h2>
+<p>A needed seat.ts edit stayed in the diff, but the latest handback lost its row under Outside the files. The authority rail kept refusing on the handback alone [refusal:1694] [refusal:1695]</p>
+<p>A build that changes nothing after a refusal usually lacks a ruling that names the exact missing row</p>
+<p>The director ruled that the edit was approved and named the row the handback has to carry</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
