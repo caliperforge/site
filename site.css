@@ -49,7 +49,9 @@ body { margin: 0; background: var(--site-paper); color: var(--site-ink); font-fa
 .home-card p { margin: 0; font-size: 14.5px; line-height: 1.6; }
 .home-tag { display: inline-block; margin-bottom: 12px; padding: 3px 8px; border: 1px solid var(--site-rust); font-size: 11px; letter-spacing: .06em; color: var(--site-rust); }
 
-.home-diagram { margin: 36px 0 0; border: 1px solid var(--site-rule); padding: 24px; }
+.home-loop { display: grid; grid-template-columns: 1fr; gap: 24px; align-items: start; margin-top: 36px; }
+.home-loop p { margin: 12px 0 0; font-family: var(--site-body); font-size: 12px; color: var(--site-muted); }
+.home-diagram { margin: 0; border: 1px solid var(--site-rule); padding: 24px; }
 .home-diagram svg { display: block; width: 100%; }
 .home-diagram rect { fill: none; stroke: var(--site-ink); stroke-width: 1.4; }
 .home-diagram rect.refused { stroke: var(--site-rust); stroke-width: 2; }
@@ -58,8 +60,16 @@ body { margin: 0; background: var(--site-paper); color: var(--site-ink); font-fa
 .home-diagram text { text-anchor: middle; font-family: var(--site-body); font-size: 11px; fill: var(--site-muted); }
 .home-diagram text.stage { font-size: 12px; letter-spacing: .6px; }
 .home-diagram text.count { font-family: var(--site-display); font-size: 24px; fill: var(--site-ink); }
-.home-diagram text.refused { fill: var(--site-rust); }
+.home-diagram text.back { text-anchor: end; fill: var(--site-rust); }
 .home-diagram figcaption { margin-top: 12px; font-size: 12px; color: var(--site-muted); }
+
+.home-chart { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; margin: 0; }
+.home-chart svg { display: block; width: 100%; height: auto; }
+.home-chart text { font-family: var(--site-body); font-size: 12px; fill: var(--site-muted); }
+.home-chart .cf-title { font-weight: 700; fill: var(--site-ink); }
+.home-chart .cf-axis { fill: var(--site-ink); }
+.home-chart .cf-bar { fill: var(--site-ink); }
+.home-chart .cf-grid { stroke: var(--site-rule); }
 
 @media (max-width: 640px) {
   .site-wrap { padding: 0 16px; }
@@ -68,5 +78,8 @@ body { margin: 0; background: var(--site-paper); color: var(--site-ink); font-fa
   .home-hero h1 { font-size: 40px; }
   .home-strip .site-wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .home-cards { grid-template-columns: 1fr; }
-  .home-diagram svg { max-width: 180px; margin: 0 auto; }
+  .home-diagram { padding: 12px; }
+  .home-diagram svg { max-width: 420px; margin: 0 auto; }
+  .home-diagram text.stage { font-size: 16px; letter-spacing: 0; }
+  .home-diagram text { font-size: 16px; }
 }
