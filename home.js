@@ -46,11 +46,12 @@
     var n = t.columns.indexOf('count');
     var refused = t.columns.indexOf('refused');
     var unit = t.columns.indexOf('unit');
+    var rows = t.rows.filter(function (r) { return !/ceo/i.test(r[stage]); });
     var narrow = matchMedia('(max-width: 640px)');
     function draw() {
       var v = narrow.matches;
-      var span = t.rows.length * 132 - 20;
-      var boxes = t.rows.map(function (r, i) {
+      var span = rows.length * 132 - 20;
+      var boxes = rows.map(function (r, i) {
         var x = v ? 0 : i * 132;
         var y = v ? i * 132 : 0;
         var gated = r[refused] !== null;
@@ -59,7 +60,7 @@
           label(x, y + 58, 'count', count(r[n])) +
           label(x, y + 77, '', r[unit]) +
           (gated ? label(x, y + 96, 'refused', count(r[refused]) + ' refused') : '') +
-          (i < t.rows.length - 1 ? '<path d="' + (v ? 'M56 ' + (y + 112) + 'V' + (y + 131) : 'M' + (x + 114) + ' 55H' + (x + 131)) + '" marker-end="url(#home-arrow)"/>' : '');
+          (i < rows.length - 1 ? '<path d="' + (v ? 'M56 ' + (y + 112) + 'V' + (y + 131) : 'M' + (x + 114) + ' 55H' + (x + 131)) + '" marker-end="url(#home-arrow)"/>' : '');
       });
       var html = '<svg viewBox="0 0 ' + (v ? '112 ' + span : span + ' 110') + '" role="img" aria-label="How a job travels">' +
         '<defs><marker id="home-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L8 4L0 8z"/></marker></defs>' +
