@@ -59,3 +59,19 @@ test('the page is on the site shell with Log current and no address', () => {
   assert.match(page, /<footer class="site-footer">/);
   assert.doesNotMatch(page, /mailto:|@/);
 });
+
+test('posts 16 to 20 link /site.css once, after caliper.css and before any inline style', () => {
+  const SITE = '<link rel="stylesheet" href="/site.css">';
+  const posts = ['16_the-gate-that-caught-the-secret-scan-gap', '17_multi-seed-reachability-hardening', '18_uniswap-v4-hook-census', '19_the-clean-zero-gate', '20_nine-gates-zero-facts'];
+  for (const name of posts) {
+    const post = source(`blog/${name}.html`);
+    assert.equal(count(post, '/site.css'), 1, name);
+    assert.ok(!post.includes('<style') || post.indexOf(SITE) < post.indexOf('<style'), name);
+    if (name.startsWith('20_')) {
+      assert.equal(post.indexOf('<style'), post.indexOf(SITE + '\n<style>') + SITE.length + 1, name);
+      assert.doesNotMatch(post, /caliper\.css/, name);
+    } else {
+      assert.ok(post.includes('<link rel="stylesheet" href="/caliper.css">\n' + SITE), name);
+    }
+  }
+});
