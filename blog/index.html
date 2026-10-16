@@ -3,57 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Blog | CaliperForge</title>
+<title>Log | CaliperForge</title>
 <meta name="description" content="Notes from CaliperForge: shipped tooling, build arcs, what is verifiable today.">
 <meta name="color-scheme" content="dark light">
 <meta name="theme-color" content="#0b0f1c">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/log.css">
 </head>
 <body>
 
-<!-- ============== NAVY MASTHEAD =========================================== -->
-<div class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-
-  <div class="cf-opstrip">
-    <div class="cf-opstrip__row">
-      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
-      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
-    </div>
-  </div>
-
-  <nav class="cf-nav" aria-label="Primary">
-    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
-    <div class="cf-nav-right">
-      <div class="cf-nav-links">
-        <a href="/blog/" class="is-current">Blog</a>
-        <a href="/what-we-caught">What we caught</a>
-        <a href="/engagements/">Engagements</a>
-        <a href="/roadmap/">Roadmap</a>
-        <a href="/papers">Papers</a>
-        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
-      </div>
-      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/">CaliperForge</a>
+    <div>
+      <a href="/">Home</a>
+      <a href="/research">Research</a>
+      <a href="/output">Output</a>
+      <a href="/blog/" aria-current="page">Log</a>
     </div>
   </nav>
-
-  <header class="cf-hero cf-hero--article">
-    <div class="cf-eyebrow cf-eyebrow--hero">BLOG</div>
-    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">Notes from the workbench.</span></h1>
-    <p class="cf-hero-lede">
-      Shipped tooling, build arcs, what is verifiable today. Newest first.
-    </p>
-  </header>
 </div>
 
-<!-- ============== POSTS (paper) =========================================== -->
-<section class="cf-band--paper">
-  <div class="cf-article-shell">
-    <div class="cf-blog-cards">
+<main class="site-wrap log">
+  <header>
+    <p class="log-eyebrow">The log</p>
+    <h1>Daily entries, weekly arcs</h1>
+    <p class="log-lede">Every day gets a short entry: what happened, what was learned about working with agents. Each week the entries become an arc. Over seasons, the arcs become the record of the experiment.</p>
+  </header>
+  <section class="log-arcs" aria-label="Weekly arcs"></section>
+  <section class="log-daily" aria-label="Daily entries">
 
       <article class="cf-blog-card">
 <h2><a href="28_learnings-for-2026-10-14.html">Learnings for 2026-10-14</a></h2>
@@ -71,21 +50,22 @@
 <p></p>
 </article>
 <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/24_thirty-eight-refusals-fifteen-plans-through-them">Thirty-eight refusals, fifteen plans through them</a>
-          <span class="cf-blog-card__date">2026-10-03</span>
-        </div>
-        <p class="cf-blog-card__desc">
+<h2><a href="25_learnings-for-2026-10-11.html">Learnings for 2026-10-11</a></h2>
+<p class="dateline">2026-10-12</p>
+<p></p>
+</article>
+<article class="cf-blog-card">
+        <h2><a href="/blog/24_thirty-eight-refusals-fifteen-plans-through-them">Thirty-eight refusals, fifteen plans through them</a></h2>
+        <p class="dateline">2026-10-03</p>
+        <p>
           A second Jito Foundation program, tip-payment, now runs on the same anchor-lang 1.0.1 / Crucible v0.2.0 rails as cf-invariants-jito. The AI invariant-suggester is live (claude-sonnet-4-6) and converged on every hand-authored class on tip-distribution plus surfaced a novel access-control gate.
         </p>
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/18_uniswap-v4-hook-census">Can a stranger's Uniswap v4 hook actually be put through an invariant harness?</a>
-          <span class="cf-blog-card__date">2026-08-01</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/18_uniswap-v4-hook-census">Can a stranger's Uniswap v4 hook actually be put through an invariant harness?</a></h2>
+        <p class="dateline">2026-08-01</p>
+        <p>
           A census of ten hooks drawn by pre-declared rule from the
           live v4 hook population, run cold, twice. On the first
           cold pass, ten of ten failed at the same step, and the
@@ -101,11 +81,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/20_nine-gates-zero-facts">Nine gates, zero facts</a>
-          <span class="cf-blog-card__date">2026-07-29</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/20_nine-gates-zero-facts">Nine gates, zero facts</a></h2>
+        <p class="dateline">2026-07-29</p>
+        <p>
           A document built specifically to be verified by hostile
           strangers passed nine consecutive quality gates while
           committing, cryptographically, to two model identifiers
@@ -121,11 +99,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/17_multi-seed-reachability-hardening">The reachability certification: sixteen seeds, hard alarm</a>
-          <span class="cf-blog-card__date">2026-07-14</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/17_multi-seed-reachability-hardening">The reachability certification: sixteen seeds, hard alarm</a></h2>
+        <p class="dateline">2026-07-14</p>
+        <p>
           An external reviewer named a real gap in the standing
           planted-twin CI claim: a single-seed green does not
           exclude a lucky-seed miss on classes with long triggers.
@@ -138,11 +114,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/16_the-gate-that-caught-the-secret-scan-gap">The gate that caught the secret-scan gap</a>
-          <span class="cf-blog-card__date">2026-07-14</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/16_the-gate-that-caught-the-secret-scan-gap">The gate that caught the secret-scan gap</a></h2>
+        <p class="dateline">2026-07-14</p>
+        <p>
           CaliperForge is a small AI-augmented contribution agency:
           one operator, thirty-nine specialized roles, each in its
           own single-context lane, each gated by a distinct
@@ -160,11 +134,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/23_flashloan-solvency-blendv2-soroban-invariant-atlas">The audit already had it, in Rust this time: Blend V2 H-01 as a Soroban twin</a>
-          <span class="cf-blog-card__date">2026-07-13</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/23_flashloan-solvency-blendv2-soroban-invariant-atlas">The audit already had it, in Rust this time: Blend V2 H-01 as a Soroban twin</a></h2>
+        <p class="dateline">2026-07-13</p>
+        <p>
           Code4rena wardens named H-01 in their published Blend V2
           review: a flash-loan round-trip that leaves a
           reserve&rsquo;s <code>d_supply</code> out of step with the
@@ -181,11 +153,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/14_share-accounting-solvency-euler-earn-m01">The audit already had it: Euler Earn share-accounting solvency as a runnable twin</a>
-          <span class="cf-blog-card__date">2026-07-10</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/14_share-accounting-solvency-euler-earn-m01">The audit already had it: Euler Earn share-accounting solvency as a runnable twin</a></h2>
+        <p class="dateline">2026-07-10</p>
+        <p>
           Pashov Audit Group surfaced M-01 in their public Euler
           Earn security review (2025-07-25): a share-accounting
           drift in <code>PublicAllocator</code> when a strategy&rsquo;s
@@ -204,11 +174,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/13_fee-direction-integrity-uniswap-v4-hook">The audited base had it too: Uniswap v4 fee-direction integrity as a runnable twin</a>
-          <span class="cf-blog-card__date">2026-07-10</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/13_fee-direction-integrity-uniswap-v4-hook">The audited base had it too: Uniswap v4 fee-direction integrity as a runnable twin</a></h2>
+        <p class="dateline">2026-07-10</p>
+        <p>
           OpenZeppelin&rsquo;s v1.1.0 RC-2 audit surfaced M-01 on
           their own <code>BaseDynamicAfterFee</code>:
           direction-blind fee arithmetic that computed against the
@@ -225,11 +193,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/15_review-layer-caught-build-layer-attribution-error">The review layer caught the build layer: a confident, wrong attribution</a>
-          <span class="cf-blog-card__date">2026-07-06</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/15_review-layer-caught-build-layer-attribution-error">The review layer caught the build layer: a confident, wrong attribution</a></h2>
+        <p class="dateline">2026-07-06</p>
+        <p>
           Written on activity day 41 and published later. A builder
           agent produced a clean twin and a planted twin that
           behaved exactly as they should: the property stayed
@@ -245,11 +211,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/12_liquidity-penalty-conservation-uniswap-v4-hook">The reference hook had it too: Uniswap v4 liquidity-penalty conservation as a runnable twin</a>
-          <span class="cf-blog-card__date">2026-07-06</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/12_liquidity-penalty-conservation-uniswap-v4-hook">The reference hook had it too: Uniswap v4 liquidity-penalty conservation as a runnable twin</a></h2>
+        <p class="dateline">2026-07-06</p>
+        <p>
           The Uniswap Foundation ships a reference
           <code>LiquidityPenaltyHook</code> through OpenZeppelin.
           Zealynx surfaced the donation-griefing class (their
@@ -265,11 +229,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/22_right-denom-wrong-channel-ibc-source-validation">Right denom, wrong channel: Secret Network, IBC source validation, and the conservation invariant</a>
-          <span class="cf-blog-card__date">2026-06-29</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/22_right-denom-wrong-channel-ibc-source-validation">Right denom, wrong channel: Secret Network, IBC source validation, and the conservation invariant</a></h2>
+        <p class="dateline">2026-06-29</p>
+        <p>
           Around June 10, 2026, roughly $4.67M was drained from a
           wrapped-token contract on Secret Network. A modified
           CW20-ICS20 implementation validated the incoming
@@ -283,11 +245,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/21_32-days-one-operator-an-ai-agentic-company">32 days, one operator, an AI-agentic company</a>
-          <span class="cf-blog-card__date">2026-06-27</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/21_32-days-one-operator-an-ai-agentic-company">32 days, one operator, an AI-agentic company</a></h2>
+        <p class="dateline">2026-06-27</p>
+        <p>
           One operator, 12 to 15 hours a day, running the venture
           through a roster of AI agents with role cards, outboxes
           and review gates. The cockpit that makes the org
@@ -298,11 +258,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/19_the-clean-zero-gate">The clean=0 gate: why a planted bug is the minimum bar for invariant CI</a>
-          <span class="cf-blog-card__date">2026-06-26</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/19_the-clean-zero-gate">The clean=0 gate: why a planted bug is the minimum bar for invariant CI</a></h2>
+        <p class="dateline">2026-06-26</p>
+        <p>
           An invariant test that fires on a planted bug tells you the
           property runs. It does not tell you the property catches
           anything. Only the second leg, the same property holding
@@ -315,11 +273,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/11_syscoin-conservation-mint-without-burn">5 billion SYS, one missing burn: Syscoin, SPV proofs, and the conservation invariant</a>
-          <span class="cf-blog-card__date">2026-06-22</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/11_syscoin-conservation-mint-without-burn">5 billion SYS, one missing burn: Syscoin, SPV proofs, and the conservation invariant</a></h2>
+        <p class="dateline">2026-06-22</p>
+        <p>
           On June 7, 2026, the Syscoin bridge lost a reported $8.56M
           to a malformed SPV proof accepted as valid: approximately
           5 billion SYS minted on the destination side with no
@@ -333,11 +289,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/10_cross-layer-conservation-aztec">The txs the proof validated but settlement skipped: Aztec&rsquo;s cross-layer conservation class</a>
-          <span class="cf-blog-card__date">2026-06-21</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/10_cross-layer-conservation-aztec">The txs the proof validated but settlement skipped: Aztec&rsquo;s cross-layer conservation class</a></h2>
+        <p class="dateline">2026-06-21</p>
+        <p>
           On June 14, 2026, approximately $2.19M was extracted from
           Aztec&rsquo;s deprecated <code>RollupProcessor</code>
           contract. Proof scope and settlement scope diverged: the
@@ -349,11 +303,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/09_authentication-is-not-authorization">Authentication is not authorization: the TrustedVolumes access_control class</a>
-          <span class="cf-blog-card__date">2026-06-19</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/09_authentication-is-not-authorization">Authentication is not authorization: the TrustedVolumes access_control class</a></h2>
+        <p class="dateline">2026-06-19</p>
+        <p>
           TrustedVolumes lost a reported $5.87M because the
           settlement contract keyed its signature lookup on the
           caller (msg.sender) instead of the order&rsquo;s maker.
@@ -364,11 +316,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/08_planted-twin-methodology">The planted-twin methodology: what it is and what it is not</a>
-          <span class="cf-blog-card__date">2026-06-12</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/08_planted-twin-methodology">The planted-twin methodology: what it is and what it is not</a></h2>
+        <p class="dateline">2026-06-12</p>
+        <p>
           A clean reference where the property holds, a planted
           twin where it fires, both on the same CI run:
           why a checkable pair beats a claim. hyperevm-safety
@@ -379,11 +329,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/07_exploit-invariant-atlas">Exploit&rarr;Invariant Atlas, six cross-VM defender-side CI cases</a>
-          <span class="cf-blog-card__date">2026-06-08</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/07_exploit-invariant-atlas">Exploit&rarr;Invariant Atlas, six cross-VM defender-side CI cases</a></h2>
+        <p class="dateline">2026-06-08</p>
+        <p>
           Six real-world hacks across Cairo, Move, Solana, and EVM,
           each with a runnable invariant that would have
           caught the bug class on the pre-exploit code under CI.
@@ -393,11 +341,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/06_cf-invariants-sepolia-suite-expansion-6-to-12-and-ci-green">cf-invariants on Starknet Sepolia, twelve references, paired clean/planted CI green</a>
-          <span class="cf-blog-card__date">2026-06-07</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/06_cf-invariants-sepolia-suite-expansion-6-to-12-and-ci-green">cf-invariants on Starknet Sepolia, twelve references, paired clean/planted CI green</a></h2>
+        <p class="dateline">2026-06-07</p>
+        <p>
           Lending, staking, vesting, timelock, payment
           splitter, and oracle join the suite. Twenty-six
           GitHub Actions jobs green: paired clean=0 /
@@ -407,11 +353,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/05_jito-tippayment-and-ai-invariant-suggester-live">Two Jito programs on the same rails, and the AI invariant-suggester goes live</a>
-          <span class="cf-blog-card__date">2026-06-03</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/05_jito-tippayment-and-ai-invariant-suggester-live">Two Jito programs on the same rails, and the AI invariant-suggester goes live</a></h2>
+        <p class="dateline">2026-06-03</p>
+        <p>
           cf-invariants-jito-tippayment ports the second
           Jito program onto the same anchor-lang 1.0.1 /
           Crucible v0.2.0 rails, CI green on first push.
@@ -421,11 +365,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/04_cf-invariants-jito-first-real-protocol-harnessed">First real protocol harnessed, cf-invariants-jito on Crucible</a>
-          <span class="cf-blog-card__date">2026-06-03</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/04_cf-invariants-jito-first-real-protocol-harnessed">First real protocol harnessed, cf-invariants-jito on Crucible</a></h2>
+        <p class="dateline">2026-06-03</p>
+        <p>
           Jito tip-distribution ported from anchor-lang 0.31.1 to 1.0.1,
           four invariant classes, four planted-bug twins.
           CI: clean=0, planted&ge;1 across all four.
@@ -433,11 +375,9 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/03_cairo-references-expansion-and-chimera-template-pack">Build update, cf-invariants Cairo suite grows to nine, chimera-template-pack ships</a>
-          <span class="cf-blog-card__date">2026-06-02</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/03_cairo-references-expansion-and-chimera-template-pack">Build update, cf-invariants Cairo suite grows to nine, chimera-template-pack ships</a></h2>
+        <p class="dateline">2026-06-02</p>
+        <p>
           Three new Voyager-verified Cairo references on
           Starknet Sepolia (lending, staking, vesting). A
           Foundry + Recon Chimera scaffold for stamping
@@ -446,44 +386,30 @@
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/02_cf-invariants-anchor-on-crucible">Stateful invariant testing for Solana/Anchor, cf-invariants-anchor on Crucible</a>
-          <span class="cf-blog-card__date">2026-06-02</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/02_cf-invariants-anchor-on-crucible">Stateful invariant testing for Solana/Anchor, cf-invariants-anchor on Crucible</a></h2>
+        <p class="dateline">2026-06-02</p>
+        <p>
           Anchor IDL in. Crucible-compatible fuzz source out.
           CI proves it: clean vault passes, planted twin fails.
         </p>
       </article>
 
       <article class="cf-blog-card">
-        <div class="cf-blog-card__head">
-          <a class="cf-blog-card__title" href="/blog/01_caliperforge-origins">cf-invariants, building the missing layer in Cairo testing</a>
-          <span class="cf-blog-card__date">2026-06-01</span>
-        </div>
-        <p class="cf-blog-card__desc">
+        <h2><a href="/blog/01_caliperforge-origins">cf-invariants, building the missing layer in Cairo testing</a></h2>
+        <p class="dateline">2026-06-01</p>
+        <p>
           A Rust CLI sidecar that adds stateful invariant testing
           to Cairo 2.x. Three reference contracts on Starknet
           Sepolia, each surfacing a planted bug on cold start.
         </p>
       </article>
 
-    </div>
-  </div>
-</section>
+  </section>
+</main>
 
-<!-- ============== FOOTER (navy) =========================================== -->
-<section class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
-    <footer class="cf-footer">
-      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
-      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
-    </footer>
-  </div>
-</section>
-
-<script src="/caliper-data.js" defer></script>
-<script src="/caliper-motion.js" defer></script>
+<div class="site-wrap"><footer class="site-footer">
+<b>Work with us.</b> If you maintain an open-source project that could use careful, reviewed contributions, or you fund work like this, write to us.<br>
+CaliperForge · Guatemala · Notes on Substack · <a href="https://github.com/caliperforge" rel="me">Code on GitHub</a>
+</footer></div>
 </body>
 </html>
