@@ -21,13 +21,13 @@ const plans = ok({
 });
 const twoDaysAgo = new Date(Date.now() - 2 * 86400000).toISOString().slice(0, 10);
 const org = ok({ launch_date: twoDaysAgo });
-const stages = [['brief', 1938, null, 'runs'], ['rails', 75568, 603, 'verdicts']];
+const stages = [['brief', 1938, null, 'runs'], ['build', 2757, null, 'runs'], ['rails', 75568, 603, 'verdicts']];
 const pipeline = (rows) => ok({ columns: ['stage', 'count', 'refused', 'unit'], rows, caveat: 'Verdicts, not jobs.' });
 
 function load(responses, files, narrow = false) {
   const calls = [];
   const els = {};
-  for (const key of ['runs', 'tokens', 'plans', 'days', 'first_day', 'pipeline']) els[key] = { textContent: '—' };
+  for (const key of ['runs', 'tokens', 'plans', 'days', 'first_day', 'pipeline', 'loop_chart']) els[key] = { textContent: '—' };
   const ctx = vm.createContext({
     matchMedia: () => ({ matches: narrow, addEventListener() {} }),
     fetch: async (url) => {
@@ -84,10 +84,10 @@ test('draws one box per pipeline stage with its count, and refusals where not nu
   const els = home({ pipeline_counts: pipeline(stages) });
   await settle();
   const html = els.pipeline.innerHTML;
-  assert.equal(html.match(/<rect/g).length, 2);
+  assert.equal(html.match(/<rect/g).length, stages.length + 1);
   assert.match(html, />1,938</);
   assert.match(html, />75,568</);
-  assert.equal(html.match(/603 refused/g).length, 1);
+  assert.equal(html.match(/603 sent back with a reason/g).length, 1);
 });
 
 test('a changed count changes its box', async () => {
@@ -110,8 +110,8 @@ test('stacks the boxes in one column at phone width', async () => {
   const wide = home({ pipeline_counts: pipeline(stages) }, false);
   const narrow = home({ pipeline_counts: pipeline(stages) }, true);
   await settle();
-  assert.match(wide.pipeline.innerHTML, /viewBox="0 0 244 110"/);
-  assert.match(narrow.pipeline.innerHTML, /viewBox="0 0 112 244"/);
+  assert.match(wide.pipeline.innerHTML, /viewBox="0 0 376 260"/);
+  assert.match(narrow.pipeline.innerHTML, /viewBox="0 0 388 502"/);
 });
 
 test('siteData fetches a name once', async () => {
