@@ -20,7 +20,53 @@ body { margin: 0; background: var(--site-paper); color: var(--site-ink); font-fa
 .site-footer { padding: 56px 0; font-size: 13px; color: var(--site-muted); line-height: 1.7; }
 .site-footer a { color: inherit; text-decoration: underline; }
 
+.home-hero, .home-experiment, .home-pipeline { font-family: var(--site-display); }
+.home-eyebrow, .home-btn, .home-tag { font-family: var(--site-body); }
+.home-eyebrow { margin: 0; font-size: 12px; letter-spacing: .16em; text-transform: uppercase; color: var(--site-rust); }
+
+.home-hero { display: flex; flex-wrap: wrap; gap: 40px; align-items: center; margin-top: 80px; margin-bottom: 64px; }
+.home-hero > div { flex: 1 1 360px; min-width: 0; }
+.home-hero svg { flex: 0 1 420px; }
+.home-hero h1 { font-size: 64px; line-height: 1.05; margin: 18px 0 24px; font-weight: 400; }
+.home-hero h1 i { color: var(--site-rust); }
+.home-lede { font-size: 22px; line-height: 1.5; max-width: 720px; margin: 0; }
+.home-btns { display: flex; flex-wrap: wrap; gap: 12px; margin: 36px 0 0; }
+.home-btn { padding: 13px 22px; font-size: 14px; background: var(--site-ink); color: var(--site-paper); border: 1px solid var(--site-ink); border-radius: 2px; text-decoration: none; }
+.home-btn--outline { background: none; color: var(--site-ink); }
+
+.home-strip { background: var(--site-ink); padding: 34px 0; }
+.home-strip .site-wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+.home-strip p { margin: 0; font-size: 12px; line-height: 1.4; color: var(--site-rule); }
+.home-strip b { display: block; margin-bottom: 4px; font-size: 40px; line-height: 1.2; font-weight: 400; color: var(--site-paper); overflow-wrap: anywhere; }
+.home-strip span { white-space: nowrap; }
+
+.home-experiment, .home-pipeline { margin-top: 84px; margin-bottom: 84px; }
+.home-experiment h2, .home-pipeline h2 { font-size: 38px; font-weight: 400; margin: 10px 0 18px; }
+.home-body { font-size: 18px; line-height: 1.65; max-width: 700px; }
+.home-cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; margin-top: 36px; }
+.home-card { border: 1px solid var(--site-rule); padding: 26px; }
+.home-card h4 { margin: 0 0 10px; font-size: 19px; font-weight: 400; }
+.home-card p { margin: 0; font-size: 14.5px; line-height: 1.6; }
+.home-tag { display: inline-block; margin-bottom: 12px; padding: 3px 8px; border: 1px solid var(--site-rust); font-size: 11px; letter-spacing: .06em; color: var(--site-rust); }
+
+.home-diagram { margin: 36px 0 0; border: 1px solid var(--site-rule); padding: 24px; }
+.home-diagram svg { display: block; width: 100%; }
+.home-diagram rect { fill: none; stroke: var(--site-ink); stroke-width: 1.4; }
+.home-diagram rect.refused { stroke: var(--site-rust); stroke-width: 2; }
+.home-diagram path { fill: none; stroke: var(--site-ink); stroke-width: 1.4; }
+.home-diagram marker path { fill: var(--site-ink); stroke: none; }
+.home-diagram text { text-anchor: middle; font-family: var(--site-body); font-size: 11px; fill: var(--site-muted); }
+.home-diagram text.stage { font-size: 12px; letter-spacing: .6px; }
+.home-diagram text.count { font-family: var(--site-display); font-size: 24px; fill: var(--site-ink); }
+.home-diagram text.refused { fill: var(--site-rust); }
+.home-diagram figcaption { margin-top: 12px; font-size: 12px; color: var(--site-muted); }
+
 @media (max-width: 640px) {
   .site-wrap { padding: 0 16px; }
   .site-nav div a { margin-left: 0; }
+  .home-hero > div, .home-hero svg { flex-basis: 100%; }
+  .home-hero h1 { font-size: 40px; }
+  .home-strip .site-wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .home-cards { grid-template-columns: 1fr; }
+  .home-diagram svg { max-width: 180px; margin: 0 auto; }
 }
