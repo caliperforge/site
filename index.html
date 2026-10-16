@@ -12,6 +12,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
 <style>
 /* Page-scoped portfolio primitives (Section 04) — spotlight card + full-portfolio
    compact list. Uses reskin palette tokens defined in caliper.css. Follows the
@@ -144,6 +145,17 @@
 </style>
 </head>
 <body>
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/">CaliperForge</a>
+    <div>
+      <a href="/" aria-current="page">Home</a>
+      <a href="/research">Research</a>
+      <a href="/output">Output</a>
+      <a href="/blog/">Log</a>
+    </div>
+  </nav>
+</div>
 
 <!-- ============== NAVY MASTHEAD ============================================ -->
 <div class="cf-band--navy cf-band--measured">
@@ -156,21 +168,6 @@
       <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
     </div>
   </div>
-
-  <!-- nav -->
-  <nav class="cf-nav" aria-label="Primary">
-    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
-    <div class="cf-nav-right">
-      <div class="cf-nav-links">
-        <a href="/blog/">Blog</a>
-        <a href="/what-we-caught">What we caught</a>
-        <a href="/engagements/">Engagements</a>
-        <a href="/roadmap/">Roadmap</a>
-        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
-      </div>
-      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
-    </div>
-  </nav>
 
   <!-- hero -->
   <header class="cf-hero">
@@ -620,12 +617,13 @@
         <div class="cf-contact-list__row cf-contact-list__row--gold"><span>ENS</span><span>caliperforge.eth</span></div>
       </div>
     </div>
-    <footer class="cf-footer">
-      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
-      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
-    </footer>
   </div>
 </section>
+
+<div class="site-wrap"><footer class="site-footer">
+<b>Work with us.</b> If you maintain an open-source project that could use careful, reviewed contributions, or you fund work like this, write to us.<br>
+CaliperForge · Guatemala · Notes on Substack · <a href="https://github.com/caliperforge" rel="me">Code on GitHub</a>
+</footer></div>
 
 <script src="/caliper-data.js" defer></script>
 <script src="/caliper-motion.js" defer></script>
