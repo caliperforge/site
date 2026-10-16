@@ -9,23 +9,23 @@
   "rows": [
     [
       "typescript_specialist",
-      2212
+      2239
     ],
     [
       "brief_writer",
-      1924
+      1938
     ],
     [
       "senior_review",
-      1051
+      1061
     ],
     [
       "code_quality",
-      958
+      960
     ],
     [
       "director",
-      296
+      302
     ],
     [
       "swift_specialist",
@@ -53,11 +53,11 @@
     ],
     [
       "text_review",
-      37
+      46
     ],
     [
       "writer",
-      35
+      46
     ],
     [
       "outside_specialist",
@@ -65,7 +65,7 @@
     ],
     [
       "python_specialist",
-      23
+      28
     ],
     [
       "php_specialist",
@@ -89,7 +89,7 @@
     ],
     [
       "growth_lead",
-      2
+      4
     ]
   ],
   "definition": "Every agent run, counted by the seat that ran it, highest first.",
