@@ -6,6 +6,21 @@
 <title>Research | CaliperForge</title>
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="stylesheet" href="/site.css">
+<style>
+.cf-panels { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 40px; }
+.cf-panel--wide { grid-column: 1 / -1; }
+.cf-panel { background: #fff; border: 1px solid var(--site-rule); padding: 28px; min-width: 0; }
+.cf-panel svg { display: block; }
+.cf-panel text { font-family: var(--site-body); font-size: 12px; fill: var(--site-muted); }
+.cf-panel .cf-title { font-weight: 700; fill: var(--site-ink); }
+.cf-panel .cf-axis { fill: var(--site-ink); }
+.cf-bar { fill: var(--site-ink); }
+.cf-grid { stroke: var(--site-rule); }
+.cf-def, .cf-caveat { font-size: 12px; color: var(--site-muted); line-height: 1.5; }
+@media (max-width: 640px) { .cf-panels { grid-template-columns: 1fr; } }
+</style>
+<script src="/charts.js" defer></script>
+<script src="/research.js" defer></script>
 </head>
 <body>
 <div class="site-wrap">
@@ -20,7 +35,16 @@
   </nav>
 </div>
 
-<main class="site-wrap"></main>
+<main class="site-wrap">
+  <div class="cf-panels">
+    <section class="cf-panel" data-metric="gate_verdicts"></section>
+    <section class="cf-panel" data-metric="plan_outcomes"></section>
+    <section class="cf-panel cf-panel--wide" data-metric="daily_activity"></section>
+    <section class="cf-panel" data-metric="runs_by_seat"></section>
+    <section class="cf-panel" data-metric="token_mix"></section>
+    <section class="cf-panel cf-panel--wide" data-metric="tokens_per_landed_job"></section>
+  </div>
+</main>
 
 <div class="site-wrap"><footer class="site-footer">
 <b>Work with us.</b> If you maintain an open-source project that could use careful, reviewed contributions, or you fund work like this, write to us.<br>
