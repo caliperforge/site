@@ -21,12 +21,15 @@ const plans = ok({
 });
 const twoDaysAgo = new Date(Date.now() - 2 * 86400000).toISOString().slice(0, 10);
 const org = ok({ launch_date: twoDaysAgo });
+const stages = [['brief', 1938, null, 'runs'], ['rails', 75568, 603, 'verdicts']];
+const pipeline = (rows) => ok({ columns: ['stage', 'count', 'refused', 'unit'], rows, caveat: 'Verdicts, not jobs.' });
 
-function load(responses, files) {
+function load(responses, files, narrow = false) {
   const calls = [];
   const els = {};
-  for (const key of ['runs', 'tokens', 'plans', 'days', 'first_day']) els[key] = { textContent: '—' };
+  for (const key of ['runs', 'tokens', 'plans', 'days', 'first_day', 'pipeline']) els[key] = { textContent: '—' };
   const ctx = vm.createContext({
+    matchMedia: () => ({ matches: narrow, addEventListener() {} }),
     fetch: async (url) => {
       calls.push(url);
       const r = responses[url.slice('/data/'.length, -'.json'.length)];
@@ -39,7 +42,7 @@ function load(responses, files) {
   return { ctx, calls, els };
 }
 
-const home = (responses) => load(responses, ['site-data.js', 'home.js']).els;
+const home = (responses, narrow) => load(responses, ['site-data.js', 'home.js'], narrow).els;
 
 test('fills runs, tokens, plans, days and first_day from the data files', async () => {
   const els = home({ daily_activity: daily, plan_outcomes: plans, org_stats: org });
@@ -75,6 +78,40 @@ test('no pr_path/done row leaves plans at a dash', async () => {
   });
   await settle();
   assert.equal(els.plans.textContent, '—');
+});
+
+test('draws one box per pipeline stage with its count, and refusals where not null', async () => {
+  const els = home({ pipeline_counts: pipeline(stages) });
+  await settle();
+  const html = els.pipeline.innerHTML;
+  assert.equal(html.match(/<rect/g).length, 2);
+  assert.match(html, />1,938</);
+  assert.match(html, />75,568</);
+  assert.equal(html.match(/603 refused/g).length, 1);
+});
+
+test('a changed count changes its box', async () => {
+  const els = home({ pipeline_counts: pipeline([stages[0], ['rails', 80001, 603, 'verdicts']]) });
+  await settle();
+  assert.match(els.pipeline.innerHTML, />80,001</);
+  assert.doesNotMatch(els.pipeline.innerHTML, /75,568/);
+});
+
+test('a pipeline_counts that is not ok or rejects leaves the diagram at a dash', async () => {
+  for (const r of [notOk, new Error('offline')]) {
+    const els = home({ pipeline_counts: r });
+    await settle();
+    assert.equal(els.pipeline.textContent, '—');
+    assert.equal(els.pipeline.innerHTML, undefined);
+  }
+});
+
+test('stacks the boxes in one column at phone width', async () => {
+  const wide = home({ pipeline_counts: pipeline(stages) }, false);
+  const narrow = home({ pipeline_counts: pipeline(stages) }, true);
+  await settle();
+  assert.match(wide.pipeline.innerHTML, /viewBox="0 0 244 110"/);
+  assert.match(narrow.pipeline.innerHTML, /viewBox="0 0 112 244"/);
 });
 
 test('siteData fetches a name once', async () => {
