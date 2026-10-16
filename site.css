@@ -83,3 +83,7 @@ body { margin: 0; background: var(--site-paper); color: var(--site-ink); font-fa
   .home-diagram text.stage { font-size: 16px; letter-spacing: 0; }
   .home-diagram text { font-size: 16px; }
 }
+
+/* Long identifiers (hashes, addresses, file paths) must wrap at phone width instead of widening the page. */
+p, li, td, th, h1, h2, h3, h4, blockquote { overflow-wrap: break-word; }
+p code, li code, td code, h1 code, h2 code, h3 code, a { overflow-wrap: anywhere; }
