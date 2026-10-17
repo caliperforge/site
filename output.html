@@ -6,6 +6,20 @@
 <title>Output | CaliperForge</title>
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="stylesheet" href="/site.css">
+<style>
+main .home-eyebrow { margin-top: 64px; }
+main h2 { font-family: var(--site-display); font-size: 38px; font-weight: 400; margin: 10px 0 18px; }
+main figure { margin: 24px 0; border: 1px solid var(--site-rule); padding: 24px; }
+main figure svg { display: block; width: 100%; max-width: 600px; height: auto; }
+main figure text { font-family: var(--site-body); font-size: 12px; fill: var(--site-muted); }
+main figure .merged { fill: var(--site-rust); }
+main figure .approved { fill: var(--site-paper); stroke: var(--site-ink); }
+main figure .open { fill: none; stroke: var(--site-ink); }
+main figure .closed { fill: var(--site-rule); }
+main figcaption { margin-top: 12px; font-size: 12px; color: var(--site-muted); }
+main ul { padding-left: 20px; font-size: 16px; line-height: 1.6; }
+@media (max-width: 640px) { main figure { padding: 12px; } }
+</style>
 </head>
 <body>
 <div class="site-wrap">
@@ -20,11 +34,20 @@
   </nav>
 </div>
 
-<main class="site-wrap"></main>
+<main class="site-wrap">
+  <p class="home-eyebrow">The output</p>
+  <h2>What the company produces</h2>
+  <figure data-output="grid">—</figure>
+  <div data-output="classes">—</div>
+  <h2>What we ship internally</h2>
+  <div data-output="shipped">—</div>
+</main>
 
 <div class="site-wrap"><footer class="site-footer">
 <b>Work with us.</b> If you maintain an open-source project that could use careful, reviewed contributions, or you fund work like this, write to us.<br>
 CaliperForge · Paris, France · Notes on Substack · <a href="https://github.com/caliperforge" rel="me">Code on GitHub</a>
 </footer></div>
+<script src="/site-data.js" defer></script>
+<script src="/output.js" defer></script>
 </body>
 </html>
