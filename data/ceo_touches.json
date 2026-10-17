@@ -288,6 +288,19 @@
       0,
       0,
       0
+    ],
+    [
+      "2026-10-17",
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
     ]
   ],
   "definition": "Every event the CEO logged, by the UTC day it was recorded, from the first CEO event's day to today, counted by kind. A kind outside the eight listed counts as other.",
