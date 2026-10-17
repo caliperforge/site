@@ -84,6 +84,46 @@ body { margin: 0; background: var(--site-paper); color: var(--site-ink); font-fa
   .home-diagram text { font-size: 16px; }
 }
 
+.cf-band--navy, .cf-band--paper { background: none; color: inherit; }
+.cf-band--measured .cf-measure-grid, .cf-opstrip, .cf-mark, .cf-cta-gold { display: none; }
+
+.cf-nav, .cf-hero--article, .cf-article-shell, .cf-shell { width: min(1120px, 100% - 80px); padding-left: 0; padding-right: 0; }
+
+.cf-nav { flex-wrap: wrap; padding-top: 26px; padding-bottom: 26px; border-bottom: 1px solid var(--site-rule); }
+.cf-nav-brand { font-family: var(--site-display); font-size: 20px; font-weight: 700; letter-spacing: .02em; color: var(--site-ink); }
+.cf-nav-links { display: flex; flex-wrap: wrap; gap: 8px 28px; font-family: var(--site-body); font-size: 13px; color: var(--site-muted); }
+.cf-nav-links a { border-bottom: 2px solid transparent; padding-bottom: 3px; }
+.cf-nav-links a.is-current, .cf-nav-links a:hover { color: var(--site-ink); border-bottom-color: var(--site-rust); }
+
+.cf-eyebrow.cf-eyebrow--hero, .cf-article .cf-article__eyebrow { margin: 0; font-family: var(--site-body); font-size: 12px; line-height: normal; letter-spacing: .16em; text-transform: uppercase; color: var(--site-rust); }
+.cf-hero--article h1, .cf-hero--article .cf-h1 { margin: 10px 0 18px; font-family: var(--site-display); font-size: 38px; line-height: normal; font-weight: 400; letter-spacing: normal; color: var(--site-ink); }
+.cf-h1 em, .cf-h1 i { color: var(--site-rust); }
+.cf-hero--article .cf-hero-lede { margin: 0; max-width: 700px; font-family: var(--site-display); font-size: 18px; line-height: 1.65; color: var(--site-ink); }
+.cf-hero--article .dateline { margin: 0 0 10px; font-family: var(--site-body); font-size: 12px; color: var(--site-muted); }
+
+.cf-article, .cf-article h2, .cf-article h3, .cf-article p, .cf-article ul, .cf-article ol, .cf-hero--article h2, .cf-hero--article p { font-family: var(--site-display); color: var(--site-ink); }
+.cf-article h2, .cf-article h3, .cf-hero--article h2 { font-weight: 400; }
+.cf-hero--article h2 { margin: 8px 0 20px; font-size: 30px; line-height: 1.2; letter-spacing: -.01em; }
+.cf-hero--article p { margin: 0 0 18px; font-size: 17px; line-height: 1.75; }
+.cf-article a, .cf-article a:hover { color: var(--site-rust); border-bottom: 1px solid currentColor; }
+.cf-article code { background: none; border-color: var(--site-rule); }
+.cf-article blockquote { border-left-color: var(--site-rust); }
+.cf-article .cf-article__meta { color: var(--site-muted); border-top-color: var(--site-rule); }
+
+.cf-footer { border-top-color: var(--site-rule); }
+.cf-footer__brand { font-family: var(--site-display); }
+.cf-footer__meta { font-family: var(--site-body); font-size: 13px; color: var(--site-muted); }
+.cf-footer__meta a { text-decoration: underline; }
+
+@media (max-width: 860px) {
+  .cf-hero--article h2 { font-size: 25px; }
+}
+
+@media (max-width: 640px) {
+  .cf-nav, .cf-hero--article, .cf-article-shell, .cf-shell { width: calc(100% - 32px); }
+  .cf-hero--article h1, .cf-hero--article .cf-h1 { font-size: 30px; }
+}
+
 /* Long identifiers (hashes, addresses, file paths) must wrap at phone width instead of widening the page. */
 p, li, td, th, h1, h2, h3, h4, blockquote { overflow-wrap: break-word; }
 p code, li code, td code, h1 code, h2 code, h3 code, a { overflow-wrap: anywhere; }
