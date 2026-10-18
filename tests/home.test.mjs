@@ -8,13 +8,12 @@ const ok = (body) => ({ ok: true, json: async () => body });
 const notOk = { ok: false, json: async () => ({}) };
 const settle = () => new Promise((resolve) => setImmediate(resolve));
 
-const daily = ok({
+const daysAgo = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
+const activity = (rows) => ok({
   columns: ['day', 'runs', 'input_tokens', 'cache_read_tokens', 'cache_write_tokens', 'output_tokens', 'total_tokens'],
-  rows: [
-    ['2026-10-01', 3, 0, 0, 0, 0, 1500000],
-    ['2026-10-02', 4, 0, 0, 0, 0, 2600000],
-  ],
+  rows: rows.map(([day, runs, total]) => [day, runs, 0, 0, 0, 0, total]),
 });
+const daily = activity([[daysAgo(30), 3, 100000000], [daysAgo(29), 4, 100000000], [daysAgo(0), 5, 2698000000]]);
 const plans = ok({
   columns: ['template', 'state', 'count'],
   rows: [['pr_path', 'queued', 5], ['pr_path', 'done', 1143]],
@@ -27,7 +26,7 @@ const pipeline = (rows) => ok({ columns: ['stage', 'count', 'refused', 'unit'], 
 function load(responses, files, narrow = false) {
   const calls = [];
   const els = {};
-  for (const key of ['runs', 'tokens', 'plans', 'days', 'first_day', 'pipeline', 'loop_chart']) els[key] = { textContent: '—' };
+  for (const key of ['runs', 'tokens', 'tokens_chart', 'plans', 'days', 'first_day', 'pipeline', 'loop_chart']) els[key] = { textContent: '—' };
   const ctx = vm.createContext({
     matchMedia: () => ({ matches: narrow, addEventListener() {} }),
     fetch: async (url) => {
@@ -42,24 +41,46 @@ function load(responses, files, narrow = false) {
   return { ctx, calls, els };
 }
 
-const home = (responses, narrow) => load(responses, ['site-data.js', 'home.js'], narrow).els;
+const home = (responses, narrow) => load(responses, ['site-data.js', 'charts.js', 'home.js'], narrow).els;
+const texts = (html, cls) => [...html.matchAll(new RegExp('class="' + cls + '"[^>]*>([^<]*)<', 'g'))].map((m) => m[1]);
 
 test('fills runs, tokens, plans, days and first_day from the data files', async () => {
   const els = home({ daily_activity: daily, plan_outcomes: plans, org_stats: org });
   await settle();
-  assert.equal(els.runs.textContent, '7');
-  assert.equal(els.tokens.textContent, '4M');
+  assert.equal(els.runs.textContent, '12');
+  assert.equal(els.tokens.textContent, '2.8B');
   assert.equal(els.plans.textContent, '1,143');
   assert.equal(els.days.textContent, '3');
-  assert.equal(els.first_day.textContent, '2026-10-01');
+  assert.equal(els.first_day.textContent, daysAgo(30));
+});
+
+test('charts tokens by Monday-start week, labelled with each week sum', async () => {
+  const els = home({ daily_activity: activity([['2026-09-18', 1, 1500000], ['2026-09-20', 1, 2600000], ['2026-09-21', 1, 2798000000]]) });
+  await settle();
+  const html = els.tokens_chart.innerHTML;
+  assert.deepEqual(texts(html, 'cf-cat'), ['2026-09-14', '2026-09-21']);
+  assert.deepEqual(texts(html, 'cf-label'), ['4.1M', '2.8B']);
+  assert.doesNotMatch(html, /\$/);
+});
+
+test('a daily_activity that is not ok, rejects or has no rows leaves tokens and its chart at a dash', async () => {
+  for (const r of [notOk, new Error('offline'), activity([])]) {
+    const els = home({ daily_activity: r, plan_outcomes: plans, org_stats: org });
+    await settle();
+    assert.equal(els.tokens.textContent, '—');
+    assert.equal(els.tokens_chart.textContent, '—');
+    assert.equal(els.tokens_chart.innerHTML, undefined);
+    assert.equal(els.plans.textContent, '1,143');
+    assert.equal(els.days.textContent, '3');
+  }
 });
 
 test('a plan_outcomes that is not ok leaves plans at a dash and fills the rest', async () => {
   const els = home({ daily_activity: daily, plan_outcomes: notOk, org_stats: org });
   await settle();
   assert.equal(els.plans.textContent, '—');
-  assert.equal(els.runs.textContent, '7');
-  assert.equal(els.tokens.textContent, '4M');
+  assert.equal(els.runs.textContent, '12');
+  assert.equal(els.tokens.textContent, '2.8B');
   assert.equal(els.days.textContent, '3');
 });
 

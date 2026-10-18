@@ -18,9 +18,25 @@
   siteData('daily_activity').then(function (t) {
     if (!t) return;
     fill('runs', count(sum(t, 'runs')));
-    var tokens = sum(t, 'total_tokens');
-    if (Number.isFinite(tokens)) fill('tokens', Math.round(tokens / 1e6).toLocaleString('en-US') + 'M');
-    if (t.rows.length) fill('first_day', t.rows[0][t.columns.indexOf('day')]);
+    if (!t.rows.length) return;
+    var day = t.columns.indexOf('day');
+    fill('first_day', t.rows[0][day]);
+    if (!Number.isFinite(sum(t, 'total_tokens'))) return;
+    var tokens = t.columns.indexOf('total_tokens');
+    var since = new Date(Date.now() - 29 * 86400000).toISOString().slice(0, 10);
+    var recent = 0;
+    var weeks = [];
+    t.rows.forEach(function (r) {
+      var d = new Date(r[day] + 'T00:00:00Z');
+      var monday = new Date(d - (d.getUTCDay() + 6) % 7 * 86400000).toISOString().slice(0, 10);
+      var last = weeks[weeks.length - 1];
+      if (last && last[0] === monday) last[1] += r[tokens];
+      else weeks.push([monday, r[tokens]]);
+      if (r[day] >= since) recent += r[tokens];
+    });
+    fill('tokens', CFChart.format(recent));
+    put('tokens_chart', CFChart.render({ metric: 'daily_activity', title: 'Tokens by week', columns: ['week', 'total_tokens'], rows: weeks },
+      { kind: 'column', label: ['week'], value: 'total_tokens', labelTitle: 'Week starting Monday', valueTitle: 'Tokens', width: 300 }));
   });
 
   siteData('plan_outcomes').then(function (t) {
