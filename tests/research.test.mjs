@@ -8,9 +8,9 @@ const ok = (body) => ({ ok: true, json: async () => body });
 const notOk = { ok: false, json: async () => ({}) };
 const settle = () => new Promise((resolve) => setImmediate(resolve));
 
-const timeline = JSON.parse(source('data/timeline.json'));
-const touches = JSON.parse(source('data/ceo_touches.json'));
-const perJob = JSON.parse(source('data/tokens_per_landed_job.json'));
+const timeline = JSON.parse(source('tests/fixtures/timeline.json'));
+const touches = JSON.parse(source('tests/fixtures/ceo_touches.json'));
+const perJob = JSON.parse(source('tests/fixtures/tokens_per_landed_job.json'));
 
 class El {
   constructor(tag, props = {}) {
@@ -85,8 +85,8 @@ test('human touches draws one labelled column per day', async () => {
   const { ceo_touches: section } = research({ ceo_touches: ok(touches) });
   await settle();
   const svg = section.nodes[0].html;
-  assert.equal(touches.rows.length, 22);
-  assert.equal(svg.match(/class="cf-label"/g).length, 22);
+  assert.equal(touches.rows.length, 23);
+  assert.equal(svg.match(/class="cf-label"/g).length, 23);
   assert.match(svg, /aria-label="Human touches"/);
 });
 

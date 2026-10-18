@@ -8,8 +8,8 @@ const ok = (body) => ({ ok: true, json: async () => body });
 const notOk = { ok: false, json: async () => ({}) };
 const settle = () => new Promise((resolve) => setImmediate(resolve));
 
-const prs = JSON.parse(source('data/outside_prs.json'));
-const plans = JSON.parse(source('data/plan_outcomes.json'));
+const prs = JSON.parse(source('tests/fixtures/outside_prs.json'));
+const plans = JSON.parse(source('tests/fixtures/plan_outcomes.json'));
 
 function output(responses, narrow = false) {
   const els = {};
@@ -79,7 +79,7 @@ test('lists one line per done plan template, and a dash when plan_outcomes is no
   const missing = output({ plan_outcomes: notOk });
   await settle();
   assert.equal(els.shipped.innerHTML,
-    '<ul><li>20 comms plans done</li><li>1,271 pr_path plans done</li><li>3 research plans done</li></ul>');
+    '<ul><li>21 comms plans done</li><li>1,313 pr_path plans done</li><li>3 research plans done</li></ul>');
   assert.equal(missing.shipped.textContent, '—');
   assert.equal(missing.shipped.innerHTML, undefined);
 });
