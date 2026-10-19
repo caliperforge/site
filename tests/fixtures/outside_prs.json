@@ -1,0 +1,144 @@
+{
+  "metric": "outside_prs",
+  "title": "Outside pull requests",
+  "unit": "pull requests",
+  "columns": [
+    "state",
+    "class",
+    "month"
+  ],
+  "rows": [
+    [
+      "closed",
+      "other",
+      "2026-06"
+    ],
+    [
+      "closed",
+      "other",
+      "2026-07"
+    ],
+    [
+      "open",
+      "other",
+      "2026-07"
+    ],
+    [
+      "closed",
+      "other",
+      "2026-08"
+    ],
+    [
+      "closed",
+      "other",
+      "2026-08"
+    ],
+    [
+      "merged",
+      "other",
+      "2026-08"
+    ],
+    [
+      "merged",
+      "other",
+      "2026-08"
+    ],
+    [
+      "open",
+      "payments SDK",
+      "2026-08"
+    ],
+    [
+      "merged",
+      "other",
+      "2026-09"
+    ],
+    [
+      "open",
+      "other",
+      "2026-09"
+    ],
+    [
+      "approved",
+      "payments SDK",
+      "2026-09"
+    ],
+    [
+      "approved",
+      "payments SDK",
+      "2026-09"
+    ],
+    [
+      "approved",
+      "payments SDK",
+      "2026-09"
+    ],
+    [
+      "approved",
+      "payments SDK",
+      "2026-09"
+    ],
+    [
+      "approved",
+      "payments SDK",
+      "2026-09"
+    ],
+    [
+      "approved",
+      "payments SDK",
+      "2026-09"
+    ],
+    [
+      "approved",
+      "payments SDK",
+      "2026-09"
+    ],
+    [
+      "approved",
+      "payments SDK",
+      "2026-09"
+    ],
+    [
+      "approved",
+      "payments SDK",
+      "2026-09"
+    ],
+    [
+      "approved",
+      "payments SDK",
+      "2026-09"
+    ],
+    [
+      "open",
+      "other",
+      "2026-10"
+    ],
+    [
+      "open",
+      "other",
+      "2026-10"
+    ],
+    [
+      "open",
+      "other",
+      "2026-10"
+    ],
+    [
+      "approved",
+      "payments SDK",
+      "2026-10"
+    ],
+    [
+      "open",
+      "payments SDK",
+      "2026-10"
+    ],
+    [
+      "open",
+      "payments SDK",
+      "2026-10"
+    ]
+  ],
+  "definition": "Every pull request we opened outside caliperforge, from GitHub search, one row each: its state (merged, closed, approved when open with an approving review, else open), the class of its repository, and the month it was opened.",
+  "caveat": "Search reaches at most 1000 pull requests, and a repository missing from the hand-kept class map counts as other."
+}

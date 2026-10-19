@@ -1,0 +1,17 @@
+{
+  "metric": "timeline",
+  "title": "The path, by version",
+  "unit": "dated events",
+  "columns": ["date", "version", "event", "note"],
+  "rows": [
+    ["2026-07-03", "v1", "First org design locked: the first machine, with a nightly chain.", "earlier measurement"],
+    ["2026-07-25", "v1", "A research corpus built and a preregistration locked before any result was looked at.", "earlier measurement"],
+    ["2026-09-15", "v2", "The v2 rebuild starts.", ""],
+    ["2026-09-17", "v2", "First language builder seat: a Kotlin builder that gets a real checkout.", ""],
+    ["2026-09-24", "v2", "Six language builders; a pull request's language picks the seat.", ""],
+    ["2026-09-24", "v2", "The orchestrator wakes, decides and changes plans.", ""],
+    ["2026-10-14", "v2", "A site lane and pipe for the public site.", ""]
+  ],
+  "definition": "Dated events from commit history, one line each, oldest first.",
+  "caveat": "Entries marked earlier measurement come from the first machine (v1) and are not re-measured."
+}
