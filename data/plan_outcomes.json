@@ -10,7 +10,7 @@
   "rows": [
     [
       "bench",
-      "queued",
+      "blocked_on_ceo",
       1
     ],
     [
@@ -21,17 +21,22 @@
     [
       "comms",
       "done",
-      21
+      22
+    ],
+    [
+      "comms",
+      "queued",
+      1
     ],
     [
       "pr_path",
       "blocked_on_ceo",
-      14
+      2
     ],
     [
       "pr_path",
       "done",
-      1313
+      1353
     ],
     [
       "pr_path",
@@ -41,7 +46,7 @@
     [
       "pr_path",
       "refused",
-      100
+      103
     ],
     [
       "pr_path",
