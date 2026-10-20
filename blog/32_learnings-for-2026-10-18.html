@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Learnings for 2026-10-18</title>
+<meta name="description" content="">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Learnings for 2026-10-18</h1>
+<p class="dateline">Work completed 2026-10-18 · written up 2026-10-19.</p>
+<h2>Submodule folders crashed the rails</h2>
+<p>The Foundry scaffold committed lib/ submodules, and the pre-review rails opened every changed path as a file and threw EISDIR [refusal:2060]</p>
+<p>A diff can contain folders, so any rail that reads changed paths has to skip gitlinks</p>
+<p>Step 2 and the pre-review rails now skip mode-160000 entries</p>
+<h2>Hardcoded main on a master-only fork</h2>
+<p>On the hts-specs job the rails ran gh compare against main, a branch the fork does not have, so every run returned 404 whatever the code was [landed:1497]</p>
+<p>Never assume the branch name; read the fork's default branch</p>
+<p>The rails and the PR opener now use the fork's default branch</p>
+<h2>Tools write files the builder is blamed for</h2>
+<p>Forge wrote foundry.lock during the build, and the authority rail refused a span no builder wrote [refusal:2065]</p>
+<p>Files a tool writes on its own, like foundry.lock, medusa.json or a gitignored uv.lock, are not the builder's edits</p>
+<p>Forge's lock file is dropped before pre_review, the fizz seat may write its root outputs, and the fence check ignores gitignored untracked files</p>
+<h2>A ruling barred the seat's only command</h2>
+<p>A director ruling barred uv run and asked for a delete the no-shell seat cannot do, so every round ran into the build cap [refusal:2052]</p>
+<p>A ruling has to fit what the seat is allowed to run</p>
+<p>The next ruling allowed uv run --no-project, and seats can now delete files through ## Deleted</p>
+<h2>A held job waited on a fix already landed</h2>
+<p>The fizz generator job was held twice for a missing null_check.py after the score step had already been fixed to skip it [landed:1484]</p>
+<p>Check main before holding a job on a fault</p>
+<p>None yet: a hold's reason is not checked against main</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
