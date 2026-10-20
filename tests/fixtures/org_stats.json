@@ -1,0 +1,44 @@
+{
+ "schema": "org_stats.v1",
+ "last_updated": "2026-09-22T12:40:00Z",
+ "as_of": "2026-09-22",
+ "launch_date": "2026-05-27",
+ "specialized_agents": 50,
+ "logged_agent_decisions": 4670,
+ "gate_reviews": 4670,
+ "agent_dispatches": 4118,
+ "days_running": 119,
+ "catch": {
+  "tp": 361,
+  "fp": 0,
+  "fn": 27,
+  "adjudicated": 4,
+  "catch_rate_display": "93%",
+  "precision_display": "100%",
+  "false_positive_rate_display": "n/a",
+  "window_start": "2026-06-04",
+  "window_end": "2026-09-22"
+ },
+ "stat_as_of": {
+  "specialized_agents": "2026-09-22",
+  "logged_agent_decisions": "2026-09-22",
+  "gate_reviews": "2026-09-22",
+  "agent_dispatches": "2026-09-22",
+  "days_running": "2026-09-22",
+  "catch": "2026-09-22"
+ },
+ "sources": {
+  "specialized_agents": "agents/_roster.json \u2014 'roles' (len)",
+  "logged_agent_decisions": "ops/qa_verdicts/control_effectiveness.jsonl + ops/archive/qa_verdicts/control_effectiveness_2026-06.jsonl + ops/archive/qa_verdicts/control_effectiveness_2026-07.jsonl + ops/archive/qa_verdicts/control_effectiveness_2026-08.jsonl \u2014 hot + every rolled monthly archive, de-duplicated on the raw line, excluding rows whose source field is test_fixture (CEO-ruled 2026-08-07, commit 1e5cfb2)",
+  "gate_reviews": "legacy mirror of logged_agent_decisions \u2014 same read-set, same exclusion",
+  "agent_dispatches": "ops/runs/ledger.md \u2014 count of headers matching ^## YYYY-MM-DD, exact, never rounded",
+  "days_running": "(run date \u2212 2026-05-27).days + 1 \u2014 no file source; live-computed here and again client-side on every page load",
+  "catch": "site/data/caught_public.json \u2014 mirror of the generated projection; SoT is the control_effectiveness read-set above plus ops/catch_corpus/"
+ },
+ "source_check": {
+  "rule": "D-LEDGER-TRUTH-2026-08-04 / T-P035-A1, applied to the public stats at T-P032-COMMS-S3: every path named in a stat's source must resolve, or the build fails and nothing is written",
+  "checked_by": "scripts/ops/source_resolution.py::check_fact_sources",
+  "failures": []
+ },
+ "errors": []
+}

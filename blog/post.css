@@ -41,3 +41,7 @@ div.post-lede { font-size: 17px; }
   .post-body { font-size: 16.5px; }
   .learning p { grid-template-columns: 1fr; gap: 2px; }
 }
+
+.post-body .steps, .post-body .promises { padding-left: 1.3em; }
+.post-body .steps li, .post-body .promises li { margin-bottom: 12px; }
+.post-body .promises li::marker { color: var(--site-rust); }

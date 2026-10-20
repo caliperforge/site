@@ -4,150 +4,90 @@ import vm from 'node:vm';
 import { readFileSync } from 'node:fs';
 
 const source = (file) => readFileSync(new URL('../' + file, import.meta.url), 'utf8');
-const ok = (body) => ({ ok: true, json: async () => body });
-const notOk = { ok: false, json: async () => ({}) };
-const settle = () => new Promise((resolve) => setImmediate(resolve));
+const fixture = (name) => JSON.parse(source('tests/fixtures/' + name + '.json'));
+const ok = (body) => ({ ok: true, json: async () => body, text: async () => '' });
+const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
+const KEYS = ['tally', 'fields', 'prs', 'outside', 'days', 'jobs', 'per_job', 'first_pass', 'first_pass_week', 'chart', 'data_start', 'loop', 'latest'];
 
-const daysAgo = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
-const activity = (rows) => ok({
-  columns: ['day', 'runs', 'input_tokens', 'cache_read_tokens', 'cache_write_tokens', 'output_tokens', 'total_tokens'],
-  rows: rows.map(([day, runs, total]) => [day, runs, 0, 0, 0, 0, total]),
-});
-const daily = activity([[daysAgo(30), 3, 100000000], [daysAgo(29), 4, 100000000], [daysAgo(0), 5, 2698000000]]);
-const plans = ok({
-  columns: ['template', 'state', 'count'],
-  rows: [['pr_path', 'queued', 5], ['pr_path', 'done', 1143]],
-});
-const twoDaysAgo = new Date(Date.now() - 2 * 86400000).toISOString().slice(0, 10);
-const org = ok({ launch_date: twoDaysAgo });
-const stages = [['brief', 1938, null, 'runs'], ['build', 2757, null, 'runs'], ['rails', 75568, 603, 'verdicts']];
-const pipeline = (rows) => ok({ columns: ['stage', 'count', 'refused', 'unit'], rows, caveat: 'Verdicts, not jobs.' });
-
-function load(responses, files, narrow = false) {
-  const calls = [];
+function load(names, { narrow = false } = {}) {
   const els = {};
-  for (const key of ['runs', 'tokens', 'tokens_chart', 'plans', 'days', 'first_day', 'pipeline', 'loop_chart']) els[key] = { textContent: '—' };
+  for (const k of KEYS) els[k] = { textContent: '—', innerHTML: undefined, clientWidth: 900, addEventListener() {} };
   const ctx = vm.createContext({
     matchMedia: () => ({ matches: narrow, addEventListener() {} }),
+    addEventListener() {},
+    setTimeout, clearTimeout,
+    DOMParser: class { parseFromString() { return { querySelectorAll: () => [] }; } },
     fetch: async (url) => {
-      calls.push(url);
-      const r = responses[url.slice('/data/'.length, -'.json'.length)];
-      if (r instanceof Error) throw r;
-      return r;
+      const name = url.replace(/^\/data\/|\.json$/g, '');
+      if (!names.includes(name)) return { ok: false, json: async () => ({}), text: async () => '' };
+      return ok(fixture(name));
     },
-    document: { querySelectorAll: (sel) => [els[sel.match(/data-home="(\w+)"/)[1]]] },
+    document: { querySelectorAll: (sel) => { const k = sel.match(/data-home="(\w+)"/); return k && els[k[1]] ? [els[k[1]]] : []; } },
   });
-  for (const file of files) vm.runInContext(source(file), ctx);
-  return { ctx, calls, els };
+  for (const file of ['site-data.js', 'charts.js', 'prs.js', 'home.js']) vm.runInContext(source(file), ctx);
+  return els;
 }
 
-const home = (responses, narrow) => load(responses, ['site-data.js', 'charts.js', 'home.js'], narrow).els;
-const texts = (html, cls) => [...html.matchAll(new RegExp('class="' + cls + '"[^>]*>([^<]*)<', 'g'))].map((m) => m[1]);
+const ALL = ['outside_pr_list', 'org_stats', 'loop_counts', 'daily_activity', 'pipeline_counts'];
 
-test('fills runs, tokens, plans, days and first_day from the data files', async () => {
-  const els = home({ daily_activity: daily, plan_outcomes: plans, org_stats: org });
+test('stats', async () => {
+  const els = load(ALL);
   await settle();
-  assert.equal(els.runs.textContent, '12');
-  assert.equal(els.tokens.textContent, '2.8B');
-  assert.equal(els.plans.textContent, '1,143');
-  assert.equal(els.days.textContent, '3');
-  assert.equal(els.first_day.textContent, daysAgo(30));
+  assert.equal(els.jobs.textContent, '1,380');
+  assert.equal(els.per_job.textContent, '1.38');
+  assert.equal(els.first_pass.textContent, '45%');
+  assert.equal(els.first_pass_week.textContent, '53%');
+  assert.equal(els.outside.textContent, '22');
+  assert.match(els.days.textContent, /^\d+$/);
 });
 
-test('charts tokens by Monday-start week, labelled with each week sum', async () => {
-  const els = home({ daily_activity: activity([['2026-09-18', 1, 1500000], ['2026-09-20', 1, 2600000], ['2026-09-21', 1, 2798000000]]) });
+test('missing data leaves dashes', async () => {
+  const els = load([]);
   await settle();
-  const html = els.tokens_chart.innerHTML;
-  assert.deepEqual(texts(html, 'cf-cat'), ['2026-09-14', '2026-09-21']);
-  assert.deepEqual(texts(html, 'cf-label'), ['4.1M', '2.8B']);
-  assert.doesNotMatch(html, /\$/);
+  for (const k of ['jobs', 'per_job', 'first_pass', 'outside', 'days']) assert.equal(els[k].textContent, '—', k);
+  assert.equal(els.prs.innerHTML, undefined);
+  assert.equal(els.loop.innerHTML, undefined);
 });
 
-test('a daily_activity that is not ok, rejects or has no rows leaves tokens and its chart at a dash', async () => {
-  for (const r of [notOk, new Error('offline'), activity([])]) {
-    const els = home({ daily_activity: r, plan_outcomes: plans, org_stats: org });
+test('tally', async () => {
+  const els = load(ALL);
+  await settle();
+  const cells = [...els.tally.innerHTML.matchAll(/<b>(\d+)<\/b><span>(?:<i[^>]*><\/i>)?([^<]+)/g)].map((m) => [m[1], m[2]]);
+  assert.deepEqual(cells, [['22', 'pull requests to 3 projects'], ['3', 'merged'], ['11', 'approved'], ['5', 'open'], ['3', 'closed without merging']]);
+});
+
+test('pr table collapses long groups', async () => {
+  const els = load(ALL);
+  await settle();
+  const html = els.prs.innerHTML;
+  assert.equal(html.match(/<tbody/g).length, 3);
+  assert.equal(html.match(/<tr class="pr"/g).length, 22);
+  assert.equal(html.match(/<tr class="pr" hidden/g).length, 10 + 3);
+  assert.match(html, /Show 10 more from pay-kit/);
+  assert.match(html, /Show 3 more from surfpool/);
+  assert.match(html, /href="https:\/\/github.com\/samtools\/hts-specs\/pull\/874"/);
+});
+
+test('weekly chart marks partial weeks', async () => {
+  const els = load(ALL);
+  await settle();
+  const svg = els.chart.innerHTML;
+  assert.equal(svg.match(/class="cf-bar"/g).length, 6);
+  assert.deepEqual([...svg.matchAll(/data-partial="(\d)"/g)].map((m) => m[1]), ['3', '2']);
+  assert.match(svg, /partial: 3 of 7 days/);
+  assert.match(svg, />Jobs finished</);
+  assert.match(svg, />Week starting Monday</);
+  assert.deepEqual([...svg.matchAll(/class="cf-label"[^>]*>([^<]+)/g)].map((m) => m[1]), ['17', '322', '409', '256', '349', '27']);
+});
+
+test('loop diagram', async () => {
+  for (const narrow of [false, true]) {
+    const els = load(ALL, { narrow });
     await settle();
-    assert.equal(els.tokens.textContent, '—');
-    assert.equal(els.tokens_chart.textContent, '—');
-    assert.equal(els.tokens_chart.innerHTML, undefined);
-    assert.equal(els.plans.textContent, '1,143');
-    assert.equal(els.days.textContent, '3');
+    const svg = els.loop.innerHTML;
+    assert.equal(svg.match(/class="back"/g).length, 4, 'one return per gate');
+    for (const n of ['692', '278', '96', '109']) assert.match(svg, new RegExp('>' + n + ' sent back'));
+    assert.match(svg, /<tspan class="n">113<\/tspan> filed, <tspan class="n">102<\/tspan> landed/);
+    assert.doesNotMatch(svg, /CEO/);
   }
-});
-
-test('a plan_outcomes that is not ok leaves plans at a dash and fills the rest', async () => {
-  const els = home({ daily_activity: daily, plan_outcomes: notOk, org_stats: org });
-  await settle();
-  assert.equal(els.plans.textContent, '—');
-  assert.equal(els.runs.textContent, '12');
-  assert.equal(els.tokens.textContent, '2.8B');
-  assert.equal(els.days.textContent, '3');
-});
-
-test('an org_stats fetch that rejects leaves days at a dash', async () => {
-  const els = home({ daily_activity: daily, plan_outcomes: plans, org_stats: new Error('offline') });
-  await settle();
-  assert.equal(els.days.textContent, '—');
-  assert.equal(els.plans.textContent, '1,143');
-});
-
-test('no pr_path/done row leaves plans at a dash', async () => {
-  const els = home({
-    daily_activity: daily,
-    plan_outcomes: ok({ columns: ['template', 'state', 'count'], rows: [['pr_path', 'queued', 5]] }),
-    org_stats: org,
-  });
-  await settle();
-  assert.equal(els.plans.textContent, '—');
-});
-
-test('draws one box per pipeline stage with its count, and refusals where not null', async () => {
-  const els = home({ pipeline_counts: pipeline(stages) });
-  await settle();
-  const html = els.pipeline.innerHTML;
-  assert.equal(html.match(/<rect/g).length, stages.length + 1);
-  assert.match(html, />1,938</);
-  assert.match(html, />75,568</);
-  assert.equal(html.match(/603 sent back with a reason/g).length, 1);
-});
-
-test('a changed count changes its box', async () => {
-  const els = home({ pipeline_counts: pipeline([stages[0], ['rails', 80001, 603, 'verdicts']]) });
-  await settle();
-  assert.match(els.pipeline.innerHTML, />80,001</);
-  assert.doesNotMatch(els.pipeline.innerHTML, /75,568/);
-});
-
-test('a pipeline_counts that is not ok or rejects leaves the diagram at a dash', async () => {
-  for (const r of [notOk, new Error('offline')]) {
-    const els = home({ pipeline_counts: r });
-    await settle();
-    assert.equal(els.pipeline.textContent, '—');
-    assert.equal(els.pipeline.innerHTML, undefined);
-  }
-});
-
-test('stacks the boxes in one column at phone width', async () => {
-  const wide = home({ pipeline_counts: pipeline(stages) }, false);
-  const narrow = home({ pipeline_counts: pipeline(stages) }, true);
-  await settle();
-  assert.match(wide.pipeline.innerHTML, /viewBox="0 0 376 260"/);
-  assert.match(narrow.pipeline.innerHTML, /viewBox="0 0 388 502"/);
-});
-
-test('siteData fetches a name once', async () => {
-  const { ctx, calls } = load({ org_stats: org }, ['site-data.js']);
-  const [a, b] = await Promise.all([ctx.siteData('org_stats'), ctx.siteData('org_stats')]);
-  assert.equal(calls.length, 1);
-  assert.equal(calls[0], '/data/org_stats.json');
-  assert.equal(a, b);
-  assert.equal(a.launch_date, twoDaysAgo);
-});
-
-test('siteData resolves null on a non-ok response, a network error or bad JSON', async () => {
-  const badJson = { ok: true, json: async () => { throw new SyntaxError('bad'); } };
-  const { ctx } = load({ a: notOk, b: new Error('offline'), c: badJson }, ['site-data.js']);
-  assert.equal(await ctx.siteData('a'), null);
-  assert.equal(await ctx.siteData('b'), null);
-  assert.equal(await ctx.siteData('c'), null);
 });

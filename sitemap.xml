@@ -1,165 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
-  <url>
-    <loc>https://caliperforge.com/</loc>
-    <lastmod>2026-07-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>1.0</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/roadmap/</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/papers</loc>
-    <lastmod>2026-06-28</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/papers/bnb_invariants_whitepaper_2026-06-27.pdf</loc>
-    <lastmod>2026-06-28</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/ai-disclosure</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.7</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/</loc>
-    <lastmod>2026-07-14</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/01_caliperforge-origins</loc>
-    <lastmod>2026-05-28</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/02_cf-invariants-anchor-on-crucible</loc>
-    <lastmod>2026-06-01</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/03_cairo-references-expansion-and-chimera-template-pack</loc>
-    <lastmod>2026-06-02</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/04_cf-invariants-jito-first-real-protocol-harnessed</loc>
-    <lastmod>2026-06-03</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/05_jito-tippayment-and-ai-invariant-suggester-live</loc>
-    <lastmod>2026-06-04</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/06_cf-invariants-sepolia-suite-expansion-6-to-12-and-ci-green</loc>
-    <lastmod>2026-06-08</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/07_exploit-invariant-atlas</loc>
-    <lastmod>2026-06-09</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/08_planted-twin-methodology</loc>
-    <lastmod>2026-06-12</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/09_authentication-is-not-authorization</loc>
-    <lastmod>2026-06-19</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/10_cross-layer-conservation-aztec</loc>
-    <lastmod>2026-06-21</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/11_syscoin-conservation-mint-without-burn</loc>
-    <lastmod>2026-06-22</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/12_liquidity-penalty-conservation-uniswap-v4-hook</loc>
-    <lastmod>2026-07-06</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/13_fee-direction-integrity-uniswap-v4-hook</loc>
-    <lastmod>2026-07-10</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/14_share-accounting-solvency-euler-earn-m01</loc>
-    <lastmod>2026-07-10</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/16_the-gate-that-caught-the-secret-scan-gap</loc>
-    <lastmod>2026-07-14</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/17_multi-seed-reachability-hardening</loc>
-    <lastmod>2026-07-14</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
-  <url>
-    <loc>https://caliperforge.com/blog/18_uniswap-v4-hook-census</loc>
-    <lastmod>2026-08-01</lastmod>
-    <changefreq>never</changefreq>
-    <priority>0.6</priority>
-  </url>
-
+  <url><loc>https://caliperforge.com/</loc></url>
+  <url><loc>https://caliperforge.com/work</loc></url>
+  <url><loc>https://caliperforge.com/research</loc></url>
+  <url><loc>https://caliperforge.com/blog/</loc></url>
+  <url><loc>https://caliperforge.com/ai-disclosure</loc></url>
+  <url><loc>https://caliperforge.com/blog/01_caliperforge-origins</loc></url>
+  <url><loc>https://caliperforge.com/blog/02_cf-invariants-anchor-on-crucible</loc></url>
+  <url><loc>https://caliperforge.com/blog/03_cairo-references-expansion-and-chimera-template-pack</loc></url>
+  <url><loc>https://caliperforge.com/blog/04_cf-invariants-jito-first-real-protocol-harnessed</loc></url>
+  <url><loc>https://caliperforge.com/blog/05_jito-tippayment-and-ai-invariant-suggester-live</loc></url>
+  <url><loc>https://caliperforge.com/blog/06_cf-invariants-sepolia-suite-expansion-6-to-12-and-ci-green</loc></url>
+  <url><loc>https://caliperforge.com/blog/07_exploit-invariant-atlas</loc></url>
+  <url><loc>https://caliperforge.com/blog/08_planted-twin-methodology</loc></url>
+  <url><loc>https://caliperforge.com/blog/09_authentication-is-not-authorization</loc></url>
+  <url><loc>https://caliperforge.com/blog/10_cross-layer-conservation-aztec</loc></url>
+  <url><loc>https://caliperforge.com/blog/11_syscoin-conservation-mint-without-burn</loc></url>
+  <url><loc>https://caliperforge.com/blog/12_liquidity-penalty-conservation-uniswap-v4-hook</loc></url>
+  <url><loc>https://caliperforge.com/blog/13_fee-direction-integrity-uniswap-v4-hook</loc></url>
+  <url><loc>https://caliperforge.com/blog/14_share-accounting-solvency-euler-earn-m01</loc></url>
+  <url><loc>https://caliperforge.com/blog/15_review-layer-caught-build-layer-attribution-error</loc></url>
+  <url><loc>https://caliperforge.com/blog/16_the-gate-that-caught-the-secret-scan-gap</loc></url>
+  <url><loc>https://caliperforge.com/blog/17_multi-seed-reachability-hardening</loc></url>
+  <url><loc>https://caliperforge.com/blog/18_uniswap-v4-hook-census</loc></url>
+  <url><loc>https://caliperforge.com/blog/19_the-clean-zero-gate</loc></url>
+  <url><loc>https://caliperforge.com/blog/20_nine-gates-zero-facts</loc></url>
+  <url><loc>https://caliperforge.com/blog/21_32-days-one-operator-an-ai-agentic-company</loc></url>
+  <url><loc>https://caliperforge.com/blog/22_right-denom-wrong-channel-ibc-source-validation</loc></url>
+  <url><loc>https://caliperforge.com/blog/23_flashloan-solvency-blendv2-soroban-invariant-atlas</loc></url>
+  <url><loc>https://caliperforge.com/blog/24_thirty-eight-refusals-fifteen-plans-through-them</loc></url>
+  <url><loc>https://caliperforge.com/blog/25_learnings-for-2026-10-11</loc></url>
+  <url><loc>https://caliperforge.com/blog/26_learnings-for-2026-10-12</loc></url>
+  <url><loc>https://caliperforge.com/blog/27_learnings-for-2026-10-13</loc></url>
+  <url><loc>https://caliperforge.com/blog/28_learnings-for-2026-10-14</loc></url>
+  <url><loc>https://caliperforge.com/blog/29_learnings-for-2026-10-15</loc></url>
+  <url><loc>https://caliperforge.com/blog/30_learnings-for-2026-10-16</loc></url>
+  <url><loc>https://caliperforge.com/blog/31_learnings-for-2026-10-17</loc></url>
+  <url><loc>https://caliperforge.com/blog/32_learnings-for-2026-10-18</loc></url>
 </urlset>

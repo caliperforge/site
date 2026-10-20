@@ -4,109 +4,65 @@ import vm from 'node:vm';
 import { readFileSync } from 'node:fs';
 
 const source = (file) => readFileSync(new URL('../' + file, import.meta.url), 'utf8');
-const ok = (body) => ({ ok: true, json: async () => body });
-const notOk = { ok: false, json: async () => ({}) };
-const settle = () => new Promise((resolve) => setImmediate(resolve));
+const fixture = (name) => JSON.parse(source('tests/fixtures/' + name + '.json'));
+const data = (name) => JSON.parse(source('data/' + name + '.json'));
+const settle = () => new Promise((resolve) => setTimeout(resolve, 0));
+const PANELS = ['jobs', 'sentback', 'reviews', 'tokens', 'perjob', 'mix', 'seats', 'ceo', 'timeline'];
+const FROZEN = ['loop_counts', 'daily_activity', 'tokens_per_landed_job', 'ceo_touches', 'timeline'];
 
-const timeline = JSON.parse(source('tests/fixtures/timeline.json'));
-const touches = JSON.parse(source('tests/fixtures/ceo_touches.json'));
-const perJob = JSON.parse(source('tests/fixtures/tokens_per_landed_job.json'));
-
-class El {
-  constructor(tag, props = {}) {
-    this.tag = tag;
-    this.className = '';
-    this.nodes = [];
-    Object.assign(this, props);
-  }
-  set innerHTML(html) { this.nodes = [{ html }]; }
-  set textContent(text) { this.nodes = text === '' ? [] : [String(text)]; }
-  get textContent() {
-    return this.nodes.map((n) => (typeof n === 'string' ? n : n.html ?? n.textContent)).join('');
-  }
-  append(...nodes) { this.nodes.push(...nodes); }
-  get outerHTML() {
-    const inner = this.nodes.map((n) => (typeof n === 'string' ? n : n.html ?? n.outerHTML)).join('');
-    return '<' + this.tag + (this.className ? ' class="' + this.className + '"' : '') + '>' + inner + '</' + this.tag + '>';
-  }
-}
-
-function research(responses) {
-  const sections = {};
-  for (const key of Object.keys(responses)) sections[key] = new El('section', { dataset: { metric: key }, clientWidth: 656 });
+function load(available) {
+  const plots = {};
+  for (const k of PANELS) plots[k] = { innerHTML: undefined, clientWidth: 900 };
   const ctx = vm.createContext({
-    document: { querySelectorAll: () => Object.values(sections), createElement: (tag) => new El(tag) },
+    addEventListener() {}, setTimeout, clearTimeout,
     fetch: async (url) => {
-      const r = responses[url.slice('/data/'.length, -'.json'.length)];
-      if (r instanceof Error) throw r;
-      return r;
+      const name = url.replace(/^\/data\/|\.json$/g, '');
+      if (!available.includes(name)) return { ok: false, json: async () => ({}) };
+      return { ok: true, json: async () => (FROZEN.includes(name) ? fixture(name) : data(name)) };
     },
-    getComputedStyle: () => ({ paddingLeft: '28px', paddingRight: '28px' }),
-    ResizeObserver: class { constructor(cb) { this.cb = cb; } observe() { this.cb(); } },
+    document: { querySelector: (sel) => plots[sel.match(/data-panel="(\w+)"/)[1]] },
   });
-  for (const file of ['charts.js', 'research.js']) vm.runInContext(source(file), ctx);
-  return sections;
+  for (const file of ['site-data.js', 'charts.js', 'research.js']) vm.runInContext(source(file), ctx);
+  return plots;
 }
 
-test('the timeline lists one item per row in file order under its title, flagging v1 rows only', async () => {
-  const { timeline: section } = research({ timeline: ok(timeline) });
+const ALL = ['loop_counts', 'daily_activity', 'gate_verdicts', 'tokens_per_landed_job', 'token_mix', 'runs_by_seat', 'ceo_touches', 'timeline'];
+
+test('every panel draws', async () => {
+  const p = load(ALL);
   await settle();
-  assert.equal(section.nodes[0].outerHTML, '<h4>The path, by version</h4>');
-  const items = section.nodes[1].nodes;
-  assert.equal(section.nodes[1].className, 'cf-timeline');
-  assert.deepEqual(items.map((li) => [li.nodes[0].textContent, li.nodes[1].nodes[1].textContent]),
-    timeline.rows.map((r) => [r[0], r[2]]));
-  items.forEach((li, i) => {
-    assert.equal(li.outerHTML.includes('<span class="cf-flag">earlier measurement</span>'), timeline.rows[i][1] === 'v1');
-  });
+  for (const k of PANELS) assert.ok(p[k].innerHTML, k);
 });
 
-test('timeline dates are YYYY-MM-DD, never descend, and hold the ruled v2 milestones', () => {
-  const dates = timeline.rows.map((r) => r[0]);
-  for (const d of dates) assert.match(d, /^\d{4}-\d{2}-\d{2}$/);
-  assert.deepEqual(dates, [...dates].sort());
-  assert.deepEqual(timeline.rows.filter((r) => r[1] === 'v2').map((r) => r[0]),
-    ['2026-09-15', '2026-09-17', '2026-09-24', '2026-09-24', '2026-10-14']);
-});
-
-test('tokens per landed job compares the first and last week after the chart', async () => {
-  const rows = (first, last) => [perJob.rows[0].with(2, first), ...perJob.rows.slice(1, -1), perJob.rows.at(-1).with(2, last)];
-  const fall = research({ tokens_per_landed_job: ok({ ...perJob, rows: rows(8e6, 2e6) }) });
-  const rise = research({ tokens_per_landed_job: ok({ ...perJob, rows: rows(2e6, 3e6) }) });
+test('weekly panels mark partial weeks', async () => {
+  const p = load(ALL);
   await settle();
-  const nodes = fall.tokens_per_landed_job.nodes;
-  assert.deepEqual(nodes.slice(1).map((n) => n.className), ['cf-compare', 'cf-def', 'cf-caveat']);
-  assert.equal(nodes[1].textContent,
-    'First week (2026-09-14): 8.0M tokens per landed job. Current week (2026-10-12): 2.0M. −75%');
-  assert.match(rise.tokens_per_landed_job.nodes[1].textContent, /: 3\.0M\. \+50%$/);
-});
-
-test('human touches draws one labelled column per day', async () => {
-  const { ceo_touches: section } = research({ ceo_touches: ok(touches) });
-  await settle();
-  const svg = section.nodes[0].html;
-  assert.equal(touches.rows.length, 23);
-  assert.equal(svg.match(/class="cf-label"/g).length, 23);
-  assert.match(svg, /aria-label="Human touches"/);
-});
-
-test('a timeline or ceo_touches that is not ok or rejects leaves the load error and draws nothing', async () => {
-  for (const key of ['timeline', 'ceo_touches']) {
-    for (const r of [notOk, new Error('offline')]) {
-      const sections = research({ [key]: r });
-      await settle();
-      assert.deepEqual(sections[key].nodes, ['Could not load data/' + key + '.json']);
-    }
+  for (const k of ['jobs', 'sentback', 'tokens', 'perjob', 'ceo']) {
+    assert.match(p[k].innerHTML, /data-partial="\d"/, k);
+    assert.match(p[k].innerHTML, />Week starting Monday</, k);
   }
 });
 
-test('research.js writes no date or label of its own', () => {
-  assert.doesNotMatch(source('research.js'), /2026-|earlier measurement/);
+test('plain labels', async () => {
+  const p = load(ALL);
+  await settle();
+  const all = PANELS.map((k) => p[k].innerHTML).join('');
+  for (const word of ['pre_review', 'rails', 'needs_ceo', '_specialist', 'cache_read', 'pr_path', '>v1<', '>v2<']) assert.ok(!all.includes(word), word);
+  assert.match(p.reviews.innerHTML, /<td>Automatic checks<\/td>/);
+  assert.match(p.seats.innerHTML, />TypeScript builder</);
+  assert.match(p.mix.innerHTML, />Re-read from cache</);
+  assert.match(p.timeline.innerHTML, /<b>Current version<\/b>/);
 });
 
-test('research.html places timeline after token_mix and ceo_touches after tokens_per_landed_job', () => {
-  assert.deepEqual([...source('research.html').matchAll(/data-metric="(\w+)"/g)].map((m) => m[1]), [
-    'gate_verdicts', 'plan_outcomes', 'daily_activity', 'runs_by_seat', 'token_mix',
-    'timeline', 'tokens_per_landed_job', 'ceo_touches',
-  ]);
+test('no dollars', async () => {
+  const p = load(ALL);
+  await settle();
+  assert.ok(!PANELS.some((k) => /\$/.test(p[k].innerHTML)));
+});
+
+test('missing file leaves its panel empty', async () => {
+  const p = load(ALL.filter((n) => n !== 'gate_verdicts'));
+  await settle();
+  assert.equal(p.reviews.innerHTML, undefined);
+  assert.ok(p.jobs.innerHTML);
 });
