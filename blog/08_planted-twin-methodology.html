@@ -2,67 +2,47 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The planted-twin methodology: what it is and what it is not | CaliperForge</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The planted-twin methodology: what it is and what it is not. | CaliperForge</title>
 <meta name="description" content="A clean reference contract. A planted-bug twin. One invariant that fires on the planted side and holds on the clean side. Both legs wired into CI. That structure -- repeated across the portfolio -- is the planted-twin methodology.">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0b0f1c">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/caliper.css">
 <link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
 </head>
 <body>
 
-<div class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-
-  <div class="cf-opstrip">
-    <div class="cf-opstrip__row">
-      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
-      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
-    </div>
-  </div>
-
-  <nav class="cf-nav" aria-label="Primary">
-    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
-    <div class="cf-nav-right">
-      <div class="cf-nav-links">
-        <a href="/blog/" class="is-current">Blog</a>
-        <a href="/what-we-caught">What we caught</a>
-        <a href="/engagements/">Engagements</a>
-        <a href="/roadmap/">Roadmap</a>
-        <a href="/papers">Papers</a>
-        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
-      </div>
-      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
     </div>
   </nav>
+</div>
 
-  <header class="cf-hero cf-hero--article">
-    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-12 · MICHAEL MOFFETT</div>
-    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">The planted-twin methodology: what it is and what it is not.</span></h1>
-    <p class="cf-hero-lede">
-      A clean reference contract. A planted-bug twin. One invariant
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 12 June 2026</p>
+    <h1>The planted-twin methodology: what it is and what it is not.</h1>
+    <div class="post-lede">A clean reference contract. A planted-bug twin. One invariant
       that fires on the planted side and holds on the clean side.
       Both legs wired into CI. That structure, repeated
       across every harness CaliperForge ships, is the
       planted-twin methodology. This is a brief account of what it
-      does and what it does not claim.
-    </p>
+      does and what it does not claim.</div>
   </header>
-</div>
+  <div class="post-body">
 
-<main class="cf-band--paper">
-  <div class="cf-article-shell">
-    <article class="cf-article">
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">The structure</p>
-        <h2>A clean pair is two contracts and one test file.</h2>
-        <p>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">The structure</p>
+<h2>A clean pair is two contracts and one test file.</h2>
+<p>
           CaliperForge harnesses ship the same structural unit.
           Take a contract that is supposed to satisfy some rule ,
           a conservation law, an access control, a solvency bound. Write
@@ -72,28 +52,28 @@
           byte-identical between the two. Run the same invariant property
           against both.
         </p>
-        <p>
+<p>
           The expected outcome:
         </p>
-        <ul>
-          <li>
-            <strong>Clean leg:</strong> zero violations. The property holds. The fuzzer does not find a
+<ul>
+<li>
+<strong>Clean leg:</strong> zero violations. The property holds. The fuzzer does not find a
             counterexample.
           </li>
-          <li>
-            <strong>Planted leg:</strong> at least one violation, with a
+<li>
+<strong>Planted leg:</strong> at least one violation, with a
             counterexample.
             The same property, against the same inputs, finds the defect.
           </li>
-        </ul>
-        <p>
+</ul>
+<p>
           CI asserts both outcomes on every push. A green badge on the
           matrix means both legs passed: the clean side held, and the
-          planted side actually broke when it should. Either leg&rsquo;s failure is a real regression: the
+          planted side actually broke when it should. Either leg’s failure is a real regression: the
           invariant started passing on a broken implementation, or it
           started failing on a correct one.
         </p>
-        <p>
+<p>
           The deterministic violation record is the checkable artifact ,
           an <code>INVARIANT VIOLATED</code> marker on stdout in the
           Foundry-twin repos, a scorecard recording the violation count
@@ -102,17 +82,16 @@
           installing CI, without trusting a badge, without reading the
           property description in prose. The record is the evidence.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">Why both legs</p>
-        <h2>A passing clean is only half the claim.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">Why both legs</p>
+<h2>A passing clean is only half the claim.</h2>
+<p>
           A property test that passes on the clean reference tells you
           the fuzzer did not find a counterexample under the campaign
           budget. That is a useful signal. It is not the full claim.
         </p>
-        <p>
+<p>
           The planted twin answers the question the clean leg cannot:
           does the property actually catch the bug class it is supposed
           to catch? A property that passes on both the clean and the
@@ -121,97 +100,95 @@
           fire, the methodology keeps the test honest. The harness is
           only as good as its ability to break on known-bad code.
         </p>
-        <p>
-          This is the invariants-as-tests pattern Trail of Bits&rsquo;
+<p>
+          This is the invariants-as-tests pattern Trail of Bits’
           <em>Building Secure Smart Contracts</em> corpus teaches, and
-          ChainSecurity&rsquo;s published findings reinforce: the value
+          ChainSecurity’s published findings reinforce: the value
           of an invariant is not the moment you state it; it is the loop
           you wire it into so it gets re-checked on every subsequent
-          change. The planted twin is the loop&rsquo;s self-check.
+          change. The planted twin is the loop’s self-check.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">Worked example</p>
-        <h2>From hyperevm-safety v0.1 to M2 in the same week.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">Worked example</p>
+<h2>From hyperevm-safety v0.1 to M2 in the same week.</h2>
+<p>
           The current portfolio illustrates the pace.
           <a href="https://github.com/caliperforge/hyperevm-safety" rel="noopener"><code>hyperevm-safety</code></a>
           v0.1 shipped with six HyperCore-boundary invariants as
-          CI-runnable property tests. At v0.1, the JELLY (Mar&nbsp;2025) mark-price manipulation
-          reproduction shipped as a clean&nbsp;/&nbsp;planted twin against
+          CI-runnable property tests. At v0.1, the JELLY (Mar 2025) mark-price manipulation
+          reproduction shipped as a clean / planted twin against
           a minimal lending-market reference, and the precompile gas DoS
           and CoreWriter solvency window classes carried inline
           broken-reference tests demonstrating the bug class
           deterministically.
         </p>
-        <p>
+<p>
           Planted twins for <code>D-3 SzDecimalsRoundTrip</code> and
           <code>D-6 ChainlinkAdapterDefeatsStaleness</code> were
           listed as M2 roadmap at the v0.1 flip. They shipped the same
-          day. The updated state, from the README&rsquo;s callout:
+          day. The updated state, from the README’s callout:
           three marker-firing counterparts now run on the same CI run:
-          the D-3&nbsp;SzDecimalsRoundTrip and
-          D-6&nbsp;ChainlinkAdapterDefeatsStaleness planted twins
-          (landed M2) and the JELLY (Mar&nbsp;2025) mark-price
-          manipulation reproduction (covering D-1&nbsp;OracleStaleness
-          and D-2&nbsp;OracleDeviation against a minimal lending-market
-          reference). D-4&nbsp;PrecompileGasDoS and
-          D-5&nbsp;CoreWriterSolvencyWindow carry inline broken-reference
+          the D-3 SzDecimalsRoundTrip and
+          D-6 ChainlinkAdapterDefeatsStaleness planted twins
+          (landed M2) and the JELLY (Mar 2025) mark-price
+          manipulation reproduction (covering D-1 OracleStaleness
+          and D-2 OracleDeviation against a minimal lending-market
+          reference). D-4 PrecompileGasDoS and
+          D-5 CoreWriterSolvencyWindow carry inline broken-reference
           tests that demonstrate the bug class deterministically, with
           marker-armed properties whose planted hunks are documented in
           NatSpec but not yet wired as CI-firing twins.
         </p>
-        <p>
+<p>
           The same week,
           <a href="https://github.com/caliperforge/cf-invariants-verus-bridge-conservation" rel="noopener"><code>cf-invariants-verus-bridge-conservation</code></a>
           shipped: a bridge-class reference anchored on the
-          Verus&ndash;Ethereum bridge exploit of 2026-05-18 (reported
-          losses USD&nbsp;11.58M, per Halborn&rsquo;s post-mortem). The
-          conservation rule existed in the bridge&rsquo;s spec as prose.
+          Verus–Ethereum bridge exploit of 2026-05-18 (reported
+          losses USD 11.58M, per Halborn’s post-mortem). The
+          conservation rule existed in the bridge’s spec as prose.
           It was never expressed as a machine-checkable invariant. This
           repo is what lifting it looks like: one property, two
           contracts, one CI matrix.
         </p>
-        <p>
+<p>
           The pattern is the same in each case. Same-source twin. One
           localized planted change. Byte-identical test file. Both legs
           asserted in CI.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">What this is not</p>
-        <h2>Not an audit. Not a runtime monitor. Not formal verification.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">What this is not</p>
+<h2>Not an audit. Not a runtime monitor. Not formal verification.</h2>
+<p>
           The planted-twin methodology is a pre-deploy CI gate. Three
           non-claims worth stating plainly.
         </p>
-        <p>
-          <em>Not an audit.</em> An audit covers the full protocol
+<p>
+<em>Not an audit.</em> An audit covers the full protocol
           surface: all state transitions, all roles, all edge cases the
           auditor can identify. A planted-twin harness covers the
           invariant classes it encodes. A passing CI run on a fork of
           one of these repos against a production protocol does not
           certify the protocol is safe. The residual surface ,
           the bug classes the properties do not encode, is the
-          protocol&rsquo;s.
+          protocol’s.
         </p>
-        <p>
-          <em>Not a runtime monitor.</em> These properties run
+<p>
+<em>Not a runtime monitor.</em> These properties run
           pre-deploy in CI, against a fuzz campaign, before code goes
           live. They do not watch the chain after deployment. The
           monitoring lane belongs to a different class of tool.
         </p>
-        <p>
-          <em>Not formal verification.</em> Coverage-guided fuzzing
+<p>
+<em>Not formal verification.</em> Coverage-guided fuzzing
           under a campaign budget is not exhaustive. Finding zero
           violations in 50,000 calls is evidence the rule holds under
           that surface; it is not a proof. Halmos symbolic specs and
           Certora CVL specs are on the roadmap for future work; they
           are not in-tree today.
         </p>
-        <p>
+<p>
           What the methodology does claim: for the invariant classes it
           encodes, a runnable property exists that surfaces a deterministic
           violation on known-bad code and
@@ -219,33 +196,32 @@
           claim is checkable by anyone who can run
           <code>git clone</code>.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">Repos</p>
-        <h2>Apache-2.0. Run it locally.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">Repos</p>
+<h2>Apache-2.0. Run it locally.</h2>
+<p>
           The full portfolio is on the
           <a href="https://github.com/caliperforge" rel="noopener">CaliperForge GitHub org</a>.
           Two repos from the worked example above:
         </p>
-        <ul>
-          <li>
-            <a href="https://github.com/caliperforge/hyperevm-safety" rel="noopener"><strong>caliperforge/hyperevm-safety</strong></a>
+<ul>
+<li>
+<a href="https://github.com/caliperforge/hyperevm-safety" rel="noopener"><strong>caliperforge/hyperevm-safety</strong></a>
            , HyperEVM lending invariants. Six HyperCore-boundary
             classes; three marker-firing planted or incident-reproduction
             twins now in-tree (D-3 SzDecimalsRoundTrip,
             D-6 ChainlinkAdapterDefeatsStaleness, JELLY reproduction).
             Apache-2.0.
           </li>
-          <li>
-            <a href="https://github.com/caliperforge/cf-invariants-verus-bridge-conservation" rel="noopener"><strong>caliperforge/cf-invariants-verus-bridge-conservation</strong></a>
+<li>
+<a href="https://github.com/caliperforge/cf-invariants-verus-bridge-conservation" rel="noopener"><strong>caliperforge/cf-invariants-verus-bridge-conservation</strong></a>
            , bridge conservation invariant reference, anchored on
-            the 2026-05-18 Verus&ndash;Ethereum exploit. One property,
+            the 2026-05-18 Verus–Ethereum exploit. One property,
             two contracts, CI matrix. Apache-2.0.
           </li>
-        </ul>
-        <p class="cf-article__meta">
+</ul>
+<p class="cf-article__meta">
           Operator of record: Michael Moffett ,
           <a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a>
           ,
@@ -256,23 +232,23 @@
           <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>
           for the full disclosure register.
         </p>
-      </section>
-
-    </article>
-  </div>
-</main>
-
-<section class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
-    <footer class="cf-footer">
-      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
-      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
-    </footer>
-  </div>
 </section>
 
-<script src="/caliper-data.js" defer></script>
-<script src="/caliper-motion.js" defer></script>
+  </div>
+  <p class="post-back"><a href="/blog/">← Every log entry</a></p>
+</main>
+
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request says how it was made; <a href="/ai-disclosure">here is how we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
+
 </body>
 </html>

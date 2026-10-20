@@ -2,51 +2,35 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The audit already had it: Euler Earn share-accounting solvency as a runnable twin, CaliperForge</title>
-<meta name="description" content="Pashov Audit Group surfaced M-01 in their public Euler Earn security review (2025-07-25): a share-accounting drift in PublicAllocator when a strategy&rsquo;s share delta reaches the vault outside EulerEarn.deposit. Euler Labs fixed it at commit f07f6b1c5e1e (2025-08-11), merged in PR #22. This post walks the invariants that name the class and the clean/planted twin in caliperforge/euler-earn-invariants that fires on it.">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0b0f1c">
-<link rel="canonical" href="https://caliperforge.com/blog/14_share-accounting-solvency-euler-earn-m01">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The audit already had it: Euler Earn share-accounting solvency as a runnable twin. | CaliperForge</title>
+<meta name="description" content="Pashov Audit Group surfaced M-01 in their public Euler Earn security review (2025-07-25): a share-accounting drift in PublicAllocator when a strategy’s share delta reaches the vault outside EulerEarn.deposit. Euler Labs fixed it at commit f07f6b1c5e1e (2025-08-11), merged in PR #22. This post walks the invariants that name the class and the clean/planted twin in caliperforge/euler-earn-invariants that fires on it.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/caliper.css">
 <link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
 </head>
 <body>
 
-<div class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-
-  <div class="cf-opstrip">
-    <div class="cf-opstrip__row">
-      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
-      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
-    </div>
-  </div>
-
-  <nav class="cf-nav" aria-label="Primary">
-    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
-    <div class="cf-nav-right">
-      <div class="cf-nav-links">
-        <a href="/blog/" class="is-current">Blog</a>
-        <a href="/what-we-caught">What we caught</a>
-        <a href="/engagements/">Engagements</a>
-        <a href="/roadmap/">Roadmap</a>
-        <a href="/papers">Papers</a>
-        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
-      </div>
-      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
     </div>
   </nav>
+</div>
 
-  <header class="cf-hero cf-hero--article">
-    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-07-10 · MICHAEL MOFFETT</div>
-    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">The audit already had it: Euler Earn share-accounting solvency as a runnable twin.</span></h1>
-    <p class="cf-hero-lede">
-      Euler Earn is a shared-vault system on top of Euler's vault
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 10 July 2026</p>
+    <h1>The audit already had it: Euler Earn share-accounting solvency as a runnable twin.</h1>
+    <div class="post-lede">Euler Earn is a shared-vault system on top of Euler's vault
       kit: a curated vault routes supplier deposits across a set of
       underlying strategy markets under a role-gated allocator. One
       of the pieces that role-gated set includes is
@@ -54,39 +38,30 @@
       that anyone can call, bounded by governance-set flow caps. It
       is the kind of contract that has to keep the vault's internal
       share tracking and the strategies' own redeemable-view
-      accounting pointed at the same numbers.
-    </p>
-    <p class="cf-hero-lede" style="margin-top:14px;">
-      In July 2025, Pashov Audit Group published a public security
+      accounting pointed at the same numbers.</div>
+    <div class="post-lede">In July 2025, Pashov Audit Group published a public security
       review of Euler Earn and flagged a share-accounting drift in
       <code>PublicAllocator</code> as finding M-01. The fix landed
       publicly a few weeks later at Euler Labs' commit
       <a href="https://github.com/euler-xyz/euler-earn/commit/f07f6b1c5e1e" rel="noopener"><code>f07f6b1c5e1e</code></a>
       (2025-08-11), merged as part of pull request #22,
       "pag-audit-fixes". The current source at that commit already
-      ships the fix.
-    </p>
-    <p class="cf-hero-lede" style="margin-top:14px;">
-      I did not find this class. Pashov Audit Group named it, wrote
+      ships the fix.</div>
+    <div class="post-lede">I did not find this class. Pashov Audit Group named it, wrote
       the reproducing test, and shipped the writeup. Euler Labs
       shipped the fix. What I want to walk in this post is the
       property that names the class, and the clean/planted twin pair
       I just made public in
       <a href="https://github.com/caliperforge/euler-earn-invariants" rel="noopener"><code>caliperforge/euler-earn-invariants</code></a>
-      that fires on it.
-    </p>
+      that fires on it.</div>
   </header>
-</div>
+  <div class="post-body">
 
-<main class="cf-band--paper">
-  <div class="cf-article-shell">
-    <article class="cf-article">
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">The mechanism</p>
-        <h2>The mechanism, in plain terms.</h2>
-        <p>
-          <code>PublicAllocator.reallocateTo(vault, withdrawals, supplyId)</code>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">The mechanism</p>
+<h2>The mechanism, in plain terms.</h2>
+<p>
+<code>PublicAllocator.reallocateTo(vault, withdrawals, supplyId)</code>
           moves assets between the vault's strategy markets under
           flow-cap governance. For each withdrawn strategy
           <code>id</code>, the allocator needs an <code>assets</code>
@@ -95,7 +70,7 @@
           accounting and to build the <code>MarketAllocation</code>
           forwarded to <code>EulerEarn.reallocate</code>.
         </p>
-        <p>
+<p>
           Two accounting systems exist for that quantity. The vault's
           own <code>_withdrawStrategy</code> path reads
           <code>expectedSupplyAssets</code>, a view derived from the
@@ -107,7 +82,7 @@
           strategy shares the vault currently holds, whether or not
           those shares arrived through the vault's own deposit path.
         </p>
-        <p>
+<p>
           Under normal supplier flow the two views agree. They
           diverge if a share delta reaches the vault outside
           <code>EulerEarn.deposit</code>. The concrete path Pashov
@@ -119,7 +94,7 @@
           <code>strategy.maxWithdraw(vault)</code> grows past
           <code>EulerEarn.expectedSupplyAssets(strategy)</code>.
         </p>
-        <p>
+<p>
           The pre-fix <code>PublicAllocator</code> read the strategy's
           <code>maxWithdraw</code> view for its <code>assets</code>
           value, which put the allocator's flow-cap math and the
@@ -134,62 +109,61 @@
           <code>PublicAllocator.sol</code> line 120, the change is
           one line:
         </p>
-        <ul>
-          <li>
+<ul>
+<li>
             Post-fix:
             <code>uint256 assets = IEulerEarn(vault).expectedSupplyAssets(id);</code>
-          </li>
-          <li>
+</li>
+<li>
             Pre-fix:
             <code>uint256 assets = id.maxWithdraw(vault);</code>
-          </li>
-        </ul>
-        <p>
+</li>
+</ul>
+<p>
           That one line is the whole semantic content of the M-01
           fix; the surrounding flow-cap guards and the
           reallocation-loop shape carry forward unchanged.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">The invariants</p>
-        <h2>The invariants that catch the class.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">The invariants</p>
+<h2>The invariants that catch the class.</h2>
+<p>
           The case encodes three invariants against the real Euler
           Earn contracts. The first is the reference solvency
           property Pashov Audit Group names in the finding, stated
           per-strategy in the vault's withdraw queue:
         </p>
-        <blockquote>
+<blockquote>
           The vault's internally tracked supply-asset amount for any
           strategy never exceeds what that strategy would let the
           vault redeem.
         </blockquote>
-        <p>Concretely:</p>
-        <pre><code>m01_solvency:
+<p>Concretely:</p>
+<pre><code>m01_solvency:
     for every strategy id in the withdraw queue,
     vault.expectedSupplyAssets(id) &lt;= id.maxWithdraw(vault)</code></pre>
-        <p>
+<p>
           Both twins hold this invariant by construction over the
           case's four-primitive handler surface. It is present as the
           reference solvency shape the finding names, not as the
           class-distinguishing property.
         </p>
-        <p>
+<p>
           The two invariants that distinguish the twins are Pashov
           Audit Group's own assertions from
           <code>testRellocateToWithDirectStrategySharesTransfer</code>
           in <code>test/PublicAllocatorTest.sol</code> at the pinned
           commit, lifted into a stateful setting:
         </p>
-        <pre><code>m01_reallocation_movement_matches_request:
+<pre><code>m01_reallocation_movement_matches_request:
     for every recorded PublicAllocator.reallocateTo call,
     strategy.maxWithdraw(vault)_delta == requested_withdrawnAssets
 
 m01_reallocation_flowcap_matches_movement:
     for every recorded reallocation,
     flowCaps[vault][id].maxIn_delta == actualWithdrawn</code></pre>
-        <p>
+<p>
           The reference for "what should have moved" is the requested
           withdrawal amount the allocator was called with. On the
           clean twin the strategy's <code>maxWithdraw</code> delta
@@ -199,7 +173,7 @@ m01_reallocation_flowcap_matches_movement:
           the next <code>reallocateFromStrategy</code> on the same
           strategy.
         </p>
-        <p>
+<p>
           The campaign is stateful. It runs 256 fuzz runs of depth 50
           (12,800 handler calls per invariant) against a handler that
           exposes four primitives: <code>deposit</code>,
@@ -215,12 +189,11 @@ m01_reallocation_flowcap_matches_movement:
           sequence fires the two markers seed-independently on the
           planted twin.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">The twin</p>
-        <h2>The clean/planted twin, and what the fuzzer does with it.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">The twin</p>
+<h2>The clean/planted twin, and what the fuzzer does with it.</h2>
+<p>
           The clean twin at
           <code>src/cases/m01-share-accounting-solvency/clean/PublicAllocator.sol</code>
           is a byte-faithful vendor of
@@ -233,14 +206,14 @@ m01_reallocation_flowcap_matches_movement:
           clean twin, reduced to semantic non-comment
           non-whitespace hunks, is empty.
         </p>
-        <p>
+<p>
           The planted twin is that same file with a single-hunk
           revert on line 120, restoring the pre-fix source. No other
           lines change between the two twin files. Both preserve the
           upstream Morpho Labs attribution the vendored source
           carries in its header.
         </p>
-        <p>
+<p>
           Both twins are wired through Euler Earn's own
           <code>IntegrationTest</code> fixture, so the vault, EVC,
           permit2, strategy factories, and role wiring are exactly
@@ -248,12 +221,12 @@ m01_reallocation_flowcap_matches_movement:
           standard <code>ERC20Mock</code> and <code>EVaultMock</code>
           that fixture already ships.
         </p>
-        <p>
+<p>
           On the clean twin, all invariants and both regression legs
           pass and no <code>INVARIANT VIOLATED</code> marker prints.
           On the planted twin, the stateful fuzzer produces a short
           counterexample: the reachable sequence
-          <code>directShareDeposit &rarr; reallocateFromStrategy</code>
+          <code>directShareDeposit → reallocateFromStrategy</code>
           is enough for the two identities to diverge on the first
           reallocation that follows a direct share deposit.
           <code>INVARIANT VIOLATED m01_reallocation_movement_matches_request</code>
@@ -267,18 +240,17 @@ m01_reallocation_flowcap_matches_movement:
           accounting divergence, not as a solvency-direction
           violation.
         </p>
-        <p>
+<p>
           That is the shape I want from a class-encoding test:
           silence and green on the correct implementation, a loud
           marker and a short human-readable counterexample on the
           specification regression.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">Scope</p>
-        <h2>What I actually claim, and where I stop.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">Scope</p>
+<h2>What I actually claim, and where I stop.</h2>
+<p>
           This is a defender-side regression fixture on a bug class
           already caught, disclosed, and fixed in public. Pashov
           Audit Group flagged the class as M-01 in their
@@ -299,7 +271,7 @@ m01_reallocation_flowcap_matches_movement:
           own 4-call sequence, and both twins wired into CI on every
           commit.
         </p>
-        <p>
+<p>
           What that gets you, if you build on Euler Earn or fork the
           <code>PublicAllocator</code> boundary: a name-recognizable
           pre-deploy CI gate for the class. If you inherit
@@ -308,7 +280,7 @@ m01_reallocation_flowcap_matches_movement:
           <code>_deployPublicAllocator</code> hook is the intended
           port point; the invariant surface travels unchanged.
         </p>
-        <p>
+<p>
           What that does not get you: a claim that CaliperForge
           audited Euler Earn, a claim that anything currently
           deployed is exposed at this class, or a claim that a
@@ -317,7 +289,7 @@ m01_reallocation_flowcap_matches_movement:
           and cheaply, on the real Euler Earn contracts the class
           actually lives on.
         </p>
-        <p>
+<p>
           Credit for the class goes to Pashov Audit Group (finding
           M-01 and the accompanying
           <code>testRellocateToWithDirectStrategySharesTransfer</code>
@@ -328,12 +300,11 @@ m01_reallocation_flowcap_matches_movement:
           diff, and CI legs live in
           <a href="https://github.com/caliperforge/euler-earn-invariants" rel="noopener"><code>caliperforge/euler-earn-invariants</code></a>.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">Reproducing</p>
-        <h2>Running it.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">Reproducing</p>
+<h2>Running it.</h2>
+<p>
           The case is at
           <code>src/cases/m01-share-accounting-solvency/</code>. Both
           twins are runnable with the pinned Foundry toolchain
@@ -342,76 +313,75 @@ m01_reallocation_flowcap_matches_movement:
           <code>via_ir = true</code>, <code>lib/euler-earn</code>
           submodule at <code>f07f6b1c5e1e</code>):
         </p>
-        <pre><code>forge test --match-contract '^M01SolvencyClean$'   -vv    # all green, zero markers
+<pre><code>forge test --match-contract '^M01SolvencyClean$'   -vv    # all green, zero markers
 forge test --match-contract '^M01SolvencyPlanted$' -vv    # detection legs fail with markers</code></pre>
-        <p>For the CI legs:</p>
-        <pre><code>bash ci/clean_leg.sh    # rc=0, no markers
+<p>For the CI legs:</p>
+<pre><code>bash ci/clean_leg.sh    # rc=0, no markers
 bash ci/planted_leg.sh  # rc=0, markers written to GITHUB_STEP_SUMMARY</code></pre>
-        <p>
+<p>
           The planted leg is inverted: every <code>*Planted</code>
           suite must exit non-zero and print at least one
           <code>INVARIANT VIOLATED</code> line; the markers are
           copied into the job summary so a reviewer clicking the CI
           job sees each catch.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">Sources</p>
-        <h2>Primary references and case artifacts.</h2>
-        <ul>
-          <li>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">Sources</p>
+<h2>Primary references and case artifacts.</h2>
+<ul>
+<li>
             Pashov Audit Group, Euler Earn security review
             (2025-07-25), finding M-01:
             <a href="https://github.com/pashov/audits/blob/master/team/md/EulerEarn-security-review_2025-07-25.md" rel="noopener">github.com/pashov/audits/blob/master/team/md/EulerEarn-security-review_2025-07-25.md</a>
-          </li>
-          <li>
+</li>
+<li>
             Euler Labs fix commit <code>f07f6b1c5e1e</code> ("M-01
             fix, PAG audit"):
             <a href="https://github.com/euler-xyz/euler-earn/commit/f07f6b1c5e1e" rel="noopener">github.com/euler-xyz/euler-earn/commit/f07f6b1c5e1e</a>
-          </li>
-          <li>
+</li>
+<li>
             Euler Earn pull request #22 ("pag-audit-fixes"), the
             merged fix set:
             <a href="https://github.com/euler-xyz/euler-earn/pull/22" rel="noopener">github.com/euler-xyz/euler-earn/pull/22</a>
-          </li>
-          <li>
+</li>
+<li>
             Post-fix source, <code>PublicAllocator.sol</code> at
             commit <code>f07f6b1c5e1e</code>:
             <a href="https://github.com/euler-xyz/euler-earn/blob/f07f6b1c5e1eb43a04b9a09d0ab84c05f34946ed/src/PublicAllocator.sol" rel="noopener">github.com/euler-xyz/euler-earn/blob/f07f6b1c5e1eb43a04b9a09d0ab84c05f34946ed/src/PublicAllocator.sol</a>
-          </li>
-          <li>
+</li>
+<li>
             Our case, M01 README:
             <a href="https://github.com/caliperforge/euler-earn-invariants/blob/main/src/cases/m01-share-accounting-solvency/README.md" rel="noopener">github.com/caliperforge/euler-earn-invariants/blob/main/src/cases/m01-share-accounting-solvency/README.md</a>
-          </li>
-          <li>
+</li>
+<li>
             Repo root:
             <a href="https://github.com/caliperforge/euler-earn-invariants" rel="noopener">github.com/caliperforge/euler-earn-invariants</a>
-          </li>
-        </ul>
-        <p class="cf-article__meta">
+</li>
+</ul>
+<p class="cf-article__meta">
           This writeup was drafted with AI assistance. Authored and
           reviewed by Michael Moffett, operator at CaliperForge. Full
           policy at
           <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
         </p>
-      </section>
-
-    </article>
-  </div>
-</main>
-
-<section class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
-    <footer class="cf-footer">
-      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
-      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
-    </footer>
-  </div>
 </section>
 
-<script src="/caliper-data.js" defer></script>
-<script src="/caliper-motion.js" defer></script>
+  </div>
+  <p class="post-back"><a href="/blog/">← Every log entry</a></p>
+</main>
+
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request says how it was made; <a href="/ai-disclosure">here is how we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
+
 </body>
 </html>

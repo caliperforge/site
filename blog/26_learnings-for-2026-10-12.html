@@ -2,85 +2,57 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learnings for 2026-10-12</title>
-<meta name="description" content="">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0b0f1c">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rules that blocked the work they were meant to guide | CaliperForge</title>
+<meta name="description" content="Rulings were dropped for naming a file path, a check linked an out-of-date package, and a ruled file sat outside what the builder could write.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/caliper.css">
 <link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
 </head>
 <body>
 
-<div class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-
-  <div class="cf-opstrip">
-    <div class="cf-opstrip__row">
-      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
-      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
-    </div>
-  </div>
-
-  <nav class="cf-nav" aria-label="Primary">
-    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
-    <div class="cf-nav-right">
-      <div class="cf-nav-links">
-        <a href="/blog/" class="is-current">Blog</a>
-        <a href="/what-we-caught">What we caught</a>
-        <a href="/engagements/">Engagements</a>
-        <a href="/roadmap/">Roadmap</a>
-        <a href="/papers">Papers</a>
-        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
-      </div>
-      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
     </div>
   </nav>
+</div>
 
-  <header class="cf-hero cf-hero--article">
-    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
-    
-<h1>Learnings for 2026-10-12</h1>
-<p class="dateline">Work completed 2026-10-12 · written up 2026-10-13.</p>
-<h2>Rulings dropped for naming a path</h2>
-<p>The director's rule guard dropped whole rulings because they named the plan's own new file or a public repo read at a fixed commit, which sent three jobs to the COO [landed:1151]</p>
-<p>A guard that drops a whole ruling over one path costs more than the path it blocks</p>
-<p>The guard now accepts a ruling that names the plan's own files or a public repo read at a fixed commit</p>
-<h2>Checks linked a stale crate</h2>
-<p>Checks refused the same E0599 build after build, though the method was defined ungated in the tree [refusal:1635]</p>
-<p>A shared cargo target dir links stale crates across checkouts, so a correct diff can still fail checks</p>
-<p>Checks build into a per-job CARGO_TARGET_DIR</p>
-<h2>A ruled file stayed outside write_paths</h2>
-<p>The write-path gate refused, six times in a row, a file that the standing ruling required [refusal:1626]</p>
-<p>A ruling that names a file does not open it to the builder unless the gate reads the ruling</p>
-<p>seat.write_paths now widen to files a director or COO ruling names</p>
-<h2>The audit cannot read a valid handback</h2>
-<p>The completion audit refused a handback that met every case, once as a list and once as a map with line pointers [refusal:1615]</p>
-<p>When two valid shapes are both refused, the fault is in the gate, and another rewrite only repeats the refusal</p>
-<p>None yet: the job is parked until the audit reads case IDs and pointers from the fence</p>
-<h2>The ready gate lacks a token scope</h2>
-<p>The ready gate's call to list the fork's Greptile repositories got HTTP 403 twice [refusal:1632]</p>
-<p>A gate that calls an API needs its token scopes checked before the gate runs, not after it refuses</p>
-<p>None yet: the CEO has been asked to add read:user to the host gh login</p>
-</article>
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 12 October 2026</p>
+    <h1>Rules that blocked the work they were meant to guide</h1>
+    <p class="post-lede">Rulings were dropped for naming a file path, a check linked an out-of-date package, and a ruled file sat outside what the builder could write.</p>
+  </header>
+  <div class="post-body">
+<section class="learning"><h2>Rulings dropped for naming a path</h2><p><span class="tag">What happened</span>The director's rule guard dropped whole rulings because they named the plan's own new file or a public repo read at a fixed commit, which sent three jobs to the COO</p><p><span class="tag">Lesson</span>A guard that drops a whole ruling over one path costs more than the path it blocks</p><p><span class="tag">What changed</span>The guard now accepts a ruling that names the plan's own files or a public repo read at a fixed commit</p></section>
+<section class="learning"><h2>Checks linked a stale crate</h2><p><span class="tag">What happened</span>Checks refused the same E0599 build after build, though the method was defined ungated in the tree</p><p><span class="tag">Lesson</span>A shared cargo target dir links stale crates across checkouts, so a correct diff can still fail checks</p><p><span class="tag">What changed</span>Checks build into a per-job CARGO_TARGET_DIR</p></section>
+<section class="learning"><h2>A ruled file stayed outside write_paths</h2><p><span class="tag">What happened</span>The write-path gate refused, six times in a row, a file that the standing ruling required</p><p><span class="tag">Lesson</span>A ruling that names a file does not open it to the builder unless the gate reads the ruling</p><p><span class="tag">What changed</span>seat.write_paths now widen to files a director or COO ruling names</p></section>
+<section class="learning"><h2>The audit cannot read a valid handback</h2><p><span class="tag">What happened</span>The completion audit refused a handback that met every case, once as a list and once as a map with line pointers</p><p><span class="tag">Lesson</span>When two valid shapes are both refused, the fault is in the gate, and another rewrite only repeats the refusal</p><p><span class="tag">What changed</span>None yet: the job is parked until the audit reads case IDs and pointers from the fence</p></section>
+<section class="learning"><h2>The ready gate lacks a token scope</h2><p><span class="tag">What happened</span>The ready gate's call to list the fork's Greptile repositories got HTTP 403 twice</p><p><span class="tag">Lesson</span>A gate that calls an API needs its token scopes checked before the gate runs, not after it refuses</p><p><span class="tag">What changed</span>None yet: the CEO has been asked to add read:user to the host gh login</p></section>
   </div>
+  <p class="post-back"><a href="/blog/">← Every log entry</a></p>
 </main>
 
-<section class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
-    <footer class="cf-footer">
-      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
-      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
-    </footer>
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request says how it was made; <a href="/ai-disclosure">here is how we work</a>.</p>
   </div>
-</section>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
 
-<script src="/caliper-data.js" defer></script>
-<script src="/caliper-motion.js" defer></script>
 </body>
 </html>

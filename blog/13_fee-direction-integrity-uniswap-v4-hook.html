@@ -2,51 +2,35 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The audited base had it too: Uniswap v4 fee-direction integrity as a runnable twin, CaliperForge</title>
-<meta name="description" content="OpenZeppelin&rsquo;s v1.1.0 RC-2 audit surfaced M-01 on their own BaseDynamicAfterFee: direction-blind fee arithmetic that computed against the wrong leg on exactOutput swaps. Commit 2678eb9 shipped the fix in tag v1.1.0. This post walks the direction-integrity invariant that names the class and the clean/planted twin in caliperforge/uniswap-v4-invariants that fires on it.">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0b0f1c">
-<link rel="canonical" href="https://caliperforge.com/blog/13_fee-direction-integrity-uniswap-v4-hook">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The audited base had it too: Uniswap v4 fee-direction integrity as a runnable twin. | CaliperForge</title>
+<meta name="description" content="OpenZeppelin’s v1.1.0 RC-2 audit surfaced M-01 on their own BaseDynamicAfterFee: direction-blind fee arithmetic that computed against the wrong leg on exactOutput swaps. Commit 2678eb9 shipped the fix in tag v1.1.0. This post walks the direction-integrity invariant that names the class and the clean/planted twin in caliperforge/uniswap-v4-invariants that fires on it.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/caliper.css">
 <link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
 </head>
 <body>
 
-<div class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-
-  <div class="cf-opstrip">
-    <div class="cf-opstrip__row">
-      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
-      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
-    </div>
-  </div>
-
-  <nav class="cf-nav" aria-label="Primary">
-    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
-    <div class="cf-nav-right">
-      <div class="cf-nav-links">
-        <a href="/blog/" class="is-current">Blog</a>
-        <a href="/what-we-caught">What we caught</a>
-        <a href="/engagements/">Engagements</a>
-        <a href="/roadmap/">Roadmap</a>
-        <a href="/papers">Papers</a>
-        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
-      </div>
-      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
     </div>
   </nav>
+</div>
 
-  <header class="cf-hero cf-hero--article">
-    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-07-10 · MICHAEL MOFFETT</div>
-    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">The audited base had it too: Uniswap v4 fee-direction integrity as a runnable twin.</span></h1>
-    <p class="cf-hero-lede">
-      OpenZeppelin ships an audited library, <code>uniswap-hooks</code>,
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 10 July 2026</p>
+    <h1>The audited base had it too: Uniswap v4 fee-direction integrity as a runnable twin.</h1>
+    <div class="post-lede">OpenZeppelin ships an audited library, <code>uniswap-hooks</code>,
       that the Uniswap v4 ecosystem uses as the trusted starting point
       for building custom-fee hooks. One of its base contracts,
       <code>BaseDynamicAfterFee</code>, encodes the after-swap
@@ -55,17 +39,13 @@
       library: M-01, an incorrect fee application when the swap's
       <code>unspecifiedAmount</code> represents input rather than
       output. The fix landed as commit <code>2678eb9</code> and shipped
-      in tag <code>v1.1.0</code>.
-    </p>
-    <p class="cf-hero-lede" style="margin-top:14px;">
-      Zealynx's public writeup of Uniswap v4 hook patterns (2026-05-25)
+      in tag <code>v1.1.0</code>.</div>
+    <div class="post-lede">Zealynx's public writeup of Uniswap v4 hook patterns (2026-05-25)
       names the taxonomy this class sits inside: Pattern 4,
       custom-accounting drift. The specific fee-arithmetic issue in
       <code>BaseDynamicAfterFee</code> is the direction-blind
-      arithmetic that Pattern 4 describes at the general level.
-    </p>
-    <p class="cf-hero-lede" style="margin-top:14px;">
-      This is chapter two of the same series that started with the
+      arithmetic that Pattern 4 describes at the general level.</div>
+    <div class="post-lede">This is chapter two of the same series that started with the
       <code>LiquidityPenaltyHook</code> case. Same shape: the ecosystem
       already found the class, the fix already shipped in the audited
       library, my job is to encode the class as a runnable
@@ -73,19 +53,14 @@
       arithmetic path can prove its suite catches it. Zealynx and
       OpenZeppelin get the credit for the class. What I want to walk
       is the property that names it and the twin diff that fires on
-      it.
-    </p>
+      it.</div>
   </header>
-</div>
+  <div class="post-body">
 
-<main class="cf-band--paper">
-  <div class="cf-article-shell">
-    <article class="cf-article">
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">The mechanism</p>
-        <h2>The mechanism, in plain terms.</h2>
-        <p>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">The mechanism</p>
+<h2>The mechanism, in plain terms.</h2>
+<p>
           Uniswap v4's <code>PoolManager</code> reports a single
           amount to a hook's <code>afterSwap</code>: the "unspecified"
           leg of the swap. On an exactInput swap that leg is the
@@ -93,8 +68,8 @@
           is the INPUT the trader pays. Whether unspecified means
           input or output flips based on the swap type.
         </p>
-        <p>
-          <code>BaseDynamicAfterFee._afterSwap</code> computes a fee
+<p>
+<code>BaseDynamicAfterFee._afterSwap</code> computes a fee
           amount from that unspecified value and a hook-supplied
           target. Before commit <code>2678eb9</code>, the arithmetic
           assumed unspecified was always output. It computed
@@ -106,7 +81,7 @@
           exactOutput it computes against the wrong leg, because
           unspec is now the trader's input, not output.
         </p>
-        <p>
+<p>
           The audit finding (M-01) named the class and the fix. The
           current code branches on <code>exactInput</code> before
           computing the fee. On exactInput it computes
@@ -119,32 +94,31 @@
           (<code>(params.amountSpecified &lt; 0 == params.zeroForOne)</code>)
           pre-existed the fix and was carried forward unchanged.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">The invariant</p>
-        <h2>The invariant that catches the class.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">The invariant</p>
+<h2>The invariant that catches the class.</h2>
+<p>
           The property is a per-currency identity between the hook's
           own ledger and a reference ledger that follows the post-fix
           arithmetic:
         </p>
-        <blockquote>
+<blockquote>
           On every state reachable by fuzzed swaps against a hooked
           pool, the fees the hook has accrued per currency equal the
           fees the reference arithmetic says it should have accrued.
         </blockquote>
-        <p>Concretely:</p>
-        <pre><code>p2_dynamicfee_direction_integrity:
+<p>Concretely:</p>
+<pre><code>p2_dynamicfee_direction_integrity:
     hook.accruedProtocolFees(c) == handler.expectedFees(c)</code></pre>
-        <p>
+<p>
           The reference ledger <code>expectedFees[c]</code> advances
           via the same post-<code>2678eb9</code> fee arithmetic the
           clean twin runs, so the clean twin matches by construction
           on every swap and the planted twin diverges on any
           exactOutput swap.
         </p>
-        <p>
+<p>
           The property is stateful. It runs 256 fuzz campaigns of
           depth 50 (12,800 handler calls per invariant, 25,600 across
           the two invariants) against a handler that swaps in all four
@@ -155,19 +129,18 @@
           is the one a real trader would take against the real
           <code>PoolManager</code>.
         </p>
-        <p>
+<p>
           A second invariant, <code>p2_fee_solvency</code>, asserts
           that the hook's cumulative accrual per currency never
           exceeds its own cumulative-unspecified-amount ledger. That
           bound holds on both twins by construction; the
           class-defining property is the direction-integrity identity.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">The twin</p>
-        <h2>The clean/planted twin, and what the fuzzer does with it.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">The twin</p>
+<h2>The clean/planted twin, and what the fuzzer does with it.</h2>
+<p>
           The clean twin subclasses OpenZeppelin's audited
           <code>BaseDynamicAfterFee</code> (vendored under
           <code>vendor/oz-uniswap-hooks-v1.1.0/</code> from tag
@@ -181,7 +154,7 @@
           <code>2678eb9</code> actually changed; every other line is
           identical, including the currency selection above.
         </p>
-        <p>
+<p>
           Under this case's target-zero configuration, the two
           arithmetics reduce to a clean asymmetry. The pre-fix
           arithmetic computes <code>feeAmount = |unspec|</code> on
@@ -191,7 +164,7 @@
           planted ledgers agree on exactInput and disagree on
           exactOutput.
         </p>
-        <p>
+<p>
           On the clean twin, all five tests pass. Both invariants hold
           across 25,600 fuzzed handler calls with zero reverts, and
           zero <code>INVARIANT VIOLATED</code> markers are printed. On
@@ -209,19 +182,18 @@
           the planted twin shows up in the direction-integrity leg,
           not in solvency.
         </p>
-        <p>
+<p>
           That is the shape I want from a class-encoding test: on the
           correct implementation, silence and green. On the
           specification violation, a loud marker and a short,
           human-readable counterexample.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">Scope</p>
-        <h2>What I actually claim, and where I stop.</h2>
-        <p>I want to name what this is and what it is not.</p>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">Scope</p>
+<h2>What I actually claim, and where I stop.</h2>
+<p>I want to name what this is and what it is not.</p>
+<p>
           This is a stateful-invariant demonstration on a bug class
           the ecosystem has already caught and documented. OpenZeppelin
           surfaced the finding on their own base library in their
@@ -239,7 +211,7 @@
           deterministic regression, scorecards for both twins, all
           reproducible with <code>forge test</code>.
         </p>
-        <p>
+<p>
           What that gets you, if you build hooks: a concrete,
           name-recognizable pre-deploy CI gate for the "after-swap fee
           arithmetic is direction-blind" class. If you inherit
@@ -248,7 +220,7 @@
           <code>bring-your-hook</code> scaffold in the repo is the
           intended path for adopting it against your own hook.
         </p>
-        <p>
+<p>
           What that does not get you: a claim that CaliperForge
           audited the OpenZeppelin base library, a claim that anything
           currently deployed is exposed at this class, or a claim that
@@ -256,7 +228,7 @@
           a specific piece of CI that catches a specific class loudly
           and cheaply, on the runtime the class actually lives on.
         </p>
-        <p>
+<p>
           The credit for the class goes to OpenZeppelin (the
           <a href="https://www.openzeppelin.com/news/openzeppelin-uniswap-hooks-v1.1.0-rc-2-audit" rel="noopener">v1.1.0 RC-2 audit</a>
           that reported M-01 and the
@@ -267,12 +239,11 @@
           twin diff, and CI evidence live in
           <a href="https://github.com/caliperforge/uniswap-v4-invariants/blob/main/src/cases/p2-dynamicfee-direction-integrity/README.md" rel="noopener"><code>caliperforge/uniswap-v4-invariants</code></a>.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">Reproducing</p>
-        <h2>Running it.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">Reproducing</p>
+<h2>Running it.</h2>
+<p>
           The case is at
           <code>src/cases/p2-dynamicfee-direction-integrity/</code>.
           Both twins are runnable with the pinned Foundry toolchain
@@ -280,75 +251,74 @@
           at <code>v4.0.0</code>, <code>openzeppelin-uniswap-hooks</code>
           at <code>v1.1.0</code>):
         </p>
-        <pre><code>forge test --match-contract '^P2DirectionClean$'   -vv   # all green, zero markers
+<pre><code>forge test --match-contract '^P2DirectionClean$'   -vv   # all green, zero markers
 forge test --match-contract '^P2DirectionPlanted$' -vv   # detection legs fail WITH marker</code></pre>
-        <p>
+<p>
           Scorecards for both runs are at
           <code>docs/scorecards/p2-dynamicfee-direction-integrity/</code>.
           CI is green on <code>main</code> at commit
           <code>46f826a</code> across both the <code>ci</code> and
           <code>bring-your-hook</code> workflows.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">Sources</p>
-        <h2>Primary references and case artifacts.</h2>
-        <ul>
-          <li>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">Sources</p>
+<h2>Primary references and case artifacts.</h2>
+<ul>
+<li>
             OpenZeppelin, Uniswap Hooks v1.1.0-rc.2 audit (M-01:
             incorrect fee application when
             <code>unspecifiedAmount</code> represents input instead of
             output):
             <a href="https://www.openzeppelin.com/news/openzeppelin-uniswap-hooks-v1.1.0-rc-2-audit" rel="noopener">openzeppelin.com/news/openzeppelin-uniswap-hooks-v1.1.0-rc-2-audit</a>
-          </li>
-          <li>
+</li>
+<li>
             Fix commit <code>2678eb9</code> in
             <code>OpenZeppelin/uniswap-hooks</code>:
             <a href="https://github.com/OpenZeppelin/uniswap-hooks/commit/2678eb92ab15270837e6be5972bedf314636c529" rel="noopener">github.com/OpenZeppelin/uniswap-hooks/commit/2678eb92ab15270837e6be5972bedf314636c529</a>
-          </li>
-          <li>
+</li>
+<li>
             Post-fix source, <code>BaseDynamicAfterFee.sol</code> at
             tag <code>v1.1.0</code>:
             <a href="https://github.com/OpenZeppelin/uniswap-hooks/blob/v1.1.0/src/fee/BaseDynamicAfterFee.sol" rel="noopener">github.com/OpenZeppelin/uniswap-hooks/blob/v1.1.0/src/fee/BaseDynamicAfterFee.sol</a>
-          </li>
-          <li>
+</li>
+<li>
             Zealynx, "Uniswap v4 hook attacks: 4 exploit patterns with
             PoCs" (2026-05-25, Pattern 4: custom-accounting drift):
             <a href="https://www.zealynx.io/research/protocol-deep-dives/uniswap-v4-hook-attacks" rel="noopener">zealynx.io/research/protocol-deep-dives/uniswap-v4-hook-attacks</a>
-          </li>
-          <li>
+</li>
+<li>
             Our case, C-P2 README:
             <a href="https://github.com/caliperforge/uniswap-v4-invariants/blob/main/src/cases/p2-dynamicfee-direction-integrity/README.md" rel="noopener">github.com/caliperforge/uniswap-v4-invariants/blob/main/src/cases/p2-dynamicfee-direction-integrity/README.md</a>
-          </li>
-          <li>
+</li>
+<li>
             Repo root:
             <a href="https://github.com/caliperforge/uniswap-v4-invariants" rel="noopener">github.com/caliperforge/uniswap-v4-invariants</a>
-          </li>
-        </ul>
-        <p class="cf-article__meta">
+</li>
+</ul>
+<p class="cf-article__meta">
           This writeup was drafted with AI assistance. Authored and
           reviewed by Michael Moffett, operator at CaliperForge. Full
           policy at
           <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
         </p>
-      </section>
-
-    </article>
-  </div>
-</main>
-
-<section class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
-    <footer class="cf-footer">
-      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
-      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
-    </footer>
-  </div>
 </section>
 
-<script src="/caliper-data.js" defer></script>
-<script src="/caliper-motion.js" defer></script>
+  </div>
+  <p class="post-back"><a href="/blog/">← Every log entry</a></p>
+</main>
+
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request says how it was made; <a href="/ai-disclosure">here is how we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
+
 </body>
 </html>

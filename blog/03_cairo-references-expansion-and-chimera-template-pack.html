@@ -2,67 +2,47 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Build update | cf-invariants Cairo suite grows to nine, chimera-template-pack ships | CaliperForge</title>
-<meta name="description" content="Two recent CaliperForge ships: cf-invariants' Cairo reference suite expanded from six to nine Voyager-verified Starknet Sepolia contracts (lending_ref, staking_ref, vesting_ref); and chimera-template-pack, a reusable Foundry + Recon Chimera scaffold for contest entries.">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0b0f1c">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Build update, cf-invariants Cairo suite grows to nine, chimera-template-pack ships. | CaliperForge</title>
+<meta name="description" content="Two recent CaliperForge ships: cf-invariants&#x27; Cairo reference suite expanded from six to nine Voyager-verified Starknet Sepolia contracts (lending_ref, staking_ref, vesting_ref); and chimera-template-pack, a reusable Foundry + Recon Chimera scaffold for contest entries.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/caliper.css">
 <link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
 </head>
 <body>
 
-<div class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-
-  <div class="cf-opstrip">
-    <div class="cf-opstrip__row">
-      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
-      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
-    </div>
-  </div>
-
-  <nav class="cf-nav" aria-label="Primary">
-    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
-    <div class="cf-nav-right">
-      <div class="cf-nav-links">
-        <a href="/blog/" class="is-current">Blog</a>
-        <a href="/what-we-caught">What we caught</a>
-        <a href="/engagements/">Engagements</a>
-        <a href="/roadmap/">Roadmap</a>
-        <a href="/papers">Papers</a>
-        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
-      </div>
-      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
     </div>
   </nav>
+</div>
 
-  <header class="cf-hero cf-hero--article">
-    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-02 · MICHAEL MOFFETT</div>
-    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">Build update, cf-invariants Cairo suite grows to nine, chimera-template-pack ships.</span></h1>
-    <p class="cf-hero-lede">
-      Two CaliperForge builds went out this week that haven't been
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 2 June 2026</p>
+    <h1>Build update, cf-invariants Cairo suite grows to nine, chimera-template-pack ships.</h1>
+    <div class="post-lede">Two CaliperForge builds went out this week that haven't been
       written up yet. Both are infrastructure for the
       security-tooling line we've been working on, and both showed
       up on the public repos before this writeup did, which is the
       order we prefer. This is the writeup, what shipped,
-      where it lives, and what each one makes cheaper next.
-    </p>
+      where it lives, and what each one makes cheaper next.</div>
   </header>
-</div>
+  <div class="post-body">
 
-<main class="cf-band--paper">
-  <div class="cf-article-shell">
-    <article class="cf-article">
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">cf-invariants Cairo references</p>
-        <h2>Six to nine. Three new bug classes, each with a planted bug, a detecting invariant, and a Voyager-verified deployment.</h2>
-        <p>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">cf-invariants Cairo references</p>
+<h2>Six to nine. Three new bug classes, each with a planted bug, a detecting invariant, and a Voyager-verified deployment.</h2>
+<p>
           The cf-invariants reference suite on Starknet Sepolia grew
           from six contracts to nine. Three new references landed
           under <code>references/</code>:
@@ -75,15 +55,15 @@
           snforge test driver, an expected scorecard, and a
           Voyager-source-verified deployment on Starknet Sepolia.
         </p>
-        <p>
+<p>
           The point of the suite is what each contract teaches the
           invariant-authoring layer. Each new reference targets a
           distinct bug class that hadn't been covered by the first
           six.
         </p>
-        <ul>
-          <li>
-            <strong><code>lending_ref</code>, per-user
+<ul>
+<li>
+<strong><code>lending_ref</code>, per-user
             solvency under LTV.</strong> A minimal single-asset
             lending market. The planted bug is that
             <code>withdraw_collateral</code> decrements the
@@ -91,16 +71,16 @@
             re-check, so a borrower can deposit, borrow up to the
             cap, then withdraw collateral down to zero. The
             detecting invariant is
-            <code>debt_of[a] * 10_000 &le; collateral_of[a] * ltv_bps</code>
+            <code>debt_of[a] * 10_000 ≤ collateral_of[a] * ltv_bps</code>
             for every borrower at every step. snforge catches it on
             the first fuzz sequence that lands a
-            <code>borrow &rarr; withdraw_collateral</code> pair
+            <code>borrow → withdraw_collateral</code> pair
             crossing the LTV threshold. Deployed at
-            <a href="https://sepolia.voyager.online/contract/0x0627b8abe3b11a2593fc5204f9b86868ff00789b7cc090c3d3e3bfcf58c57c52" rel="noopener"><code>0x0627&hellip;7c52</code></a>,
+            <a href="https://sepolia.voyager.online/contract/0x0627b8abe3b11a2593fc5204f9b86868ff00789b7cc090c3d3e3bfcf58c57c52" rel="noopener"><code>0x0627…7c52</code></a>,
             Voyager-source-verified.
           </li>
-          <li>
-            <strong><code>staking_ref</code>, multi-pool
+<li>
+<strong><code>staking_ref</code>, multi-pool
             conservation under slashing.</strong> A staking vault
             with a slashing-escheat path. The planted bug is that
             <code>slash(victim)</code> zeros the victim's stake and
@@ -108,32 +88,32 @@
             <code>slashed_pool</code>, so the slashed amount
             vanishes from accounting. The detecting invariant sums
             across both pools
-            (<code>total_staked + slashed_pool == sum(stakes) &minus; sum(unstakes) &minus; sum(slashed_withdrawals)</code>),
+            (<code>total_staked + slashed_pool == sum(stakes) − sum(unstakes) − sum(slashed_withdrawals)</code>),
             a structurally different shape from the single-pool
             ERC-20 conservation finding. Deployed at
-            <a href="https://sepolia.voyager.online/contract/0x014e72228c8aa95e5aad34fdcb00186d335e6f96c3ed4c6c632b85e9aaea4e09" rel="noopener"><code>0x014e&hellip;4e09</code></a>.
+            <a href="https://sepolia.voyager.online/contract/0x014e72228c8aa95e5aad34fdcb00186d335e6f96c3ed4c6c632b85e9aaea4e09" rel="noopener"><code>0x014e…4e09</code></a>.
           </li>
-          <li>
-            <strong><code>vesting_ref</code>, time-bounded
+<li>
+<strong><code>vesting_ref</code>, time-bounded
             supply cap.</strong> A linear-vesting contract. The
             planted bug is that <code>claim()</code> pays out
-            <code>total_grant &minus; claimed</code> unconditionally
+            <code>total_grant − claimed</code> unconditionally
             instead of releasing against
             <code>vested_at(now)</code>, so the first
             pre-<code>end_ts</code> claim drives
             <code>claimed &gt; vested_at(now)</code>. The detecting
             invariant is
-            <code>claimed() &le; vested_at(t)</code> for every
+            <code>claimed() ≤ vested_at(t)</code> for every
             observable timestamp, and the driver exercises it by
             advancing <code>cheat_block_timestamp</code> across the
             schedule. This is the first reference in the suite
             where the right-hand side of the invariant is a function
             of time rather than a fixed accounting identity.
             Deployed at
-            <a href="https://sepolia.voyager.online/contract/0x032537f261a271e4ccf0ac0e90e41c0f994f9efda69baaa5b66d055b4a0abd38" rel="noopener"><code>0x0325&hellip;bd38</code></a>.
+            <a href="https://sepolia.voyager.online/contract/0x032537f261a271e4ccf0ac0e90e41c0f994f9efda69baaa5b66d055b4a0abd38" rel="noopener"><code>0x0325…bd38</code></a>.
           </li>
-        </ul>
-        <p>
+</ul>
+<p>
           The full deployment manifest, class hashes, declare
           and deploy tx hashes, constructor calldata, and Voyager
           source-verification job IDs for all nine contracts ,
@@ -145,12 +125,11 @@
           Cairo Specialist agent and accepted by the contract author
           before inclusion, per the standing AI disclosure.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">chimera-template-pack</p>
-        <h2>A Foundry + Recon Chimera scaffold for contest entries. Two-day fork instead of a five-day rebuild.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">chimera-template-pack</p>
+<h2>A Foundry + Recon Chimera scaffold for contest entries. Two-day fork instead of a five-day rebuild.</h2>
+<p>
           The second ship is
           <a href="https://github.com/caliperforge/chimera-template-pack" rel="noopener">chimera-template-pack</a>,
           a GitHub-template repo for stamping out CaliperForge
@@ -165,7 +144,7 @@
           ANSI-stripped scorecards into
           <code>findings/&lt;invariant&gt;/scorecard.{json,md}</code>.
         </p>
-        <p>
+<p>
           The reason this is worth shipping as a template is the
           cycle-time delta. Standing up the same harness ad-hoc for a
           Cantina or Code4rena entry has been running roughly five
@@ -181,12 +160,11 @@
           Recon's create-chimera-app is the upstream pattern this
           template tracks, cited as such in the README.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">The throughline</p>
-        <h2>Inside-the-tool and outside-the-tool versions of the same cadence.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">The throughline</p>
+<h2>Inside-the-tool and outside-the-tool versions of the same cadence.</h2>
+<p>
           We hold both of these under the same lens we have been
           describing as specialization velocity, how quickly
           the org can stand a new-chain or new-tooling-class
@@ -198,7 +176,7 @@
           outside-the-tool version: future contest-entry artifacts
           cost roughly two days instead of five.
         </p>
-        <p>
+<p>
           Neither is a launch, and neither is a tool-count claim.
           The throughline is the cadence, an org that ships
           verified security tooling fast, with the proof checked into
@@ -206,26 +184,26 @@
           public if you want to check the cadence against the commit
           history.
         </p>
-        <p class="cf-article__meta">
+<p class="cf-article__meta">
          , Michael Moffett. Built with AI assistance; AI-suggested invariants are tagged in source. Full AI policy at <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
         </p>
-      </section>
-
-    </article>
-  </div>
-</main>
-
-<section class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
-    <footer class="cf-footer">
-      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
-      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
-    </footer>
-  </div>
 </section>
 
-<script src="/caliper-data.js" defer></script>
-<script src="/caliper-motion.js" defer></script>
+  </div>
+  <p class="post-back"><a href="/blog/">← Every log entry</a></p>
+</main>
+
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request says how it was made; <a href="/ai-disclosure">here is how we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
+
 </body>
 </html>

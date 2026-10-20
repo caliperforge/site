@@ -2,80 +2,56 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The txs the proof validated but settlement skipped: Aztec&rsquo;s cross-layer conservation class, CaliperForge</title>
-<meta name="description" content="On June 14, 2026, approximately $2.19M was extracted from Aztec&rsquo;s deprecated RollupProcessor contract. The invariant class: cross-layer conservation. What our CI-verified reference pairs cover today, and where the Aztec surface sits outside that set.">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0b0f1c">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The txs the proof validated but settlement skipped: Aztec’s cross-layer conservation class. | CaliperForge</title>
+<meta name="description" content="On June 14, 2026, approximately $2.19M was extracted from Aztec’s deprecated RollupProcessor contract. The invariant class: cross-layer conservation. What our CI-verified reference pairs cover today, and where the Aztec surface sits outside that set.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/caliper.css">
 <link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
 </head>
 <body>
 
-<div class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-
-  <div class="cf-opstrip">
-    <div class="cf-opstrip__row">
-      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
-      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
-    </div>
-  </div>
-
-  <nav class="cf-nav" aria-label="Primary">
-    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
-    <div class="cf-nav-right">
-      <div class="cf-nav-links">
-        <a href="/blog/" class="is-current">Blog</a>
-        <a href="/what-we-caught">What we caught</a>
-        <a href="/engagements/">Engagements</a>
-        <a href="/roadmap/">Roadmap</a>
-        <a href="/papers">Papers</a>
-        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
-      </div>
-      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
     </div>
   </nav>
+</div>
 
-  <header class="cf-hero cf-hero--article">
-    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-21 · MICHAEL MOFFETT</div>
-    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">The txs the proof validated but settlement skipped: Aztec&rsquo;s cross-layer conservation class.</span></h1>
-    <p class="cf-hero-lede">
-      On June 14, 2026, approximately $2.19M was extracted from
-      Aztec&rsquo;s deprecated <code>RollupProcessor</code> contract.
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 21 June 2026</p>
+    <h1>The txs the proof validated but settlement skipped: Aztec’s cross-layer conservation class.</h1>
+    <div class="post-lede">On June 14, 2026, approximately $2.19M was extracted from
+      Aztec’s deprecated <code>RollupProcessor</code> contract.
       The mechanism: the ZK proof validates the full batch of 32
       transaction slots, but the L1 settlement loop processes only the
       first <code>numRealTxs</code> of them. The remaining slots pass
       proof validation and receive no settlement-side accounting.
-      Tokens in those positions bypass the settlement fee entirely.
-    </p>
-    <p class="cf-hero-lede" style="margin-top:14px;">
-      That is the bug in one sentence: proof scope and settlement scope
+      Tokens in those positions bypass the settlement fee entirely.</div>
+    <div class="post-lede">That is the bug in one sentence: proof scope and settlement scope
       diverged. The proof said 32 transactions were valid. Settlement
-      processed fewer. The difference walked out.
-    </p>
-    <p class="cf-hero-lede" style="margin-top:14px;">
-      This post is not a postmortem. SlowMist published the detailed
+      processed fewer. The difference walked out.</div>
+    <div class="post-lede">This post is not a postmortem. SlowMist published the detailed
       root-cause analysis, and the incident was widely reported. That
       analysis is the authoritative artifact. What this covers is the
       invariant class the mechanism belongs to, and what a test that
-      holds that class would assert.
-    </p>
+      holds that class would assert.</div>
   </header>
-</div>
+  <div class="post-body">
 
-<main class="cf-band--paper">
-  <div class="cf-article-shell">
-    <article class="cf-article">
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">The pattern</p>
-        <h2>Conservation across layers.</h2>
-        <p>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">The pattern</p>
+<h2>Conservation across layers.</h2>
+<p>
           The conservation class, broadly, asserts that units entering a
           system must be consistently accounted for. Every deposit must
           appear in the total. Every debit that gets processed must reduce
@@ -85,16 +61,16 @@
           layers, it fails when the accounting view at one layer diverges
           from what the other layer actually processed.
         </p>
-        <p>
+<p>
           The <code>numRealTxs</code> boundary is the cross-layer shape.
           The ZK proof layer and the L1 settlement layer are supposed to
           agree on which transactions have been finalized. The proof said
-          &ldquo;all 32 are valid.&rdquo; Settlement said &ldquo;I
-          processed the first N.&rdquo; Transactions at position N+1
+          “all 32 are valid.” Settlement said “I
+          processed the first N.” Transactions at position N+1
           through 32 existed in one accounting view and not the other.
           Conservation broke at the boundary.
         </p>
-        <p>
+<p>
           The invariant that should hold is: for every transaction slot in
           a proof-validated batch, the L1 settlement loop processes exactly
           that slot, or the batch is invalid. Equivalently: the set of
@@ -104,28 +80,27 @@
           accounting across both layers matches after settlement would have
           flagged this shape.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">CI-verified coverage</p>
-        <h2>What we cover, and where we stop.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">CI-verified coverage</p>
+<h2>What we cover, and where we stop.</h2>
+<p>
           For the conservation class, we ship reference artifacts on two
           runtimes: Cairo on Starknet and HyperEVM. Both carry the class
           with clean and planted-bug twins running in CI. The
           EVM-L1-ZK-settlement surface that Aztec used is not one of them.
         </p>
-        <p>
-          <strong>cf-invariants, Cairo / Starknet (same-layer
+<p>
+<strong>cf-invariants, Cairo / Starknet (same-layer
           conservation).</strong> The 12-class reference suite includes
           two conservation-class references: <code>erc4626_ref</code> and
           <code>staking_ref</code>. The erc4626 conservation invariant
           (<code>cf_invariant_share_asset_conservation</code>) tracks the
-          vault&rsquo;s <code>total_assets</code> against an
+          vault’s <code>total_assets</code> against an
           externally-maintained cumulative net-deposit count across every
           deposit and withdraw transition. The planted bug:
           <code>withdraw</code> decrements <code>total_shares</code> but
-          not <code>total_assets</code>, so the vault&rsquo;s reported
+          not <code>total_assets</code>, so the vault’s reported
           total drifts from the real one after the first withdrawal. The
           invariant fires as soon as the two counts diverge. The staking
           conservation invariant
@@ -137,13 +112,13 @@
           <code>slashed_pool</code> credit on a slash, and the conservation
           assertion fails the moment a non-zero slash lands.
         </p>
-        <p>
+<p>
           Both are single-layer conservation: the invariant lives inside
           one contract and the assertion compares internal accounting
           fields. They teach the conservation class shape. They are not
           the Aztec shape, which is a cross-layer divergence.
         </p>
-        <p>
+<p>
           CI evidence for cf-invariants: PR #2 squash-merged 2026-06-07,
           commit <code>0bff2c4</code>, CI run <code>27075213962</code>
           26/26 green. All 12 references source-verified on Starknet
@@ -152,8 +127,8 @@
           Developer cookbook:
           <a href="https://github.com/caliperforge/cf-invariants-starknet/tree/main/docs/cookbook" rel="noopener">github.com/caliperforge/cf-invariants-starknet/tree/main/docs/cookbook</a>.
         </p>
-        <p>
-          <strong>hyperevm-safety, HyperEVM / Solidity (cross-layer
+<p>
+<strong>hyperevm-safety, HyperEVM / Solidity (cross-layer
           conservation window).</strong> D-5
           (<code>CoreWriterSolvencyWindow</code>) is the cross-layer
           variant in our artifact set. The bug class it covers: a lending
@@ -162,24 +137,24 @@
           EVM-side solvency view shows inflated collateral that has not
           cleared the HyperCore layer yet. If HyperCore rejects the action,
           the borrower holds debt against collateral that never arrived.
-          The <code>CoreWriterSolvency</code> library&rsquo;s
+          The <code>CoreWriterSolvency</code> library’s
           <code>assertSettlementWindowInvariant</code> reverts if the
           EVM-reported solvency would only hold because of unsettled
           credits. A protocol that calls this from every
           position-mutating entry point cannot be exploited via the
           pre-credit path.
         </p>
-        <p>
+<p>
           The structural resemblance to the Aztec shape: in both cases,
-          one layer&rsquo;s accounting runs ahead of the other
-          layer&rsquo;s confirmed state. In Aztec, the proof layer
+          one layer’s accounting runs ahead of the other
+          layer’s confirmed state. In Aztec, the proof layer
           validates transactions the settlement layer never processes. In
           D-5, the EVM layer counts collateral the HyperCore layer has not
           confirmed. The class identity is a cross-layer conservation
           window: two layers that should agree on settled state temporarily
           diverge, and the divergence window is exploitable.
         </p>
-        <p>
+<p>
           CI evidence for hyperevm-safety: v0.1, commit
           <code>540464e</code>, CI run <code>27379686747</code> 6/6 jobs
           green. D-5 planted twin
@@ -188,34 +163,33 @@
           and stays silent on the clean variant. Repo:
           <a href="https://github.com/caliperforge/hyperevm-safety" rel="noopener">github.com/caliperforge/hyperevm-safety</a>.
         </p>
-        <p>
-          <strong>What is not in our set.</strong> The
+<p>
+<strong>What is not in our set.</strong> The
           EVM-L1-ZK-settlement surface, which is the Aztec attack surface,
           does not appear in our artifact set. We do not have a planted
           twin at the <code>numRealTxs</code> boundary or on any
           ZK-rollup-to-L1-settlement pair. A test that caught the Aztec
           shape directly would harness the
-          <code>RollupProcessor</code>&rsquo;s settlement loop, construct
+          <code>RollupProcessor</code>’s settlement loop, construct
           a batch with <code>numRealTxs &lt; batch_size</code>, invoke
           settlement, and assert that the post-settlement accounting
           matches the full batch. That test does not exist in our CI today.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">The teach</p>
-        <h2>Why the class identity is the useful thing to say here.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">The teach</p>
+<h2>Why the class identity is the useful thing to say here.</h2>
+<p>
           The conservation class is not a single implementation pattern.
           It surfaces wherever there is a summary that two separate
           accounting views must agree. Single-layer conservation (erc4626,
-          staking) fails when a contract&rsquo;s internal bookkeeping has
+          staking) fails when a contract’s internal bookkeeping has
           a gap. Cross-layer conservation (D-5, Aztec) fails when two
           systems that share a settlement boundary disagree on what has
           settled.
         </p>
-        <p>
-          The useful output from an incident like Aztec&rsquo;s is the
+<p>
+          The useful output from an incident like Aztec’s is the
           class name, the invariant formulation, and the question: does
           anything in our harness already carry this shape? For teams
           building on Cairo or Starknet, the <code>cf-invariants</code>
@@ -226,48 +200,47 @@
           EVM-L1-ZK-settlement harness that the Aztec incident calls for,
           neither artifact covers it yet.
         </p>
-        <p>
+<p>
           That is what the class-identity teach is doing: the method
           generalizes across runtimes; our coverage of this specific
           surface does not.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">Sources</p>
-        <h2>Primary analysis and CaliperForge artifacts.</h2>
-        <ul>
-          <li>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">Sources</p>
+<h2>Primary analysis and CaliperForge artifacts.</h2>
+<ul>
+<li>
             SlowMist root-cause analysis:
             <a href="https://slowmist.medium.com/analysis-of-the-2-19-million-asset-theft-from-aztec-connect-d867c59b1fc6" rel="noopener">slowmist.medium.com/analysis-of-the-2-19-million-asset-theft-from-aztec-connect-d867c59b1fc6</a>
-          </li>
-          <li>
+</li>
+<li>
             Aztec Connect incident, widely reported (KuCoin, NewsBTC,
             CryptoTimes, others).
           </li>
-        </ul>
-        <p>
-          <strong>CaliperForge artifacts cited:</strong>
-        </p>
-        <ul>
-          <li>
-            <a href="https://github.com/caliperforge/cf-invariants-starknet" rel="noopener">cf-invariants</a>
+</ul>
+<p>
+<strong>CaliperForge artifacts cited:</strong>
+</p>
+<ul>
+<li>
+<a href="https://github.com/caliperforge/cf-invariants-starknet" rel="noopener">cf-invariants</a>
            , Cairo / Starknet, 12-class matrix including two
             conservation-class references, CI-verified
             <code>0bff2c4</code>, run <code>27075213962</code>.
           </li>
-          <li>
-            <a href="https://github.com/caliperforge/cf-invariants-starknet/tree/main/docs/cookbook" rel="noopener">cf-invariants developer cookbook</a>
+<li>
+<a href="https://github.com/caliperforge/cf-invariants-starknet/tree/main/docs/cookbook" rel="noopener">cf-invariants developer cookbook</a>
            , public since 2026-06-11, <code>7f94b08</code>.
           </li>
-          <li>
-            <a href="https://github.com/caliperforge/hyperevm-safety" rel="noopener">hyperevm-safety</a>
+<li>
+<a href="https://github.com/caliperforge/hyperevm-safety" rel="noopener">hyperevm-safety</a>
            , HyperEVM / Solidity, D-5 cross-layer conservation
             window, CI-verified <code>540464e</code>, run
             <code>27379686747</code>.
           </li>
-        </ul>
-        <p class="cf-article__meta">
+</ul>
+<p class="cf-article__meta">
           Operator of record: Michael Moffett ,
           <a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a>
           ,
@@ -278,23 +251,23 @@
           <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>
           for the full disclosure register.
         </p>
-      </section>
-
-    </article>
-  </div>
-</main>
-
-<section class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
-    <footer class="cf-footer">
-      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
-      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
-    </footer>
-  </div>
 </section>
 
-<script src="/caliper-data.js" defer></script>
-<script src="/caliper-motion.js" defer></script>
+  </div>
+  <p class="post-back"><a href="/blog/">← Every log entry</a></p>
+</main>
+
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request says how it was made; <a href="/ai-disclosure">here is how we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
+
 </body>
 </html>

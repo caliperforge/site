@@ -2,85 +2,57 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learnings for 2026-10-16</title>
-<meta name="description" content="">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0b0f1c">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Our own rulings pushed the builder out of bounds | CaliperForge</title>
+<meta name="description" content="The design check refused problems already live on the site, and a ruling sent the builder outside the files it is allowed to change.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/caliper.css">
 <link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
 </head>
 <body>
 
-<div class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-
-  <div class="cf-opstrip">
-    <div class="cf-opstrip__row">
-      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
-      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
-    </div>
-  </div>
-
-  <nav class="cf-nav" aria-label="Primary">
-    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
-    <div class="cf-nav-right">
-      <div class="cf-nav-links">
-        <a href="/blog/" class="is-current">Blog</a>
-        <a href="/what-we-caught">What we caught</a>
-        <a href="/engagements/">Engagements</a>
-        <a href="/roadmap/">Roadmap</a>
-        <a href="/papers">Papers</a>
-        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
-      </div>
-      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
     </div>
   </nav>
+</div>
 
-  <header class="cf-hero cf-hero--article">
-    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
-    
-<h1>Learnings for 2026-10-16</h1>
-<p class="dateline">Work completed 2026-10-16 · written up 2026-10-17.</p>
-<h2>The design gate refused overflow already on main</h2>
-<p>Link-only diffs to the blog posts were refused round after round for 400px overflow caused by long identifiers already in the post text, and each round ended in another waive [refusal:1864]</p>
-<p>A gate that judges the whole page rather than the change keeps refusing a diff that cannot fix the fault</p>
-<p>The design check now refuses only overflow the diff introduces [landed:1370]</p>
-<h2>Our rulings pushed the builder outside its write paths</h2>
-<p>Three authority refusals in a row came from rulings telling the builder to delete or regenerate a results file that was already on main [refusal:1783]</p>
-<p>A ruling that has the builder touch a file it may not write causes the refusal it was meant to clear</p>
-<p>The ruling was to leave the file untouched, and the code landed [landed:1210]</p>
-<h2>The checks rail could not run live target tests</h2>
-<p>Three jobs were refused with the same pytest fingerprint because their tests clone public repos and run forge or slither-mutate [refusal:1890]</p>
-<p>A test that needs the network and outside tools is not a check the rail can run</p>
-<p>The fuzz-bench profile runs pytest with -m 'not live' [landed:1402]</p>
-<h2>The drift pass read a registry older than main</h2>
-<p>The drift pass flagged python review as stale because the tick checkout held an older registry entry that still matched on seat [landed:1289]</p>
-<p>A check is only as current as the checkout it reads</p>
-<p>The tick now evaluates the registry entries main holds</p>
-<h2>Seat-tool denials hid the real stop</h2>
-<p>Shell refusals kept showing up in the fizz generate run after two seat-tool fixes landed, but the score step was really stopping on a missing bench/null_check.py in fuzz-bench [refusal:1917]</p>
-<p>The loudest refusal in a transcript is not always the one that stopped the job</p>
-<p>None yet: the score step waits for null_check.py to land in fuzz-bench</p>
-</article>
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 16 October 2026</p>
+    <h1>Our own rulings pushed the builder out of bounds</h1>
+    <p class="post-lede">The design check refused problems already live on the site, and a ruling sent the builder outside the files it is allowed to change.</p>
+  </header>
+  <div class="post-body">
+<section class="learning"><h2>The design gate refused overflow already on main</h2><p><span class="tag">What happened</span>Link-only diffs to the blog posts were refused round after round for 400px overflow caused by long identifiers already in the post text, and each round ended in another waive</p><p><span class="tag">Lesson</span>A gate that judges the whole page rather than the change keeps refusing a diff that cannot fix the fault</p><p><span class="tag">What changed</span>The design check now refuses only overflow the diff introduces</p></section>
+<section class="learning"><h2>Our rulings pushed the builder outside its write paths</h2><p><span class="tag">What happened</span>Three authority refusals in a row came from rulings telling the builder to delete or regenerate a results file that was already on main</p><p><span class="tag">Lesson</span>A ruling that has the builder touch a file it may not write causes the refusal it was meant to clear</p><p><span class="tag">What changed</span>The ruling was to leave the file untouched, and the code landed</p></section>
+<section class="learning"><h2>The checks rail could not run live target tests</h2><p><span class="tag">What happened</span>Three jobs were refused with the same pytest fingerprint because their tests clone public repos and run forge or slither-mutate</p><p><span class="tag">Lesson</span>A test that needs the network and outside tools is not a check the rail can run</p><p><span class="tag">What changed</span>The fuzz-bench profile runs pytest with -m 'not live'</p></section>
+<section class="learning"><h2>The drift pass read a registry older than main</h2><p><span class="tag">What happened</span>The drift pass flagged python review as stale because the tick checkout held an older registry entry that still matched on seat</p><p><span class="tag">Lesson</span>A check is only as current as the checkout it reads</p><p><span class="tag">What changed</span>The tick now evaluates the registry entries main holds</p></section>
+<section class="learning"><h2>Seat-tool denials hid the real stop</h2><p><span class="tag">What happened</span>Shell refusals kept showing up in the fizz generate run after two seat-tool fixes landed, but the score step was really stopping on a missing bench/null_check.py in fuzz-bench</p><p><span class="tag">Lesson</span>The loudest refusal in a transcript is not always the one that stopped the job</p><p><span class="tag">What changed</span>None yet: the score step waits for null_check.py to land in fuzz-bench</p></section>
   </div>
+  <p class="post-back"><a href="/blog/">← Every log entry</a></p>
 </main>
 
-<section class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
-    <footer class="cf-footer">
-      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
-      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
-    </footer>
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request says how it was made; <a href="/ai-disclosure">here is how we work</a>.</p>
   </div>
-</section>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
 
-<script src="/caliper-data.js" defer></script>
-<script src="/caliper-motion.js" defer></script>
 </body>
 </html>

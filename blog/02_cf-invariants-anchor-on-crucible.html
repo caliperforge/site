@@ -2,66 +2,46 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stateful invariant testing for Solana/Anchor | cf-invariants-anchor on Crucible | CaliperForge</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stateful invariant testing for Solana/Anchor, cf-invariants-anchor on Crucible. | CaliperForge</title>
 <meta name="description" content="cf-invariants-anchor is the Anchor sibling of cf-invariants. It ingests an Anchor IDL, emits Crucible-compatible fuzz source, and is proven by CI: a clean vault passes, a planted-bug twin fails, scorecards committed.">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0b0f1c">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/caliper.css">
 <link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
 </head>
 <body>
 
-<div class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-
-  <div class="cf-opstrip">
-    <div class="cf-opstrip__row">
-      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
-      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
-    </div>
-  </div>
-
-  <nav class="cf-nav" aria-label="Primary">
-    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
-    <div class="cf-nav-right">
-      <div class="cf-nav-links">
-        <a href="/blog/" class="is-current">Blog</a>
-        <a href="/what-we-caught">What we caught</a>
-        <a href="/engagements/">Engagements</a>
-        <a href="/roadmap/">Roadmap</a>
-        <a href="/papers">Papers</a>
-        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
-      </div>
-      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
     </div>
   </nav>
+</div>
 
-  <header class="cf-hero cf-hero--article">
-    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-02 · MICHAEL MOFFETT</div>
-    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">Stateful invariant testing for Solana/Anchor, cf-invariants-anchor on Crucible.</span></h1>
-    <p class="cf-hero-lede">
-      Crucible and Trident ship the execution engine for invariant
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 2 June 2026</p>
+    <h1>Stateful invariant testing for Solana/Anchor, cf-invariants-anchor on Crucible.</h1>
+    <div class="post-lede">Crucible and Trident ship the execution engine for invariant
       fuzzing on Anchor. They do not ship the invariants.
       cf-invariants-anchor is the authoring layer that sits on top
      , IDL in, ready-to-run Crucible source out, planted bug
-      surfaced by CI.
-    </p>
+      surfaced by CI.</div>
   </header>
-</div>
+  <div class="post-body">
 
-<main class="cf-band--paper">
-  <div class="cf-article-shell">
-    <article class="cf-article">
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">The gap</p>
-        <h2>Crucible and Trident ship the rails. The invariants you want fuzzed still come from someone's head.</h2>
-        <p>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">The gap</p>
+<h2>Crucible and Trident ship the rails. The invariants you want fuzzed still come from someone's head.</h2>
+<p>
           Solana's Anchor framework has two open invariant-fuzzing
           harnesses: Asymmetric Research's
           <a href="https://github.com/asymmetric-research/crucible" rel="noopener">Crucible</a>
@@ -76,7 +56,7 @@
           still come out of someone's head. The harness assumes you wrote
           them down.
         </p>
-        <p>
+<p>
           The Cairo tool
           <a href="https://github.com/caliperforge/cf-invariants-starknet" rel="noopener">cf-invariants</a>
           targets the same gap on snforge. cf-invariants-anchor is the
@@ -90,13 +70,12 @@
           the execution engine. cf-invariants-anchor is the authoring
           layer that sits on top of it.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">What we built</p>
-        <h2>An Anchor IDL reader that emits Crucible-compatible fuzz source.</h2>
-        <p>
-          <a href="https://github.com/caliperforge/cf-invariants-anchor" rel="noopener">github.com/caliperforge/cf-invariants-anchor</a>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">What we built</p>
+<h2>An Anchor IDL reader that emits Crucible-compatible fuzz source.</h2>
+<p>
+<a href="https://github.com/caliperforge/cf-invariants-anchor" rel="noopener">github.com/caliperforge/cf-invariants-anchor</a>
           is public today, Apache-2.0. A Cargo workspace of five Rust
           crates: an Anchor IDL parser, a candidate-invariant suggester
           with an extensible <code>ClassRegistry</code>, an emit pipeline
@@ -111,7 +90,7 @@
           tool. A reviewer or downstream contributor can read off where
           any given invariant came from at the point of the run.
         </p>
-        <p>
+<p>
           The repo carries two reference Anchor programs.
           <code>vault_ref</code> is the clean variant.
           <code>vault_ref_planted</code> carries a deliberate off-by-one
@@ -121,12 +100,11 @@
           emitted balance-conservation invariant catches the drift in a
           2-action sequence.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">What's verifiable today</p>
-        <h2>Two reference vaults. Clean passes, planted fails. Proven by CI.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">What's verifiable today</p>
+<h2>Two reference vaults. Clean passes, planted fails. Proven by CI.</h2>
+<p>
           This is the first CaliperForge build-to-win artifact proven by
           CI, not by hand. The workflow at
           <a href="https://github.com/caliperforge/cf-invariants-anchor/blob/main/.github/workflows/ci.yml" rel="noopener"><code>.github/workflows/ci.yml</code></a>
@@ -135,11 +113,11 @@
           harness against each on every push. The assertions are
           unambiguous:
         </p>
-        <ul>
-          <li><code>vault_ref_clean</code>: <strong>0 invariants violated.</strong></li>
-          <li><code>vault_ref_planted</code>: <strong>&ge;1 invariant violated</strong>, the bookkeeping drift surfaces inside the 30-second Crucible timeout.</li>
-        </ul>
-        <p>
+<ul>
+<li><code>vault_ref_clean</code>: <strong>0 invariants violated.</strong></li>
+<li><code>vault_ref_planted</code>: <strong>≥1 invariant violated</strong>, the bookkeeping drift surfaces inside the 30-second Crucible timeout.</li>
+</ul>
+<p>
           The real captured outputs from the green run on 2026-06-02 are
           committed at
           <a href="https://github.com/caliperforge/cf-invariants-anchor/blob/main/findings/vault_ref_clean/scorecard.md" rel="noopener"><code>findings/vault_ref_clean/scorecard.md</code></a>
@@ -151,18 +129,18 @@
           Solana platform-tools v1.52, Crucible v0.2.0 (anchor-lang
           1.0.1).
         </p>
-        <p>
+<p>
           For local reproduction: clone the repo, clone Crucible to a
           sibling directory (the fuzz <code>Cargo.toml</code>s use a path
           dep), install the pinned Solana CLI, and run
           <a href="https://github.com/caliperforge/cf-invariants-anchor/blob/main/scripts/run_phase0_harness.sh" rel="noopener"><code>scripts/run_phase0_harness.sh</code></a>.
           The script wraps the same <code>cargo build-sbf</code> and
           <code>crucible run</code> calls CI uses. The README's
-          &ldquo;Pinned toolchain&rdquo; section is the version
+          “Pinned toolchain” section is the version
           authority; the <code>.tool-versions</code> file is
           informational.
         </p>
-        <p>
+<p>
           One thing worth saying plainly: this took four CI runs to go
           green. The first failed on a <code>cargo-build-sbf</code>
           toolchain pin, platform-tools v1.52 is required because
@@ -174,7 +152,7 @@
           v0.2.0 actually pins. The third failed on a <code>use</code>-glob
           ambiguity. The fourth went green.
         </p>
-        <p>
+<p>
           That arc is why the standing rule on every CaliperForge
           artifact is CI-green-is-the-only-proof. Under
           verified-by-reading-the-code, the anchor-lang API drift would
@@ -182,12 +160,11 @@
           the gate, the failures stayed inside the cloud, the pins got
           corrected, and what is public today actually builds and runs.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">What's next</p>
-        <h2>Second VM live. Phase 1 AI suggester next. Move queued.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">What's next</p>
+<h2>Second VM live. Phase 1 AI suggester next. Move queued.</h2>
+<p>
           The Cairo build was the proof of concept. cf-invariants-anchor
           is the second VM. A Move target (Sui, Aptos) is queued behind
           Phase 1 here. The cross-VM thesis is that the
@@ -200,7 +177,7 @@
           honest claim today is that the second VM is public, runs in CI
           on every push, and surfaces a planted bug end-to-end.
         </p>
-        <p>
+<p>
           The Phase 1 milestone here is turning on the AI suggester path
           against the versioned prompt, with
           <code>InvariantSource::AiSuggested { model, prompt_version, timestamp_utc }</code>
@@ -209,7 +186,7 @@
           is shipped today. What is shipped is the Crucible seam, the two
           reference programs, and the green CI badge.
         </p>
-        <p>
+<p>
           If you ship Anchor programs and find yourself writing the same
           conservation or monotonicity invariants by hand for each new
           contract, the repo is at
@@ -217,26 +194,26 @@
           The CI badge tells you whether the artifact builds today.
           Issues and PRs are open.
         </p>
-        <p class="cf-article__meta">
+<p class="cf-article__meta">
          , Michael Moffett. Built with AI assistance; AI-suggested invariants are tagged in source. Full AI policy at <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
         </p>
-      </section>
-
-    </article>
-  </div>
-</main>
-
-<section class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
-    <footer class="cf-footer">
-      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
-      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
-    </footer>
-  </div>
 </section>
 
-<script src="/caliper-data.js" defer></script>
-<script src="/caliper-motion.js" defer></script>
+  </div>
+  <p class="post-back"><a href="/blog/">← Every log entry</a></p>
+</main>
+
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request says how it was made; <a href="/ai-disclosure">here is how we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
+
 </body>
 </html>

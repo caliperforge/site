@@ -2,68 +2,48 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>First real protocol harnessed | cf-invariants-jito on Crucible | CaliperForge</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>First real protocol harnessed, cf-invariants-jito on Crucible. | CaliperForge</title>
 <meta name="description" content="cf-invariants-jito is an invariant-fuzzing harness for the Jito Foundation tip-distribution program, ported to anchor-lang 1.0.1 and run on Crucible. Four invariant classes, four planted-bug twins, CI: clean=0, planted≥1.">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0b0f1c">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/caliper.css">
 <link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
 </head>
 <body>
 
-<div class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-
-  <div class="cf-opstrip">
-    <div class="cf-opstrip__row">
-      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
-      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
-    </div>
-  </div>
-
-  <nav class="cf-nav" aria-label="Primary">
-    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
-    <div class="cf-nav-right">
-      <div class="cf-nav-links">
-        <a href="/blog/" class="is-current">Blog</a>
-        <a href="/what-we-caught">What we caught</a>
-        <a href="/engagements/">Engagements</a>
-        <a href="/roadmap/">Roadmap</a>
-        <a href="/papers">Papers</a>
-        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
-      </div>
-      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
     </div>
   </nav>
+</div>
 
-  <header class="cf-hero cf-hero--article">
-    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
-    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">First real protocol harnessed, cf-invariants-jito on Crucible.</span></h1>
-    <p class="cf-hero-lede">
-      Crucible ships the execution rails for invariant fuzzing on
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 3 June 2026</p>
+    <h1>First real protocol harnessed, cf-invariants-jito on Crucible.</h1>
+    <div class="post-lede">Crucible ships the execution rails for invariant fuzzing on
       Solana / Anchor. The invariants and the program-under-test
       still come from someone's head. cf-invariants-jito picks a
       real upstream Apache-2.0 program (Jito Foundation's
       tip-distribution) and runs four invariant classes
       against it. Clean reference plus four planted-bug twins. CI
-      asserts clean=0, planted&ge;1 on every push.
-    </p>
+      asserts clean=0, planted≥1 on every push.</div>
   </header>
-</div>
+  <div class="post-body">
 
-<main class="cf-band--paper">
-  <div class="cf-article-shell">
-    <article class="cf-article">
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">The gap</p>
-        <h2>Toy vaults prove the rails. A real upstream program is the next test.</h2>
-        <p>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">The gap</p>
+<h2>Toy vaults prove the rails. A real upstream program is the next test.</h2>
+<p>
           The previous CaliperForge build,
           <a href="/blog/02_cf-invariants-anchor-on-crucible">cf-invariants-anchor</a>,
           stood up a generic invariant-authoring scaffold on top of
@@ -76,7 +56,7 @@
           real account layouts, real CPI patterns, and a real on-chain
           footprint.
         </p>
-        <p>
+<p>
           cf-invariants-jito is the answer to that. The target is the
           <a href="https://github.com/jito-foundation/jito-programs/tree/master/mev-programs/programs/tip-distribution" rel="noopener">Jito Foundation tip-distribution program</a>
          , the on-chain piece of the
@@ -89,17 +69,16 @@
           their share. Apache-2.0, real economic surface, real claim
           sequencing. A natural target for invariant fuzzing.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">Port distance</p>
-        <h2>anchor-lang 0.31.1 to 1.0.1 is not a free move.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">Port distance</p>
+<h2>anchor-lang 0.31.1 to 1.0.1 is not a free move.</h2>
+<p>
           The upstream Jito tip-distribution program pins
           <code>anchor-lang</code> 0.31.1. Crucible v0.2.0's workspace
           pins <code>anchor-lang</code> 1.0.1. Those are not the same
           macro expansion. To run the program under Crucible at all, the
-          program has to be ported across the 0.31 &rarr; 1.0 boundary,
+          program has to be ported across the 0.31 → 1.0 boundary,
           and that boundary touches account validation, error types,
           <code>CpiContext</code> shape, and the IDL surface that
           Crucible's calldata generator reads. The
@@ -107,7 +86,7 @@
           file in the repo preserves Jito's upstream Apache-2.0
           attribution and itemizes the modifications.
         </p>
-        <p>
+<p>
           The port lives at
           <a href="https://github.com/caliperforge/cf-invariants-jito/tree/main/programs/tip-distribution" rel="noopener"><code>programs/tip-distribution</code></a>
           in the repo. The production Jito program is not modified by
@@ -115,12 +94,11 @@
           drive it. The on-chain footprint of Jito tip-distribution
           stays whatever Jito Foundation deploys.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">What it tests</p>
-        <h2>Four invariant classes. Four planted-bug twins. One clean reference.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">What it tests</p>
+<h2>Four invariant classes. Four planted-bug twins. One clean reference.</h2>
+<p>
           The harness runs four invariant classes. Each runs as a
           Crucible fuzz fixture against (a) the clean reference
           (<code>jito_tipdist_ref</code>) and (b) a single-site
@@ -129,9 +107,9 @@
           invariant class fires; they are not claims about the
           production Jito program. The classes:
         </p>
-        <ul>
-          <li>
-            <strong><code>claim_amount_conservation</code></strong> ,
+<ul>
+<li>
+<strong><code>claim_amount_conservation</code></strong> ,
             <code>invariant_claim_amount_conservation</code>. The
             lamports debited from the <code>TipDistributionAccount</code>
             on a successful <code>claim</code> equal the lamports
@@ -139,32 +117,32 @@
             <code>programs/tip-distribution/src/state.rs::transfer_lamports</code>
            , off-by-one debit.
           </li>
-          <li>
-            <strong><code>no_double_claim</code></strong> ,
+<li>
+<strong><code>no_double_claim</code></strong> ,
             <code>invariant_no_double_claim</code>. For a given
             (TDA, claimant) pair, at most one successful <code>claim</code>
             ever fires. Planted-bug site:
             <code>programs/tip-distribution/src/lib.rs::claim</code>
             runtime gate, replay accepted.
           </li>
-          <li>
-            <strong><code>merkle_authority</code></strong> ,
+<li>
+<strong><code>merkle_authority</code></strong> ,
             <code>invariant_merkle_proof_required</code>. A
             <code>claim</code> only succeeds if the supplied proof
             verifies against the uploaded Merkle root. Planted-bug
             site: <code>programs/tip-distribution/src/merkle_proof.rs::verify</code>
            , early-accept short-circuit.
           </li>
-          <li>
-            <strong><code>admin_gating</code></strong> ,
+<li>
+<strong><code>admin_gating</code></strong> ,
             <code>invariant_update_config_requires_authority</code>.
             <code>update_config</code> only succeeds when signed by
             the current config authority. Planted-bug site:
             <code>programs/tip-distribution/src/lib.rs::update_config</code>
            , authority check dropped.
           </li>
-        </ul>
-        <p>
+</ul>
+<p>
           The fuzz-fixture source for each invariant lives once under
           <code>references/jito_tipdist_ref/fuzz/&lt;inv&gt;/src/main.rs</code>.
           CI copies the same source into each planted variant before
@@ -173,15 +151,14 @@
           LiteSVM. Same harness, same fuzz seed surface, different
           program under test.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">What's verifiable today</p>
-        <h2>Commit e683c5a. CI green. Four classes, eight runs, the right outcome on each.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">What's verifiable today</p>
+<h2>Commit e683c5a. CI green. Four classes, eight runs, the right outcome on each.</h2>
+<p>
           The
           <a href="https://github.com/caliperforge/cf-invariants-jito/actions/workflows/ci.yml" rel="noopener">CI workflow</a>
-          runs a matrix of (class &times; variant) on every push: builds
+          runs a matrix of (class × variant) on every push: builds
           the workspace under <code>cargo check --workspace --locked</code>,
           builds the cf-invariants-jito port and all five reference
           variants via <code>cargo build-sbf --tools-version v1.52</code>,
@@ -191,18 +168,18 @@
           a 30-second timeout against the clean reference and the
           class-matching planted twin. CI asserts:
         </p>
-        <ul>
-          <li><code>jito_tipdist_ref</code>: <strong>0 violations</strong> across all four invariants.</li>
-          <li><code>jito_tipdist_ref_planted_*</code>: <strong>&ge;1 violation</strong> on the matching invariant within the 30-second timeout.</li>
-        </ul>
-        <p>
+<ul>
+<li><code>jito_tipdist_ref</code>: <strong>0 violations</strong> across all four invariants.</li>
+<li><code>jito_tipdist_ref_planted_*</code>: <strong>≥1 violation</strong> on the matching invariant within the 30-second timeout.</li>
+</ul>
+<p>
           That assertion held on commit
           <a href="https://github.com/caliperforge/cf-invariants-jito/commit/e683c5a" rel="noopener"><code>e683c5a</code></a>,
           the publication commit. The CI badge on the repo README is
           the source of truth from here on, if it is red, the
           harness is broken.
         </p>
-        <p>
+<p>
           Pinned toolchain (the version authority is the README's
           "Pinned toolchain" section, not a downstream pin file):
           Rust stable, <code>anchor-lang</code> 1.0.1 (matches Crucible
@@ -218,12 +195,11 @@
           <a href="https://github.com/caliperforge/cf-invariants-jito#reproduce-from-a-fresh-clone" rel="noopener">"Reproduce from a fresh clone"</a>
           section of the repo README.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">Why this artifact</p>
-        <h2>Specialization velocity, expressed as an existence proof.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">Why this artifact</p>
+<h2>Specialization velocity, expressed as an existence proof.</h2>
+<p>
           CaliperForge's edge is not new fuzzing engines. The engines
           doing the work, snforge on Cairo, Crucible on Solana /
           Anchor, are run by other teams and we do not compete
@@ -232,7 +208,7 @@
           layer against a new VM, against a new real protocol, and get
           it CI-verified.
         </p>
-        <p>
+<p>
           The existence proof, as of 2026-06-03, is three points:
           <a href="/blog/01_caliperforge-origins">cf-invariants</a>
           (Cairo / Starknet / snforge),
@@ -244,33 +220,32 @@
           GitHub, the commits are public, and the CI badges show today's
           state, not a screenshot from launch.
         </p>
-        <p>
+<p>
           That is the claim. It is not that this harness covers
           everything Crucible covers, or that fuzzing Jito has surfaced
           anything in the production program. The claim is that the
           authoring layer ports across VMs at the speed shown, and the
           CI green light is the only evidence that matters.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">What this is not</p>
-        <h2>Not a fork. Not an audit. Not proofs.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">What this is not</p>
+<h2>Not a fork. Not an audit. Not proofs.</h2>
+<p>
           Three framings the repo README is explicit about, mirrored
           here so this post does not drift:
         </p>
-        <ul>
-          <li>
-            <strong>Not a fork of Crucible.</strong> Crucible is the
+<ul>
+<li>
+<strong>Not a fork of Crucible.</strong> Crucible is the
             harness. cf-invariants-jito is a target plus fuzz fixtures
             that run on top of it. Credit for the LiteSVM execution
             rails and the IDL-driven fuzzing plumbing belongs to
             Asymmetric Research. The fuzz <code>Cargo.toml</code>s
             pull Crucible by path dep; there is no vendored copy.
           </li>
-          <li>
-            <strong>Not a Jito security audit.</strong> Each planted
+<li>
+<strong>Not a Jito security audit.</strong> Each planted
             twin is a synthetic single-site regression authored to
             prove the corresponding invariant class fires. No claim
             is made about the production Jito tip-distribution
@@ -279,39 +254,39 @@
             <a href="https://github.com/caliperforge/cf-invariants-jito/blob/main/NOTICE" rel="noopener"><code>NOTICE</code></a>
             file.
           </li>
-          <li>
-            <strong>Not a formal-verification tool.</strong>
+<li>
+<strong>Not a formal-verification tool.</strong>
             Randomized invariant fuzzing, not proofs. Crucible's
             guarantees are coverage-guided exploration within the
             timeout budget, not exhaustive search.
           </li>
-        </ul>
-        <p>
+</ul>
+<p>
           The repo is at
           <a href="https://github.com/caliperforge/cf-invariants-jito" rel="noopener">github.com/caliperforge/cf-invariants-jito</a>.
           Issues and PRs are open. Operator of record on every commit:
           Michael Moffett.
         </p>
-        <p class="cf-article__meta">
+<p class="cf-article__meta">
          , Michael Moffett. Built with AI assistance; the harness scaffold and the four invariant fixtures were drafted with an AI coding assistant under operator review, with full repo attribution. AI policy at <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
         </p>
-      </section>
-
-    </article>
-  </div>
-</main>
-
-<section class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
-    <footer class="cf-footer">
-      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
-      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
-    </footer>
-  </div>
 </section>
 
-<script src="/caliper-data.js" defer></script>
-<script src="/caliper-motion.js" defer></script>
+  </div>
+  <p class="post-back"><a href="/blog/">← Every log entry</a></p>
+</main>
+
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request says how it was made; <a href="/ai-disclosure">here is how we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
+
 </body>
 </html>

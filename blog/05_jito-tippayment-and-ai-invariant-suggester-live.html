@@ -2,50 +2,35 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Two Jito programs on the same rails | and the AI invariant-suggester goes live | CaliperForge</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Two Jito programs on the same rails, and the AI invariant-suggester goes live. | CaliperForge</title>
 <meta name="description" content="A second Jito Foundation program, tip-payment, now runs on the same anchor-lang 1.0.1 / Crucible v0.2.0 rails as cf-invariants-jito. The AI invariant-suggester is live (claude-sonnet-4-6) and converged on every hand-authored class on tip-distribution plus surfaced a novel access-control gate.">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0b0f1c">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/caliper.css">
 <link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
 </head>
 <body>
 
-<div class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-
-  <div class="cf-opstrip">
-    <div class="cf-opstrip__row">
-      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
-      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
-    </div>
-  </div>
-
-  <nav class="cf-nav" aria-label="Primary">
-    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
-    <div class="cf-nav-right">
-      <div class="cf-nav-links">
-        <a href="/blog/" class="is-current">Blog</a>
-        <a href="/what-we-caught">What we caught</a>
-        <a href="/engagements/">Engagements</a>
-        <a href="/roadmap/">Roadmap</a>
-        <a href="/papers">Papers</a>
-        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
-      </div>
-      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
     </div>
   </nav>
+</div>
 
-  <header class="cf-hero cf-hero--article">
-    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
-    <h1 class="cf-h1 cf-h1--entrance"><span class="cf-hline">Two Jito programs on the same rails, and the AI invariant-suggester goes live.</span></h1>
-    <p class="cf-hero-lede">
-      cf-invariants-jito harnessed Jito Foundation's
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 3 June 2026</p>
+    <h1>Two Jito programs on the same rails, and the AI invariant-suggester goes live.</h1>
+    <div class="post-lede">cf-invariants-jito harnessed Jito Foundation's
       tip-distribution program against Crucible earlier today. A
       second Jito program, tip-payment, now runs on
       the same anchor-lang 1.0.1 / Crucible v0.2.0 rails, with its
@@ -55,19 +40,14 @@
       converged on every hand-authored invariant class and
       surfaced a fifth, a novel access-control gate on
       <code>upload_merkle_root</code>. Assistive, human-reviewed,
-      not autonomous discovery.
-    </p>
+      not autonomous discovery.</div>
   </header>
-</div>
+  <div class="post-body">
 
-<main class="cf-band--paper">
-  <div class="cf-article-shell">
-    <article class="cf-article">
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">From one to two</p>
-        <h2>Rails generalize when the second port is the boring one.</h2>
-        <p>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">From one to two</p>
+<h2>Rails generalize when the second port is the boring one.</h2>
+<p>
           The previous post,
           <a href="/blog/04_cf-invariants-jito-first-real-protocol-harnessed">First real protocol harnessed</a>,
           stood up
@@ -75,7 +55,7 @@
           against the Jito Foundation
           <a href="https://github.com/jito-foundation/jito-programs/tree/master/mev-programs/programs/tip-distribution" rel="noopener">tip-distribution</a>
           program: four invariant classes, four planted-bug twins,
-          CI clean=0 / planted&ge;1, commit
+          CI clean=0 / planted≥1, commit
           <a href="https://github.com/caliperforge/cf-invariants-jito/commit/e683c5a" rel="noopener"><code>e683c5a</code></a>.
           That established that the
           <a href="https://github.com/asymmetric-research/crucible" rel="noopener">Crucible</a>
@@ -84,8 +64,8 @@
           vault. The question that immediately followed was whether
           the second port off the same rails was cheap.
         </p>
-        <p>
-          <a href="https://github.com/caliperforge/cf-invariants-jito-tippayment" rel="noopener">cf-invariants-jito-tippayment</a>
+<p>
+<a href="https://github.com/caliperforge/cf-invariants-jito-tippayment" rel="noopener">cf-invariants-jito-tippayment</a>
           answers that. The target is the sibling
           <a href="https://github.com/jito-foundation/jito-programs/tree/master/mev-programs/programs/tip-payment" rel="noopener">tip-payment</a>
           program in the same Jito Foundation workspace, the
@@ -95,17 +75,16 @@
           Crucible v0.2.0, platform-tools v1.52, Solana CLI 2.1.21),
           the same workspace shape, the same clean/planted twin
           convention, and the same CI assertion (clean=0,
-          planted&ge;1). Commit
+          planted≥1). Commit
           <a href="https://github.com/caliperforge/cf-invariants-jito-tippayment/commit/08ed8f9" rel="noopener"><code>08ed8f9</code></a>,
           <a href="https://github.com/caliperforge/cf-invariants-jito-tippayment/actions/runs/26915805927" rel="noopener">CI run 26915805927</a>
           green on the first push, all three jobs.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">What tip-payment tests</p>
-        <h2>One invariant class to start, the right one for the program.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">What tip-payment tests</p>
+<h2>One invariant class to start, the right one for the program.</h2>
+<p>
           tip-payment's first cut ships a single invariant class:
           <strong><code>change_tip_receiver_state_update</code></strong>
           (<code>invariant_change_tip_receiver_updates_config</code>).
@@ -115,12 +94,12 @@
           passed in. The planted twin
           (<code>jito_tippay_ref_planted_change_tip_receiver_state</code>)
           drops the
-          <code>ctx.accounts.config.tip_receiver = &hellip;</code>
+          <code>ctx.accounts.config.tip_receiver = …</code>
           commit line; the instruction succeeds, lamports rebalance,
           but the rotation never commits. The hand-authored invariant
           catches it.
         </p>
-        <p>
+<p>
           Why this class first, and not the lamport-conservation
           shape that does most of the work on tip-distribution: tip-payment's
           economic moves are <em>rebalances</em>, not deltas against a
@@ -140,18 +119,17 @@
           <a href="https://github.com/caliperforge/cf-invariants-jito-tippayment#why-only-the-change_tip_receiver_state_update-class-and-not-a-lamport-conservation-shape-yet" rel="noopener">README calibration paragraph</a>
           walks through the choice in full.
         </p>
-        <p>
+<p>
           One class today, with the same harness shape that ran four
           on tip-distribution. Adding the next class is a
           single-source-file <code>main.rs</code> + a single planted
           variant; the CI matrix expands by one cell.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">AI invariant-suggester, live</p>
-        <h2>A real model call, a real provenance tag, and a hand-authored set to compare against.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">AI invariant-suggester, live</p>
+<h2>A real model call, a real provenance tag, and a hand-authored set to compare against.</h2>
+<p>
           The AI invariant-suggester in
           <a href="https://github.com/caliperforge/cf-invariants-anchor" rel="noopener">cf-invariants-anchor</a>
           shipped as a typed orchestrator on 2026-06-02 with the
@@ -164,7 +142,7 @@
           <code>InvariantSource::AiSuggested { model, prompt_version, timestamp_utc }</code>
           per the disclosure contract that lives in the crate.
         </p>
-        <p>
+<p>
           The first portfolio-wide capture ran the suggester against
           both Jito programs without changing the prompt between
           them. On <strong>tip-distribution</strong> the model returned
@@ -172,19 +150,19 @@
           invariant classes that Phase 2 of cf-invariants-jito
           ratified:
         </p>
-        <ul>
-          <li>
-            <strong><code>admin_gating</code></strong> (hand-authored)
-            &harr; <code>invariant_update_config_authority_only</code>
+<ul>
+<li>
+<strong><code>admin_gating</code></strong> (hand-authored)
+            ↔ <code>invariant_update_config_authority_only</code>
             (AI, rank 0.93). <strong>Direct match.</strong> Same
             instruction (<code>update_config</code>), same authority
             field, same gate semantics.
           </li>
-          <li>
-            <strong><code>claim_conservation</code></strong>
-            &harr; <code>invariant_claim_status_amount_conservation</code>
+<li>
+<strong><code>claim_conservation</code></strong>
+            ↔ <code>invariant_claim_status_amount_conservation</code>
             (0.88) <em>and</em>
-            <code>invariant_total_funds_claimed_monotonic</code> (0.90).
+<code>invariant_total_funds_claimed_monotonic</code> (0.90).
             <strong>Two angles on the same property:</strong> the AI
             surfaced both a per-claim receipt mirror
             (<code>ClaimStatus.amount</code> equals the
@@ -194,9 +172,9 @@
             delta-tracked ledger comparison; the AI proposed
             witnesses on either side of it.
           </li>
-          <li>
-            <strong><code>no_double_claim</code></strong>
-            &harr; <code>invariant_num_nodes_claimed_monotonic</code>
+<li>
+<strong><code>no_double_claim</code></strong>
+            ↔ <code>invariant_num_nodes_claimed_monotonic</code>
             (0.83). <strong>Adjacent, same property,
             different witness field.</strong> A double-claim would
             show up either as a missing increment in
@@ -205,9 +183,9 @@
             or as a decrement-and-re-increment that the monotonic
             property rules out.
           </li>
-          <li>
-            <strong><code>merkle_authority</code></strong>
-            &harr; <code>invariant_upload_merkle_root_authority_only</code>
+<li>
+<strong><code>merkle_authority</code></strong>
+            ↔ <code>invariant_upload_merkle_root_authority_only</code>
             (0.91). <strong>Complementary, not duplicate.</strong>
             The hand-authored invariant is the cryptographic
             <em>proof check at claim time</em>; the AI candidate
@@ -222,8 +200,8 @@
             limitation, not model failure, flagged to the
             Spec Writer for library expansion.
           </li>
-        </ul>
-        <p>
+</ul>
+<p>
           And one <strong>novel</strong> candidate not in the
           hand-authored set: the access-control gate on
           <code>upload_merkle_root</code> itself. Phase 2 tested the
@@ -234,7 +212,7 @@
           hand-authored Phase 3 set, not as a vulnerability claim
           against the production Jito program.
         </p>
-        <p>
+<p>
           On <strong>tip-payment</strong> the same prompt returned two
           candidates, both <code>access_control</code>. One mapped
           adjacent to the hand-authored
@@ -245,7 +223,7 @@
           that the hand-authored set has not covered yet. Both are
           in the captured run README.
         </p>
-        <p>
+<p>
           One of those candidates was honestly flagged for human
           review in the run README: the literal text ,
           "<code>change_tip_receiver</code> must reject signers other
@@ -261,7 +239,7 @@
           Foundation via their <code>security.txt</code> channel is
           a CEO call, not a vulnerability claim from this post.
         </p>
-        <p>
+<p>
           Full captures, surface JSON, rendered prompt, raw
           model response with SHA-256, tagged candidates, audit-log
           entry, transport envelope, live under
@@ -273,25 +251,24 @@
           <code>vault_ref</code> surface, and a cap re-tune is queued
           with the CEO.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">What the AI suggester is and isn't</p>
-        <h2>Assistive, human-reviewed, harness-verified.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">What the AI suggester is and isn't</p>
+<h2>Assistive, human-reviewed, harness-verified.</h2>
+<p>
           Three framings to keep load-bearing:
         </p>
-        <ul>
-          <li>
-            <strong>Assistive, not autonomous.</strong> The model
+<ul>
+<li>
+<strong>Assistive, not autonomous.</strong> The model
             proposes candidate invariants from a parsed contract
             surface. The operator reviews them. The Crucible harness
             is what <em>checks</em> them, against the clean
             reference and against the planted twin. No candidate
             reaches a CI assertion without an operator pass.
           </li>
-          <li>
-            <strong>Not "AI found a bug."</strong> The planted bugs
+<li>
+<strong>Not "AI found a bug."</strong> The planted bugs
             live in our own reference copies of the Jito programs,
             authored specifically so the corresponding invariant
             class has something to fire on. No claim is made about
@@ -300,8 +277,8 @@
             clean reference is at zero violations; that is the only
             evidence about the clean reference.
           </li>
-          <li>
-            <strong>Provenance tagged at the source.</strong> Every
+<li>
+<strong>Provenance tagged at the source.</strong> Every
             AI-proposed candidate carries
             <code>InvariantSource::AiSuggested { model, prompt_version, timestamp_utc }</code>
             in the cf-invariants-anchor-ai data model, audit-logged
@@ -309,13 +286,12 @@
             tell, at the candidate level, which invariants the AI
             proposed and which the operator hand-authored.
           </li>
-        </ul>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">Why this artifact, restated</p>
-        <h2>Specialization velocity, as an existence proof.</h2>
-        <p>
+</ul>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">Why this artifact, restated</p>
+<h2>Specialization velocity, as an existence proof.</h2>
+<p>
           The differentiator is not new fuzzing engines. snforge on
           Cairo, Crucible on Solana / Anchor, both belong to
           other teams, and CaliperForge does not compete with them on
@@ -326,7 +302,7 @@
           protocol, against a second real protocol on the same rails,
           with the AI suggester live and tagged.
         </p>
-        <p>
+<p>
           The existence proof, as of 2026-06-03, is four points:
           <a href="/blog/01_caliperforge-origins">cf-invariants</a>
           (Cairo / Starknet / snforge),
@@ -344,7 +320,7 @@
           are checkable on GitHub. The commits are public. The CI
           badges show today's state.
         </p>
-        <p>
+<p>
           That is the claim. It is not that this harness covers
           everything Crucible covers, or that the AI suggester
           replaces hand-authored invariants, the hand-authored
@@ -356,18 +332,17 @@
           on the live model, and the CI green lights are the only
           evidence that matters.
         </p>
-      </section>
-
-      <section class="cf-article__section">
-        <p class="cf-article__eyebrow">What this is not</p>
-        <h2>Not a fork. Not an audit. Not autonomous discovery.</h2>
-        <p>
+</section>
+<section class="cf-article__section">
+<p class="cf-article__eyebrow">What this is not</p>
+<h2>Not a fork. Not an audit. Not autonomous discovery.</h2>
+<p>
           Four framings each repo's README is explicit about, mirrored
           here so this post does not drift:
         </p>
-        <ul>
-          <li>
-            <strong>Not a fork of Crucible.</strong> Crucible is the
+<ul>
+<li>
+<strong>Not a fork of Crucible.</strong> Crucible is the
             harness. cf-invariants-jito and cf-invariants-jito-tippayment
             are targets plus fuzz fixtures that run on top of it.
             Credit for the LiteSVM execution rails, the IDL-driven
@@ -375,8 +350,8 @@
             belongs to Asymmetric Research. Both repos pull Crucible
             by path dep with no vendored copy.
           </li>
-          <li>
-            <strong>Not a Jito security audit.</strong> Every planted
+<li>
+<strong>Not a Jito security audit.</strong> Every planted
             twin is a synthetic single-site regression authored to
             prove the corresponding invariant class fires. The
             production Jito tip-distribution and tip-payment programs
@@ -386,8 +361,8 @@
             and the
             <a href="https://github.com/caliperforge/cf-invariants-jito-tippayment/blob/main/NOTICE" rel="noopener">cf-invariants-jito-tippayment <code>NOTICE</code></a>.
           </li>
-          <li>
-            <strong>Not autonomous AI discovery.</strong> The AI
+<li>
+<strong>Not autonomous AI discovery.</strong> The AI
             suggester proposes candidates from a parsed contract
             surface; the operator reviews them; the Crucible harness
             checks them. The candidate that overshoots program
@@ -395,14 +370,14 @@
             reason, it is the human-review case, not a
             vulnerability claim.
           </li>
-          <li>
-            <strong>Not a formal-verification tool.</strong>
+<li>
+<strong>Not a formal-verification tool.</strong>
             Randomized invariant fuzzing, not proofs. Crucible's
             guarantees are coverage-guided exploration within the
             timeout budget, not exhaustive search.
           </li>
-        </ul>
-        <p>
+</ul>
+<p>
           Repos:
           <a href="https://github.com/caliperforge/cf-invariants-jito" rel="noopener">github.com/caliperforge/cf-invariants-jito</a>
           and
@@ -412,26 +387,26 @@
           Issues and PRs are open on all three. Operator of record on
           every commit: Michael Moffett.
         </p>
-        <p class="cf-article__meta">
+<p class="cf-article__meta">
          , Michael Moffett. Built with AI assistance; the harness scaffolds, the invariant fixtures, and the AI-suggester orchestration were drafted with an AI coding assistant under operator review, with full repo attribution. AI policy at <a href="/ai-disclosure">caliperforge.com/ai-disclosure</a>.
         </p>
-      </section>
-
-    </article>
-  </div>
-</main>
-
-<section class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
-    <footer class="cf-footer">
-      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
-      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
-    </footer>
-  </div>
 </section>
 
-<script src="/caliper-data.js" defer></script>
-<script src="/caliper-motion.js" defer></script>
+  </div>
+  <p class="post-back"><a href="/blog/">← Every log entry</a></p>
+</main>
+
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request says how it was made; <a href="/ai-disclosure">here is how we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
+
 </body>
 </html>

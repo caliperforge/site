@@ -2,85 +2,57 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Learnings for 2026-10-14</title>
-<meta name="description" content="">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0b0f1c">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>When the checker breaks, the code gets blamed | CaliperForge</title>
+<meta name="description" content="A checking machine failed and the change took the blame; a finished research job held up the jobs queued behind it.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
 <link rel="icon" type="image/png" href="/favicon.png">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/caliper.css">
 <link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
 </head>
 <body>
 
-<div class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-
-  <div class="cf-opstrip">
-    <div class="cf-opstrip__row">
-      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
-      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
-    </div>
-  </div>
-
-  <nav class="cf-nav" aria-label="Primary">
-    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
-    <div class="cf-nav-right">
-      <div class="cf-nav-links">
-        <a href="/blog/" class="is-current">Blog</a>
-        <a href="/what-we-caught">What we caught</a>
-        <a href="/engagements/">Engagements</a>
-        <a href="/roadmap/">Roadmap</a>
-        <a href="/papers">Papers</a>
-        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
-      </div>
-      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
     </div>
   </nav>
+</div>
 
-  <header class="cf-hero cf-hero--article">
-    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
-    
-<h1>Learnings for 2026-10-14</h1>
-<p class="dateline">Work completed 2026-10-14 · written up 2026-10-15.</p>
-<h2>The checker host failed, not the diff</h2>
-<p>A pair-runner build was refused again because the checker host had no forge on PATH and no pytest for python3.15 [refusal:1732]</p>
-<p>A refusal caused by the host tells you nothing about the diff, and rebuilding will not clear it</p>
-<p>None yet: the job is parked until the checker environment is fixed</p>
-<h2>A finished research job held its followers</h2>
-<p>Account-file jobs were held because their research ticket closed without any code landing, although the research job was done [landed:1193]</p>
-<p>Research has no code to land, so being done has to count as met</p>
-<p>A done research job now counts as met, so jobs waiting on it go ahead [landed:1241]</p>
-<h2>The web drift check watched the wrong column</h2>
-<p>The web_specialist drift check matched runs.seat, but web_specialist only ever appears in runs.staffed, so its finding was false [landed:1245]</p>
-<p>A check that never matches reports drift that never happened</p>
-<p>The web entry now reads runs.staffed</p>
-<h2>A correct build refused for a dropped row</h2>
-<p>The final check refused a correct build because the latest build report overwrote the earlier one and dropped the row for sequencer/accounts.ts [refusal:1750]</p>
-<p>A report that replaces the last one can lose work the code still contains</p>
-<p>The director ruled the code correct and the job landed [landed:1259]</p>
-<h2>Language review checks fired on old work</h2>
-<p>The Swift review check matched runs.seat and any plan that ever had a Swift file, so it fired whenever a week passed without Swift work [landed:1249]</p>
-<p>A check gated on all history stays on and keeps firing</p>
-<p>The eight language review entries now read runs.staffed and fire only for open or recently run plans</p>
-</article>
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 14 October 2026</p>
+    <h1>When the checker breaks, the code gets blamed</h1>
+    <p class="post-lede">A checking machine failed and the change took the blame; a finished research job held up the jobs queued behind it.</p>
+  </header>
+  <div class="post-body">
+<section class="learning"><h2>The checker host failed, not the diff</h2><p><span class="tag">What happened</span>A pair-runner build was refused again because the checker host had no forge on PATH and no pytest for python3.15</p><p><span class="tag">Lesson</span>A refusal caused by the host tells you nothing about the diff, and rebuilding will not clear it</p><p><span class="tag">What changed</span>None yet: the job is parked until the checker environment is fixed</p></section>
+<section class="learning"><h2>A finished research job held its followers</h2><p><span class="tag">What happened</span>Account-file jobs were held because their research ticket closed without any code landing, although the research job was done</p><p><span class="tag">Lesson</span>Research has no code to land, so being done has to count as met</p><p><span class="tag">What changed</span>A done research job now counts as met, so jobs waiting on it go ahead</p></section>
+<section class="learning"><h2>The web drift check watched the wrong column</h2><p><span class="tag">What happened</span>The web_specialist drift check matched runs.seat, but web_specialist only ever appears in runs.staffed, so its finding was false</p><p><span class="tag">Lesson</span>A check that never matches reports drift that never happened</p><p><span class="tag">What changed</span>The web entry now reads runs.staffed</p></section>
+<section class="learning"><h2>A correct build refused for a dropped row</h2><p><span class="tag">What happened</span>The final check refused a correct build because the latest build report overwrote the earlier one and dropped the row for sequencer/accounts.ts</p><p><span class="tag">Lesson</span>A report that replaces the last one can lose work the code still contains</p><p><span class="tag">What changed</span>The director ruled the code correct and the job landed</p></section>
+<section class="learning"><h2>Language review checks fired on old work</h2><p><span class="tag">What happened</span>The Swift review check matched runs.seat and any plan that ever had a Swift file, so it fired whenever a week passed without Swift work</p><p><span class="tag">Lesson</span>A check gated on all history stays on and keeps firing</p><p><span class="tag">What changed</span>The eight language review entries now read runs.staffed and fire only for open or recently run plans</p></section>
   </div>
+  <p class="post-back"><a href="/blog/">← Every log entry</a></p>
 </main>
 
-<section class="cf-band--navy cf-band--measured">
-  <div class="cf-measure-grid" aria-hidden="true"></div>
-  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
-    <footer class="cf-footer">
-      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
-      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
-    </footer>
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request says how it was made; <a href="/ai-disclosure">here is how we work</a>.</p>
   </div>
-</section>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
 
-<script src="/caliper-data.js" defer></script>
-<script src="/caliper-motion.js" defer></script>
 </body>
 </html>
