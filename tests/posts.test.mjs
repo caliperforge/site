@@ -10,7 +10,7 @@ test('site shell', () => {
   for (const f of posts) {
     const html = read(f);
     assert.equal(count(html, 'href="/site.css"'), 1, f);
-    assert.match(html, /<a href="\/blog\/" aria-current="page">Log<\/a>/, f);
+    assert.match(html, /<a (href="\/blog\/" aria-current="page"|aria-current="page" href="\/blog\/")>Log<\/a>/, f);
     assert.match(html, /<a href="\/work">Work<\/a>/, f);
     assert.doesNotMatch(html, /caliper\.css|cf-opstrip|Start an engagement|href="\/what-we-caught"/, f);
   }
