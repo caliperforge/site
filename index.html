@@ -3,22 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>CaliperForge | AI research studio, verifiable, auditable, correctable</title>
-<meta name="description" content="An AI research studio specializing in security and invariants. We build autonomous systems you can check, and the delivery is the proof.">
-<meta name="color-scheme" content="dark light">
-<meta name="theme-color" content="#0b0f1c">
+<title>CaliperForge | Engineering and conformance work for open-source projects</title>
+<meta name="description" content="Careful engineering and conformance work for open-source projects, made by a company of AI agents with one human CEO.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
 <link rel="icon" type="image/png" href="/favicon.png">
 <link rel="stylesheet" href="/site.css">
 </head>
 <body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="f-payments" viewBox="0 0 24 24"><ellipse cx="12" cy="6.5" rx="7" ry="3"/><path d="M5 6.5v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5M5 11.5v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></symbol>
+  <symbol id="f-developer-tools" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M7 10l3 2-3 2M12.5 15H17"/></symbol>
+  <symbol id="f-astronomy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><ellipse cx="12" cy="12" rx="10.5" ry="3.6" transform="rotate(-22 12 12)"/></symbol>
+  <symbol id="f-genomics" viewBox="0 0 24 24"><path d="M8 2.5c0 4.8 8 4.8 8 9.5s-8 4.7-8 9.5M16 2.5c0 4.8-8 4.8-8 9.5s8 4.7 8 9.5M9.2 5.5h5.6M9.2 18.5h5.6"/></symbol>
+</svg>
+
 <div class="site-wrap">
   <nav class="site-nav" aria-label="Primary">
-    <a href="/">CaliperForge</a>
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
     <div>
-      <a href="/" aria-current="page">Home</a>
+      <a href="/work">Work</a>
       <a href="/research">Research</a>
-      <a href="/output">Output</a>
       <a href="/blog/">Log</a>
+      <a href="/ai-disclosure">How we work</a>
     </div>
   </nav>
 </div>
@@ -26,10 +34,10 @@
 <main>
   <section class="site-wrap home-hero">
     <div>
-      <p class="home-eyebrow">An experiment in running a company of AI agents</p>
-      <h1>One human CEO. A company of AI agents. <i>How far does that stretch?</i></h1>
-      <p class="home-lede">CaliperForge is run by AI agents with defined roles, rules, SOPs, review gates and chains of command, under one human. What the company produces is engineering and conformance testing for crypto payment infrastructure: checking that implementations do what their specs say. We log all of it, daily.</p>
-      <p class="home-btns"><a class="home-btn" href="#experiment">See the experiment</a><a class="home-btn home-btn--outline" href="/blog/">Read the daily log</a></p>
+      <p class="eyebrow">Paris, France · since 27 May 2026</p>
+      <h1>Careful engineering and conformance work for open-source projects, <i>made by a company of AI agents with one human CEO.</i></h1>
+      <p class="home-lede">Every change starts as a written task, is built by an agent that specializes in the project's language, and passes automatic checks and two separate reviews before it goes out. Today the work goes to payments infrastructure, developer tools, astronomy and genomics.</p>
+      <p class="home-btns"><a class="btn" href="#work">See the work</a><a class="btn btn--outline" href="/blog/">Read the log</a></p>
     </div>
 <svg viewBox="0 0 420 300" role="img" aria-label="Calipers measuring a block labelled spec">
 <rect x="0" y="0" width="420" height="300" fill="#ece5d3"/>
@@ -50,50 +58,66 @@
 </svg>
   </section>
 
-  <section class="home-strip" aria-label="Headline numbers">
+  <section class="work-band section" id="work">
     <div class="site-wrap">
-      <p><b data-home="runs">—</b>agent runs logged by the Atelier since <span data-home="first_day">—</span></p>
-      <div>
-        <p><b data-home="tokens">—</b>tokens read and written in the last 30 days</p>
-        <figure data-home="tokens_chart">—</figure>
-      </div>
-      <p><b data-home="plans">—</b>pull-request plans completed end to end</p>
-      <p><b data-home="days">—</b>days since this started</p>
+      <p class="eyebrow">Work for other projects</p>
+      <h2>Every pull request we have opened on someone else's project</h2>
+      <p class="intro">Grouped by project, newest first. Each links to the pull request on GitHub, where the maintainers' reviews are public.</p>
+      <div class="tally" data-home="tally"></div>
+      <ul class="fields" data-home="fields"></ul>
+      <div data-home="prs"><p class="small">Loading the list from GitHub data…</p></div>
+      <p class="prs-note small">Approved means a maintainer has approved it and it is waiting to be merged. Refreshed daily.</p>
     </div>
   </section>
 
-  <section class="site-wrap home-experiment" id="experiment">
-    <p class="home-eyebrow">The experiment</p>
-    <h2>A company where the staff are agents</h2>
-    <p class="home-body">Not a chatbot with a task list. A structure: roles with charters, a rulebook the agents enforce on each other, review gates between writing and shipping, written channels for who may talk to whom, and one human at the top who sets direction and signs off. The question is how much one person's capacity can be stretched, and what that person has to learn to do it.</p>
-    <div class="home-cards">
-      <article class="home-card"><span class="home-tag">ROLES</span><h4>Seats with a job</h4><p>A COO, an orchestrator and a fixer, language-specialist builders, and reviewers. Every run is attributed to a seat, so work is measurable per role.</p></article>
-      <article class="home-card"><span class="home-tag">RULES</span><h4>Rules, enforced</h4><p>Lessons become rules, and rules become checks in code.</p></article>
-      <article class="home-card"><span class="home-tag">HUMAN</span><h4>One CEO, few decisions</h4><p>Few deliverables need explicit approval. Everything else passes the gates or gets refused by them.</p></article>
+  <section class="site-wrap section" id="experiment">
+    <p class="eyebrow">Research</p>
+    <h2>The experiment: how far can one person's capacity stretch?</h2>
+    <p class="intro">CaliperForge is also a research project. One human CEO runs a company whose staff are AI agents, with roles, written rules, review gates and a chain of command. We measure what happens and publish it daily.</p>
+    <div class="stats">
+      <div><b data-home="days">—</b><h3>Days running</h3><p>Since the first agent run on 27 May 2026.</p></div>
+      <div><b data-home="jobs">—</b><h3>Jobs finished</h3><p>A job is one written task that an agent built and every review passed. Most are the machine building the machine: its own builders, reviewers and checks. <span data-home="outside">—</span> became pull requests to other projects.</p></div>
+      <div><b data-home="per_job">—</b><h3>Times sent back, per job</h3><p>On average, how often a review refused the work and returned it with a reason before it passed.</p></div>
+      <div><b data-home="first_pass">—</b><h3>Passed first time</h3><p>Share of finished jobs that no review sent back. Over the last 7 days: <span data-home="first_pass_week">—</span>.</p></div>
     </div>
+    <figure class="chart-box">
+      <div data-home="chart"></div>
+      <figcaption class="small">Counts start on <span data-home="data_start">—</span>, when the current version of the company began recording jobs. A hatched bar is a week the data covers only in part. The mix of jobs changes week to week, so read this as a trend, not a controlled measurement. <a href="/research">All the numbers</a></figcaption>
+    </figure>
   </section>
 
-  <section class="site-wrap home-pipeline">
-    <p class="home-eyebrow">How a job travels</p>
+  <section class="site-wrap section" id="loop">
+    <p class="eyebrow">How a job travels</p>
     <h2>Every refusal makes the next job better</h2>
-    <p class="home-body">Every change starts as a written brief and ends as a pull request. In between, it is built by a language specialist and checked by automatic rails, two separate reviewers, and a final proof. A refusal is not a failure; it sends the job back with a reason.</p>
-    <div class="home-loop">
-      <figure class="home-diagram" data-home="pipeline">—</figure>
-      <div>
-        <figure class="home-chart" data-home="loop_chart">—</figure>
-        <p>Job mix changes week to week; this is a trend, not a controlled measurement.</p>
-      </div>
-    </div>
+    <p class="intro">A refusal is not a failure. It sends the job back to its builder with the reason, and the rebuilt job is checked again. When the same refusal keeps coming back, it becomes a fix ticket, and the fix becomes a new rule or check for every job after it.</p>
+    <figure class="loop">
+      <div data-home="loop"></div>
+      <figcaption class="small">Each count is how many times that gate sent a job back to its builder, with the reason, since the current version began. One job can be sent back more than once.</figcaption>
+    </figure>
+  </section>
+
+  <section class="site-wrap section" id="log">
+    <p class="eyebrow">From the log</p>
+    <h2>What we learned this week</h2>
+    <div class="latest" data-home="latest"></div>
+    <a class="more-link" href="/blog/">Every entry and weekly arc →</a>
   </section>
 </main>
 
 <div class="site-wrap"><footer class="site-footer">
-<b>Work with us.</b> If you maintain an open-source project that could use careful, reviewed contributions, or you fund work like this, write to us.<br>
-CaliperForge · Paris, France · Notes on Substack · <a href="https://github.com/caliperforge" rel="me">Code on GitHub</a>
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request says how it was made; <a href="/ai-disclosure">here is how we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
 </footer></div>
 
 <script src="/site-data.js" defer></script>
-<script src="/charts.js" defer></script>
+<script src="/prs.js" defer></script>
 <script src="/home.js" defer></script>
 </body>
 </html>

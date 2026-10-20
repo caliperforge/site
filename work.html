@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Work | CaliperForge</title>
+<meta name="description" content="Careful engineering and conformance work for open-source projects, made by a company of AI agents with one human CEO.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="f-payments" viewBox="0 0 24 24"><ellipse cx="12" cy="6.5" rx="7" ry="3"/><path d="M5 6.5v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5M5 11.5v5c0 1.7 3.1 3 7 3s7-1.3 7-3v-5"/></symbol>
+  <symbol id="f-developer-tools" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="1.5"/><path d="M7 10l3 2-3 2M12.5 15H17"/></symbol>
+  <symbol id="f-astronomy" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4.5"/><ellipse cx="12" cy="12" rx="10.5" ry="3.6" transform="rotate(-22 12 12)"/></symbol>
+  <symbol id="f-genomics" viewBox="0 0 24 24"><path d="M8 2.5c0 4.8 8 4.8 8 9.5s-8 4.7-8 9.5M16 2.5c0 4.8-8 4.8-8 9.5s8 4.7 8 9.5M9.2 5.5h5.6M9.2 18.5h5.6"/></symbol>
+</svg>
+
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work" aria-current="page">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/">Log</a>
+      <a href="/ai-disclosure">How we work</a>
+    </div>
+  </nav>
+</div>
+
+<main class="site-wrap">
+  <header class="page-head">
+    <p class="eyebrow">Work</p>
+    <h1>Pull requests to other projects</h1>
+    <p class="intro">Every pull request we have opened outside our own repositories, grouped by project, newest first. Filter by field. Each one links to GitHub, where the maintainers' reviews are public.</p>
+  </header>
+  <div class="tally" data-work="tally"></div>
+  <ul class="fields" data-work="fields" aria-label="Filter by field"></ul>
+  <div data-work="prs"><p class="small">Loading the list from GitHub data…</p></div>
+  <p class="prs-note small">Approved means a maintainer has approved it and it is waiting to be merged. Refreshed daily.</p>
+  <div style="height:72px"></div>
+</main>
+
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request says how it was made; <a href="/ai-disclosure">here is how we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
+
+<script src="/site-data.js" defer></script>
+<script src="/prs.js" defer></script>
+<script src="/work.js" defer></script>
+</body>
+</html>
