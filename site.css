@@ -109,11 +109,13 @@ a { color: inherit; }
 .cf-axis { font-family: var(--site-body); font-size: 12px; fill: var(--site-ink); }
 .cf-tick, .cf-cat { font-family: var(--site-body); font-size: 12px; fill: var(--site-muted); }
 .cf-label { font-family: var(--site-display); font-size: 16px; fill: var(--site-ink); }
+.cf-label--sm { font-size: 13px; }
 .cf-share { font-family: var(--site-body); font-size: 12px; fill: var(--site-ink); }
 .cf-partial { font-family: var(--site-body); font-size: 11px; fill: var(--site-rust); }
 .cf-grid { stroke: var(--site-rule); }
 .cf-bar { fill: var(--site-ink); }
-.cf-bar--partial { fill: url(#hatch); stroke: var(--site-ink); stroke-width: 1.2; }
+.cf-hatch-bg { fill: var(--site-sheet); } .cf-hatch-line { stroke: var(--site-ink); stroke-width: 2; }
+.cf-bar[data-partial] { stroke: var(--site-ink); stroke-width: 1.2; }
 
 /* Loop diagram */
 .loop { margin: 36px 0 0; padding: 28px 24px 20px; background: var(--site-sheet); border: 1px solid var(--site-rule); }
@@ -179,6 +181,39 @@ a { color: inherit; }
   .prs .more td { padding: 4px 14px 14px; }
   .chart-box, .loop { padding: 14px 10px; }
   .site-footer { grid-template-columns: 1fr; }
+}
+
+
+/* Research page */
+.glossary { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1px; margin: 32px 0 0; background: var(--site-rule); border: 1px solid var(--site-rule); }
+.glossary div { background: var(--site-sheet); padding: 14px 16px; }
+.glossary dt { font-family: var(--site-display); font-size: 18px; margin-bottom: 4px; }
+.glossary dd { margin: 0; font-size: 13px; line-height: 1.5; color: var(--site-muted); }
+.panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; margin-top: 32px; }
+.panel { background: var(--site-sheet); border: 1px solid var(--site-rule); padding: 24px; min-width: 0; }
+.panel--wide { grid-column: 1 / -1; }
+.panel h2 { margin: 0 0 6px; font-family: var(--site-display); font-size: 22px; font-weight: 400; }
+.panel .def { margin: 0 0 18px; max-width: 760px; font-size: 14px; line-height: 1.55; color: var(--site-muted); }
+.panel svg { display: block; max-width: 100%; height: auto; }
+.panel .cf-title { display: none; }
+.table-scroll { overflow-x: auto; }
+table.data { width: 100%; border-collapse: collapse; font-size: 14px; font-variant-numeric: tabular-nums; }
+table.data th { text-align: left; font-size: 11px; letter-spacing: .08em; text-transform: uppercase; color: var(--site-muted); font-weight: 600; padding: 8px 12px; border-bottom: 1px solid var(--site-ink); }
+table.data td { padding: 9px 12px; border-bottom: 1px solid var(--site-rule); }
+table.data .n { text-align: right; }
+.timeline { list-style: none; margin: 0; padding: 0; }
+.timeline li { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 16px; padding: 8px 0; border-top: 1px dotted var(--site-rule); font-size: 15px; line-height: 1.5; }
+.timeline time { font-size: 13px; color: var(--site-muted); font-variant-numeric: tabular-nums; padding-top: 2px; }
+.timeline b { font-weight: 600; margin-right: 6px; }
+.timeline em { font-style: normal; font-size: 12px; color: var(--site-rust); margin-left: 6px; }
+@media (max-width: 860px) {
+  .glossary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .panels { grid-template-columns: 1fr; }
+}
+@media (max-width: 640px) {
+  .glossary { grid-template-columns: 1fr; }
+  .panel { padding: 16px 12px; }
+  .timeline li { grid-template-columns: 1fr; gap: 2px; }
 }
 
 /* Older post pages still use the cf-* shell; these rules map it onto the site look until posts move to the new shell. */

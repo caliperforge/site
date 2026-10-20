@@ -39,43 +39,14 @@
     fill('days', count(Math.floor((Date.now() - utc(org.launch_date)) / DAY) + 1));
   });
 
-  // Weekly chart: a week is partial when the data does not cover all seven of its days.
   function chart(loop, firstDay, lastDay, width) {
     var weeks = loop.rows.filter(function (r) { return /^\d{4}-/.test(r[0]); }).map(function (r) {
       var o = {};
       loop.columns.forEach(function (c, j) { o[c] = r[j]; });
-      var start = Math.max(utc(o.period), utc(firstDay)), end = Math.min(utc(o.period) + 6 * DAY, utc(lastDay));
-      o.days = Math.round((end - start) / DAY) + 1;
-      return o;
+      return { week: o.period, value: o.landed, sub: pct(o.first_pass_share) + ' first time' };
     });
-    if (!weeks.length) return '';
-    var narrow = width < 560;
-    var H = narrow ? 330 : 340, left = 52, right = width - 8, top = 52, bottom = H - (narrow ? 92 : 86);
-    var max = Math.max.apply(null, weeks.map(function (w) { return w.landed; }));
-    var step = [50, 100, 200, 500].find(function (s) { return max / s <= 5; }) || 1000;
-    var ticks = [];
-    for (var t = 0; t <= Math.ceil(max / step) * step; t += step) ticks.push(t);
-    var y = function (v) { return bottom - (bottom - top) * v / ticks[ticks.length - 1]; };
-    var slot = (right - left) / weeks.length;
-    var s = '<defs><pattern id="hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
-      '<rect width="6" height="6" fill="var(--site-sheet)"/><line x1="0" y1="0" x2="0" y2="6" stroke="var(--site-ink)" stroke-width="2"/></pattern></defs>' +
-      '<text class="cf-title" x="0" y="16">Jobs finished each week</text>' +
-      '<text class="cf-tick" x="0" y="34">' + (narrow ? 'Under each week: share passed first time' : 'Under each week: the share that passed every review first time') + '</text>';
-    ticks.forEach(function (v) {
-      s += '<line class="cf-grid" x1="' + left + '" x2="' + right + '" y1="' + y(v) + '" y2="' + y(v) + '"/>' +
-        '<text class="cf-tick" text-anchor="end" x="' + (left - 8) + '" y="' + (y(v) + 4) + '">' + count(v) + '</text>';
-    });
-    weeks.forEach(function (w, i) {
-      var cx = left + slot * (i + 0.5), bw = Math.min(slot * 0.6, 64), partial = w.days < 7;
-      s += '<rect class="cf-bar' + (partial ? ' cf-bar--partial' : '') + '" x="' + (cx - bw / 2) + '" y="' + y(w.landed) + '" width="' + bw + '" height="' + (bottom - y(w.landed)) + '"/>' +
-        '<text class="cf-label" text-anchor="middle" x="' + cx + '" y="' + (y(w.landed) - 7) + '">' + count(w.landed) + '</text>' +
-        '<text class="cf-cat" text-anchor="middle" x="' + cx + '" y="' + (bottom + 18) + '">' + short(w.period) + '</text>' +
-        '<text class="cf-share" text-anchor="middle" x="' + cx + '" y="' + (bottom + 34) + '">' + pct(w.first_pass_share) + (narrow ? '' : ' first time') + '</text>' +
-        (partial ? '<text class="cf-partial" text-anchor="middle" x="' + cx + '" y="' + (bottom + 50) + '">' + (narrow ? w.days + ' of 7 days' : 'partial: ' + w.days + ' of 7 days') + '</text>' : '');
-    });
-    s += '<text class="cf-axis" transform="translate(14,' + ((top + bottom) / 2) + ') rotate(-90)" text-anchor="middle">Jobs finished</text>' +
-      '<text class="cf-axis" text-anchor="middle" x="' + ((left + right) / 2) + '" y="' + (H - 6) + '">Week starting Monday</text>';
-    return '<svg viewBox="0 0 ' + width + ' ' + H + '" width="' + width + '" height="' + H + '" role="img" aria-label="Jobs finished each week">' + s + '</svg>';
+    return CFChart.weekly(weeks, { title: 'Jobs finished each week', note: 'Under each week: the share that passed every review first time',
+      yTitle: 'Jobs finished', firstDay: firstDay, lastDay: lastDay, width: width, fmt: count });
   }
 
   // How a job travels, drawn as a loop: refusals return to the builder, repeated ones become rules.

@@ -90,6 +90,62 @@ var CFChart = (function () {
     return { height: bottom + 96, body: s };
   }
 
+
+  var DAY = 86400000, MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  function utc(iso) { return Date.parse(iso + 'T00:00:00Z'); }
+  function short(iso) { var d = new Date(utc(iso)); return d.getUTCDate() + ' ' + MONTHS[d.getUTCMonth()]; }
+  function monday(iso) { var d = new Date(utc(iso)); return new Date(d - (d.getUTCDay() + 6) % 7 * DAY).toISOString().slice(0, 10); }
+
+  // Sums a per-day column into Monday-start weeks.
+  function byWeek(table, value) {
+    var di = col(table, 'day'), vi = col(table, value), out = [];
+    table.rows.forEach(function (r) {
+      var m = monday(r[di]), last = out[out.length - 1];
+      if (last && last.week === m) last.value += r[vi]; else out.push({ week: m, value: r[vi] });
+    });
+    return out;
+  }
+
+  // Columns per Monday week; a week the data covers only in part is hatched and labelled.
+  // weeks: [{week, value, sub?}]; opts: {title, note, yTitle, firstDay, lastDay, width, fmt}
+  function weekly(weeks, opts) {
+    var width = Math.max(300, Math.floor(opts.width)), narrow = width < 560, fmt = opts.fmt || format;
+    var subs = weeks.some(function (w) { return w.sub; });
+    var H = (narrow ? 300 : 310) + (subs ? 16 : 0), right = width - 8, top = opts.note ? 56 : 40, bottom = H - (subs ? 88 : 72);
+    var max = Math.max.apply(null, weeks.map(function (w) { return w.value; })) || 1;
+    var ticks = scale(max, bottom - top, function () { return 18; });
+    var left = 34 + widest(ticks.map(fmt));
+    var y = function (v) { return bottom - (bottom - top) * v / ticks[ticks.length - 1]; };
+    var slot = (right - left) / weeks.length;
+    var fit = function (v) {
+      var t = fmt(v);
+      if (t.length * (narrow ? 7.2 : 9) <= slot - 4 || v < 1e6) return t;
+      return v >= 1e9 ? (v / 1e9).toFixed(1) + 'B' : Math.round(v / 1e6) + 'M';
+    };
+    var id = 'hatch-' + Math.random().toString(36).slice(2, 8);
+    var s = '<defs><pattern id="' + id + '" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">' +
+      '<rect width="6" height="6" class="cf-hatch-bg"/><line x1="0" y1="0" x2="0" y2="6" class="cf-hatch-line"/></pattern></defs>' +
+      el('text', 'cf-title', { x: 0, y: 16 }, opts.title) + (opts.note ? el('text', 'cf-tick', { x: 0, y: 34 }, opts.note) : '');
+    ticks.forEach(function (t) {
+      s += el('line', 'cf-grid', { x1: left, x2: right, y1: y(t), y2: y(t) }) +
+        el('text', 'cf-tick', { x: left - 8, y: y(t) + 4, 'text-anchor': 'end' }, fmt(t));
+    });
+    weeks.forEach(function (w, i) {
+      var cx = left + slot * (i + 0.5), bw = Math.min(slot * 0.6, 64);
+      var start = Math.max(utc(w.week), utc(opts.firstDay)), end = Math.min(utc(w.week) + 6 * DAY, utc(opts.lastDay));
+      var days = Math.round((end - start) / DAY) + 1, partial = days < 7, line = bottom + 18;
+      s += '<rect class="cf-bar" x="' + +(cx - bw / 2).toFixed(1) + '" y="' + +y(w.value).toFixed(1) + '" width="' + +bw.toFixed(1) + '" height="' + +(bottom - y(w.value)).toFixed(1) + '"' +
+        (partial ? ' style="fill:url(#' + id + ')" data-partial="' + days + '"' : '') + '/>' +
+        el('text', narrow ? 'cf-label cf-label--sm' : 'cf-label', { x: cx, y: y(w.value) - 7, 'text-anchor': 'middle' }, fit(w.value)) +
+        el('text', 'cf-cat', { x: cx, y: line, 'text-anchor': 'middle' }, short(w.week));
+      if (w.sub) { line += 16; s += el('text', 'cf-share', { x: cx, y: line, 'text-anchor': 'middle' }, narrow ? w.sub.split(' ')[0] : w.sub); }
+      if (partial) s += el('text', 'cf-partial', { x: cx, y: line + 16, 'text-anchor': 'middle' }, (narrow ? '' : 'partial: ') + days + ' of 7 days');
+    });
+    s += rotated(14, (top + bottom) / 2, opts.yTitle) +
+      el('text', 'cf-axis', { x: (left + right) / 2, y: H - 6, 'text-anchor': 'middle' }, 'Week starting Monday');
+    return '<svg viewBox="0 0 ' + width + ' ' + H + '" width="' + width + '" height="' + H + '" role="img" aria-label="' + esc(opts.title) + '">' + s + '</svg>';
+  }
+
   function render(metric, opts) {
     var vi = col(metric, opts.value);
     var li = opts.label.map(function (name) { return col(metric, name); });
@@ -104,5 +160,5 @@ var CFChart = (function () {
       + el('text', 'cf-title', { x: 0, y: 14 }, metric.title) + c.body + '</svg>';
   }
 
-  return { render: render, format: format };
+  return { render: render, format: format, weekly: weekly, byWeek: byWeek, short: short };
 })();
