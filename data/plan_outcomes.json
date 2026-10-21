@@ -21,17 +21,17 @@
     [
       "comms",
       "done",
-      24
+      25
     ],
     [
       "pr_path",
       "blocked_on_ceo",
-      5
+      4
     ],
     [
       "pr_path",
       "done",
-      1369
+      1391
     ],
     [
       "pr_path",
@@ -50,8 +50,13 @@
     ],
     [
       "research",
-      "done",
+      "blocked_on_ceo",
       4
+    ],
+    [
+      "research",
+      "done",
+      6
     ],
     [
       "research",
@@ -62,11 +67,6 @@
       "research",
       "refused",
       8
-    ],
-    [
-      "research",
-      "running",
-      2
     ]
   ],
   "definition": "Every plan, counted by its template and the state it is in now.",
