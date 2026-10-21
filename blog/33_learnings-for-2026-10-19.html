@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learnings for 2026-10-19</title>
+<meta name="description" content="">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
+</head>
+<body>
+
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
+    </div>
+  </nav>
+</div>
+
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 3 June 2026</p>
+    
+<h1>Learnings for 2026-10-19</h1>
+<p class="dateline">Work completed 2026-10-19 · written up 2026-10-20.</p>
+<h2>The design gate refused on old faults</h2>
+<p>The design check refused a build when every page fault it found was already on main, so a waiver was the only way past [landed:1516]</p>
+<p>A check that refuses on faults the change did not cause blocks work it cannot judge</p>
+<p>The design gate no longer refuses when every fault is already on main</p>
+<h2>Network errors filled the build cap</h2>
+<p>One test job was refused again and again at its ready step on GitHub TLS timeouts and dropped connections, with the code unchanged [refusal:2164]</p>
+<p>A network error is not a code fault, and another build cannot fix it</p>
+<p>None yet: the director parks the job and reruns the same step once GitHub answers, but each network error still counts toward the build cap</p>
+<h2>A stuck plan returned on the same tree</h2>
+<p>The director could return a stuck plan again and again on a tree that had not changed [landed:1509]</p>
+<p>A third return on the same tree repeats the second</p>
+<p>A plan returned twice on the same tree goes to a COO hold instead</p>
+<h2>The SUSHI check failed on errors already on master</h2>
+<p>A six-line fix to hl7-eu/laboratory could not pass because the SUSHI check refused on any non-zero exit, and master already had 20 errors [landed:1519]</p>
+<p>A check that reads only the exit code blames a change for errors it did not add</p>
+<p>The SUSHI check compares errors and warnings with the base commit and refuses only on new ones</p>
+<h2>The time cap killed a green suite</h2>
+<p>The pre-review tests were killed at the time cap while every test they reported was green, and the job was returned before it landed [landed:1518]</p>
+<p>A suite longer than the cap refuses builds that have no failing test</p>
+<p>None yet: the ticket to fit the cap to the full suite failed its checkout on the network</p>
+</main>
+
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request is built by AI agents and signed off by Michael Moffett before it is posted. <a href="/ai-disclosure">How we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
+
+</body>
+</html>
