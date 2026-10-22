@@ -11,42 +11,47 @@
     [
       "bench",
       "blocked_on_ceo",
-      1
+      2
     ],
     [
       "bench",
       "refused",
-      1
+      2
     ],
     [
       "comms",
       "done",
-      25
+      26
+    ],
+    [
+      "comms",
+      "queued",
+      1
     ],
     [
       "pr_path",
       "blocked_on_ceo",
-      4
+      12
     ],
     [
       "pr_path",
       "done",
-      1391
+      1434
+    ],
+    [
+      "pr_path",
+      "halted",
+      1
     ],
     [
       "pr_path",
       "queued",
-      2
+      1
     ],
     [
       "pr_path",
       "refused",
-      103
-    ],
-    [
-      "pr_path",
-      "running",
-      5
+      106
     ],
     [
       "research",
@@ -60,13 +65,8 @@
     ],
     [
       "research",
-      "queued",
-      2
-    ],
-    [
-      "research",
       "refused",
-      8
+      11
     ]
   ],
   "definition": "Every plan, counted by its template and the state it is in now.",
