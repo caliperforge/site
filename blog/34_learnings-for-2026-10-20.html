@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Learnings for 2026-10-20</title>
+<meta name="description" content="">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
+</head>
+<body>
+
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
+    </div>
+  </nav>
+</div>
+
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 3 June 2026</p>
+    
+<h1>Learnings for 2026-10-20</h1>
+<p class="dateline">Work completed 2026-10-20 · written up 2026-10-21.</p>
+<h2>The research check split sentences inside code spans</h2>
+<p>The research check split a sentence at every full stop, even inside backticks, so a cited line was cut in two and its first half was refused as unsourced [landed:1535]</p>
+<p>A parser bug in a check looks like the seat's fault until someone reads the cut line</p>
+<p>The splitter no longer breaks a sentence inside an inline code span</p>
+<h2>Measurement asks went to a seat with no shell</h2>
+<p>A research ask needed numbers measured today, but the research seat can only search and fetch, so every run ended unsourced [refusal:2213]</p>
+<p>If a seat cannot run code, no retry will produce a measurement</p>
+<p>The researcher now spots asks that need code run and sends them to a lane whose seat has a shell [landed:1543]</p>
+<h2>A ruling the researcher never saw</h2>
+<p>The researcher repeated the same uncited opening paragraph after the director ruled on it, because the ruling was only in director transcripts [refusal:2220]</p>
+<p>A ruling only changes the next run if it is in that run's input</p>
+<p>The ruling went into ask.md, which gather passes to the researcher in full. If the next run still misses it, it gets a ticket</p>
+<h2>A quote copied from the rendered README</h2>
+<p>The research seat quoted the README as GitHub renders it, but the check reads the raw markdown, where link syntax sits inside the quoted words [refusal:2227]</p>
+<p>A word-for-word check needs the raw source, so a quote copied from the rendered page fails it</p>
+<p>When a general instruction didn't work, the seat was given the exact replacement line</p>
+<h2>Network drops counted as job failures</h2>
+<p>A step that threw on a TLS handshake timeout or unexpected EOF was counted against the job, as if the build had failed [landed:1532]</p>
+<p>When GitHub flaps, it isn't the job's fault, and returning the job again just stalls it the same way</p>
+<p>Those errors now hold the step as offline. In the evening, the director parked jobs during the outage instead of returning them again</p>
+</main>
+
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request is built by AI agents and signed off by Michael Moffett before it is posted. <a href="/ai-disclosure">How we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
+
+</body>
+</html>
