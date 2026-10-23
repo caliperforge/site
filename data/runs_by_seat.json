@@ -9,23 +9,23 @@
   "rows": [
     [
       "typescript_specialist",
-      2811
+      2934
     ],
     [
       "brief_writer",
-      2628
+      2758
     ],
     [
       "senior_review",
-      1421
+      1520
     ],
     [
       "code_quality",
-      1266
+      1278
     ],
     [
       "director",
-      694
+      788
     ],
     [
       "swift_specialist",
@@ -37,11 +37,15 @@
     ],
     [
       "fixer",
-      191
+      195
     ],
     [
       "python_specialist",
-      154
+      171
+    ],
+    [
+      "researcher",
+      128
     ],
     [
       "web_specialist",
@@ -52,28 +56,24 @@
       95
     ],
     [
-      "researcher",
-      83
+      "rust_specialist",
+      80
     ],
     [
       "kotlin_specialist",
       75
     ],
     [
-      "rust_specialist",
-      72
+      "writer",
+      69
+    ],
+    [
+      "text_review",
+      68
     ],
     [
       "coo_lite",
       60
-    ],
-    [
-      "text_review",
-      57
-    ],
-    [
-      "writer",
-      57
     ],
     [
       "outside_specialist",
@@ -84,16 +84,20 @@
       31
     ],
     [
+      "fetcher",
+      29
+    ],
+    [
+      "fizz_generator",
+      26
+    ],
+    [
       "measurer",
-      19
+      20
     ],
     [
       "php_specialist",
       19
-    ],
-    [
-      "fizz_generator",
-      17
     ],
     [
       "blind_review",
@@ -105,7 +109,7 @@
     ],
     [
       "growth_lead",
-      4
+      6
     ]
   ],
   "definition": "Every agent run, counted by the seat that ran it, highest first.",
