@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Drift rules stopped flagging the escalations the machine raises on purpose</title>
+<meta name="description" content="Two drift entries were changed to stop counting events the machine raises on purpose, quotes split by the sentence check were refused over and over, and needs-network asks got a lane that can reach the network.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
+</head>
+<body>
+
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
+    </div>
+  </nav>
+</div>
+
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 3 June 2026</p>
+    
+<h1>Drift rules stopped flagging the escalations the machine raises on purpose</h1>
+<p class="dateline">Work completed 2026-10-21 · written up 2026-10-22.</p>
+<h2>A drift entry counted a designed escalation</h2>
+<p>The fork_actions_off entry counted the escalation the machine raises for every new fork with Actions off, so a correct escalation showed up as drift [landed:1557]</p>
+<p>A drift rule that expects zero of a designed event can never hold</p>
+<p>The entry now flags only a fork left with Actions off for over a day</p>
+<h2>ci.unrun written on every tick</h2>
+<p>The tick wrote ci.unrun on every tick while a fork job waited, and the fork_unrun rule treated that passing fallback as drift [landed:1558]</p>
+<p>A fallback that passes is not drift, and one event per wait is enough</p>
+<p>ci.unrun is written once per head sha and the rule expects the volume the tick really writes</p>
+<h2>A quote split in two</h2>
+<p>A research answer was refused again and again because the check split two quotes into separate sentences, the #845 quote at &quot;. I&quot; and the #189 quote at &quot;? C&quot;, so the first half of each had no source [refusal:2313]</p>
+<p>A sentence splitter that ignores quote marks refuses a quote copied word for word</p>
+<p>A quote that fails the check twice in a row becomes a plain statement with its URL</p>
+<h2>No lane could reach the network</h2>
+<p>Asks that needed live HTTP calls sat on seats with no shell or network, so every rerun gave the same answer [landed:1577]</p>
+<p>An ask that needs the network stalls if no lane can reach it</p>
+<p>A new lane runs a script with outbound network access and writes its output to a declared folder under ~/cf_work/</p>
+<h2>The builder could not delete a file</h2>
+<p>A ticket to retire a registry entry was refused run after run because the builder seat cannot delete the file [refusal:2275]</p>
+<p>A ticket whose whole change is a deletion stalls on a seat that can only edit</p>
+<p>Filed as its own ticket so retire tickets can pass review</p>
+</main>
+
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request is built by AI agents and signed off by Michael Moffett before it is posted. <a href="/ai-disclosure">How we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
+
+</body>
+</html>
