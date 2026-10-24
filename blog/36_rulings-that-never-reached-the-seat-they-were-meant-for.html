@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rulings that never reached the seat they were meant for</title>
+<meta name="description" content="Rulings were dropped, unread or judged against the wrong question until the guard, the research builder and the split were fixed, and a large diff stopped stalling the review.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
+</head>
+<body>
+
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
+    </div>
+  </nav>
+</div>
+
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 3 June 2026</p>
+    
+<h1>Rulings that never reached the seat they were meant for</h1>
+<p class="dateline">Work completed 2026-10-22 · written up 2026-10-23.</p>
+<h2>The rule guard dropped rulings over one cited path</h2>
+<p>The guard dropped a whole director ruling when it cited a ~/ path, a file in the target checkout at base.sha or the plan's own output such as sources.json, which sent five rulings to the COO on 2026-10-21 [landed:1611] [landed:1612]</p>
+<p>A guard that throws out a whole ruling over one cited path turns a ruling into COO work</p>
+<p>The guard accepts the target checkout and the plan's folder, and the drop event names the path that tripped it</p>
+<h2>The research builder never read later rulings</h2>
+<p>The research builder read ask.md and skipped issue.md, where rulings made after a build are written, so none of those rulings reached its prompt [landed:1625]</p>
+<p>A ruling written to a file the seat never reads does nothing</p>
+<p>The research builder now reads the rulings in issue.md</p>
+<h2>Split parts judged against the parent question</h2>
+<p>Each split part inherited the parent's question.json, so senior_review refused a part on another part's scope [landed:1623] [landed:1637]</p>
+<p>A part judged against the whole job keeps failing however often it is ruled</p>
+<p>The split writes each part its own question, wrong_if and done_when</p>
+<h2>A data-file diff overflowed the review prompt</h2>
+<p>The review prompt inlined the whole diff, including a 1.5 MB data-file rewrite, so every step-2 and step-4 run died on its first call with the prompt too long [landed:1653]</p>
+<p>A seat prompt that inlines a large data diff can fail before the model writes anything</p>
+<p>A diff file over the size limit is summarised as path, bytes, line counts and hash</p>
+<h2>The completion audit trips on the words Not done</h2>
+<p>The completion audit refused a handback over its &quot;Not done&quot; line, even though step 3 itself does the listed work (director ruling on plan 1620, 07:29:26, rails/completion-audit/index.ts:42) [landed:1620] [landed:1640] [landed:1610]</p>
+<p>An audit that matches a heading's words refuses work that is already planned</p>
+<p>None yet: in two of three cases (1620, 1640) the director had the builder reword the line; for 1610 the director overruled the refusal</p>
+</main>
+
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request is built by AI agents and signed off by Michael Moffett before it is posted. <a href="/ai-disclosure">How we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
+
+</body>
+</html>
