@@ -1,0 +1,30 @@
+{
+  "metric": "vo_conformance",
+  "title": "VO conformance",
+  "unit": "outcome",
+  "columns": ["day", "client", "service", "behaviour", "outcome", "note"],
+  "rows": [
+    ["2026-10-21", "astroquery", "CADC", "async_jobs", "pass", null],
+    ["2026-10-21", "astroquery", "IRSA", "async_jobs", "fail", "Job phase stays QUEUED after RUN"],
+    ["2026-10-21", "pyvo", "CADC", "async_jobs", "pass", null],
+    ["2026-10-21", "pyvo", "MAST", "async_jobs", "pass", null],
+    ["2026-10-22", "astroquery", "CADC", "async_jobs", "pass", null],
+    ["2026-10-22", "astroquery", "IRSA", "async_jobs", "fail", "Job phase stays QUEUED after RUN"],
+    ["2026-10-22", "astroquery", "ARI", "async_jobs", "not supported", "Service has no async endpoint"],
+    ["2026-10-22", "astroquery", "MAST", "async_jobs", "pass", null],
+    ["2026-10-22", "pyvo", "CADC", "async_jobs", "pass", null],
+    ["2026-10-22", "pyvo", "IRSA", "async_jobs", "pass", null],
+    ["2026-10-22", "pyvo", "ARI", "async_jobs", "not supported", "Service has no async endpoint"],
+    ["2026-10-21", "astroquery", "CADC", "error_documents", "fail", "Error body is HTML, not VOTable"],
+    ["2026-10-22", "astroquery", "CADC", "error_documents", "fail", "Error body is HTML, not VOTable"],
+    ["2026-10-22", "pyvo", "CADC", "error_documents", "pass", null]
+  ],
+  "behaviours": {
+    "async_jobs": "A client submits a UWS job, runs it and reads its results.",
+    "error_documents": "A failed query returns a VOTable error document the client reports."
+  },
+  "run_at": "2026-10-23T03:10:00Z",
+  "source": "https://github.com/caliperforge/vo-conformance/tree/main/results",
+  "definition": "Each cell is one client calling one service for one behaviour on one day.",
+  "caveat": "Fixture data for tests."
+}
