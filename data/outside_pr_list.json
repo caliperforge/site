@@ -63,7 +63,7 @@
       282,
       "test(mpp): RFC 3339 expires conformance vectors across seven SDKs",
       "https://github.com/solana-foundation/pay-kit/pull/282",
-      "open",
+      "closed",
       "2026-08-10",
       null,
       "payments",
@@ -239,7 +239,7 @@
       350,
       "test(harness): add Kotlin mpp-protocol conformance runner",
       "https://github.com/solana-foundation/pay-kit/pull/350",
-      "open",
+      "closed",
       "2026-10-05",
       null,
       "payments",
@@ -332,6 +332,17 @@
       null,
       null,
       "HL7 Europe Laboratory Report HL7 FHIR IG"
+    ],
+    [
+      "pashov/skills",
+      62,
+      "fizz: keep Medusa target balance within the deployer's funds",
+      "https://github.com/pashov/skills/pull/62",
+      "open",
+      "2026-10-23",
+      null,
+      null,
+      "Pashov Audit Group Skills"
     ]
   ],
   "definition": "Every pull request we opened outside caliperforge, from GitHub search, one row each: its repository, number, title and link, its state (merged, closed, approved when open with an approving review, else open), the UTC days it was opened and merged, the field of its repository, and the description the repository gives on GitHub.",
