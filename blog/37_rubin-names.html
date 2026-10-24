@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How few Rubin objects ever get a name | CaliperForge</title>
+<meta name="description" content="Almost none of the objects Rubin&#x27;s alerts find get a name in the Transient Name Server, and that name is how astronomers agree an object is worth following up.">
+<meta name="color-scheme" content="light">
+<meta name="theme-color" content="#f5f1e8">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="stylesheet" href="/site.css">
+<link rel="stylesheet" href="/blog/post.css">
+</head>
+<body>
+
+<div class="site-wrap">
+  <nav class="site-nav" aria-label="Primary">
+    <a href="/"><img src="/mark.svg" alt="">CaliperForge</a>
+    <div>
+      <a href="/work">Work</a>
+      <a href="/research">Research</a>
+      <a href="/blog/" aria-current="page">Log</a>
+      <a href="/ai-disclosure">How we work</a>
+    </div>
+  </nav>
+</div>
+
+
+<main class="site-wrap post">
+  <header class="post-head">
+    <p class="eyebrow"><a href="/blog/">The log</a> · 24 October 2026</p>
+    <h1>How few Rubin objects ever get a name</h1>
+    <p class="post-lede">Almost none of the objects Rubin&#x27;s alerts find get a name in the Transient Name Server, and that name is how astronomers agree an object is worth following up.</p>
+  </header>
+  <div class="post-body">
+<p>From <span data-rubin="counted_dates">2026-06-15 to 2026-07-14</span>, <span data-rubin="first_detections">2,929,058</span> of Rubin's alerts were the first detection of an object. Over the same nights, alerts came in on <span data-rubin="named_objects">2,347</span> objects that have a name in the Transient Name Server. Set against the first detections, that is <span data-rubin="ratio">1 in 1,248</span>, or <span data-rubin="share">0.080%</span>.</p>
+<h2>What an alert is, and what a name is</h2>
+<p>Each night the Vera C. Rubin Observatory compares its new images of the southern sky with earlier ones and sends an alert for every source that has changed: something new, something brighter or fainter, something that moved. Fink is one of the brokers that take in that stream, add their own flags and serve it through a public API.</p>
+<p>An alert does not say what an object is, or that anyone should look at it. That is what the Transient Name Server (TNS) is for. It is the International Astronomical Union's register of new transients: an object reported there gets a name such as AT 2025agpz, one of the objects in this window, and spectra, classifications and papers then cite that name. A TNS name is the community's agreement that an object deserves follow-up.</p>
+<h2>How the count works</h2>
+<p>Fink's statistics give one row per night. Over the <span data-rubin="nights_with_data">16</span> nights with data, they count <span data-rubin="alerts">4,807,653</span> alerts, <span data-rubin="first_detections">2,929,058</span> first detections (<code>is_first</code>) and <span data-rubin="in_tns_alerts">7,084</span> alerts flagged <code>in_tns</code>.</p>
+<p>The named objects come from Fink's <code>in_tns</code> tag, which lists each flagged alert with its object and its TNS name. It returned <span data-rubin="in_tns_tag_rows">7,063</span> rows against a limit of <span data-rubin="tag_cap">200,000</span>, so the limit cut nothing off. Those rows belong to <span data-rubin="named_objects">2,347</span> distinct objects with a TNS name.</p>
+<figure>
+<div data-rubin-chart></div>
+<figcaption>Alerts flagged <code>in_tns</code> on each night with data, from Fink's statistics.</figcaption>
+</figure>
+<p><code>is_first</code> is only the closest figure for new objects. It counts alerts that were an object's first detection, and we have not checked that it equals the number of distinct objects first seen each night. The statistics also give <code>f:objects</code>, the objects seen each night, but summed over the window it counts an object again on every night it was seen. It overstates the total and is not used here.</p>
+<h2>Where the data stops</h2>
+<p>Plan 1614, the research job behind this post, ran on <span data-rubin="run_date">2026-10-23</span> and asked for the month before it, <span data-rubin="asked_dates">2026-09-23 to 2026-10-22</span>. Fink's Rubin statistics hold <span data-rubin="asked_window">0</span> nights there: the newest night they hold is <span data-rubin="newest_night">20260714</span>. The plan found that edge and counted the same length of time ending there instead, <span data-rubin="counted_dates">2026-06-15 to 2026-07-14</span>, of which <span data-rubin="nights_with_data">16</span> nights have data. Why the statistics stop at that night is still unknown.</p>
+<h2>Where the tag and the statistics disagree</h2>
+<p>The statistics flag <span data-rubin="in_tns_alerts">7,084</span> alerts <code>in_tns</code>, and the tag returns <span data-rubin="in_tns_tag_rows">7,063</span>: <span data-rubin="gap">21</span> fewer. The whole difference is night <span data-rubin="gap_night">20260615</span>, which has that many in the statistics and none in the tag on its UTC date. On other nights the two disagree only between neighbouring nights, by amounts that cancel, so Fink's night label is probably not the UTC date of the observation. If the tag leaves out night <span data-rubin="gap_night">20260615</span>'s alerts, the count of named objects misses any object flagged only that night.</p>
+<h2>Why so few</h2>
+<p>This is not a failing of Fink or of Rubin. Rubin is built to catch everything in its sky that changes, and Fink takes in all of it. A name needs someone to report the object to the TNS, and follow-up needs spectra, which need time on other telescopes. That capacity is small next to a stream this size, and the gap between first detections and names measures it.</p>
+<h2>How we counted</h2>
+<p>Each call to Fink's API beside the numbers it gave. The numbers are in <a href="/data/rubin_names.json">data/rubin_names.json</a>.</p>
+<table>
+<thead><tr><th>Call</th><th>What it gave</th></tr></thead>
+<tbody>
+<tr><td><code>https://api.lsst.fink-portal.org/api/v1/statistics?date=202609</code> and <code>https://api.lsst.fink-portal.org/api/v1/statistics?date=202610</code></td><td><span data-rubin="asked_window">0</span> nights with data from <span data-rubin="asked_dates">2026-09-23 to 2026-10-22</span></td></tr>
+<tr><td><code>https://api.lsst.fink-portal.org/api/v1/statistics?date=&amp;columns=f%3Anight%2Cf%3Aalerts</code></td><td>Newest night <span data-rubin="newest_night">20260714</span></td></tr>
+<tr><td><code>https://api.lsst.fink-portal.org/api/v1/statistics?date=202606</code> and <code>https://api.lsst.fink-portal.org/api/v1/statistics?date=202607</code></td><td><span data-rubin="nights_with_data">16</span> nights, <span data-rubin="alerts">4,807,653</span> alerts, <span data-rubin="first_detections">2,929,058</span> first detections, <span data-rubin="in_tns_alerts">7,084</span> alerts flagged <code>in_tns</code></td></tr>
+<tr><td><code>https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&amp;n=200000&amp;startdate=2026-06-15&amp;stopdate=2026-07-15&amp;columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai%2Cf%3Axm_tns_fullname%2Cf%3Axm_tns_type</code></td><td><span data-rubin="in_tns_tag_rows">7,063</span> rows from <span data-rubin="named_objects">2,347</span> named objects, against a limit of <span data-rubin="tag_cap">200,000</span></td></tr>
+<tr><td><code>https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&amp;n=200000&amp;startdate=2026-06-14&amp;stopdate=2026-07-15&amp;columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai</code></td><td>Tag alerts on each UTC date, set against the statistics night by night</td></tr>
+</tbody>
+</table>
+  </div>
+  <p class="post-back"><a href="/blog/">← Every log entry</a></p>
+</main>
+
+<div class="site-wrap"><footer class="site-footer">
+  <div>
+    <b>Work with us</b>
+    <p>If you maintain an open-source project that could use careful, reviewed contributions, write to michael@caliperforge.com. Every pull request is built by AI agents and signed off by Michael Moffett before it is posted. <a href="/ai-disclosure">How we work</a>.</p>
+  </div>
+  <ul>
+    <li>CaliperForge · Paris, France</li>
+    <li><a href="https://github.com/caliperforge" rel="me">Code on GitHub</a></li>
+    <li><a href="/blog/">The log</a></li>
+  </ul>
+</footer></div>
+
+<script src="/site-data.js" defer></script>
+<script src="/charts.js" defer></script>
+<script src="/rubin-names.js" defer></script>
+</body>
+</html>

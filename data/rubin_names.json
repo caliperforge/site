@@ -1,0 +1,83 @@
+{
+  "metric": "rubin_names",
+  "title": "TNS-flagged alerts per night",
+  "unit": "alerts flagged in_tns per Fink night, 2026-06-15 to 2026-07-14",
+  "run_at": "2026-10-23T15:19:32.689Z",
+  "totals": {
+    "newest_night": {
+      "value": "20260714",
+      "calls": ["https://api.lsst.fink-portal.org/api/v1/statistics?date=&columns=f%3Anight%2Cf%3Aalerts"],
+      "source": 1
+    },
+    "asked_window": {
+      "value": 0,
+      "first_night": "20260923",
+      "last_night": "20261022",
+      "calls": ["https://api.lsst.fink-portal.org/api/v1/statistics?date=202609", "https://api.lsst.fink-portal.org/api/v1/statistics?date=202610"],
+      "source": 1
+    },
+    "nights_with_data": {
+      "value": 16,
+      "first_night": "20260615",
+      "last_night": "20260714",
+      "calls": ["https://api.lsst.fink-portal.org/api/v1/statistics?date=202606", "https://api.lsst.fink-portal.org/api/v1/statistics?date=202607"],
+      "source": 1
+    },
+    "alerts": {
+      "value": 4807653,
+      "calls": ["https://api.lsst.fink-portal.org/api/v1/statistics?date=202606", "https://api.lsst.fink-portal.org/api/v1/statistics?date=202607"],
+      "source": 1
+    },
+    "first_detections": {
+      "value": 2929058,
+      "calls": ["https://api.lsst.fink-portal.org/api/v1/statistics?date=202606", "https://api.lsst.fink-portal.org/api/v1/statistics?date=202607"],
+      "source": 1
+    },
+    "in_tns_alerts": {
+      "value": 7084,
+      "calls": ["https://api.lsst.fink-portal.org/api/v1/statistics?date=202606", "https://api.lsst.fink-portal.org/api/v1/statistics?date=202607"],
+      "source": 1
+    },
+    "in_tns_tag_rows": {
+      "value": 7063,
+      "calls": ["https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-15&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai%2Cf%3Axm_tns_fullname%2Cf%3Axm_tns_type"],
+      "source": 1
+    },
+    "named_objects": {
+      "value": 2347,
+      "calls": ["https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-15&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai%2Cf%3Axm_tns_fullname%2Cf%3Axm_tns_type"],
+      "source": 1
+    },
+    "tag_cap": {
+      "value": 200000,
+      "calls": ["https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-15&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai%2Cf%3Axm_tns_fullname%2Cf%3Axm_tns_type"],
+      "source": 1
+    }
+  },
+  "columns": [
+    "night",
+    "in_tns_stats",
+    "in_tns_tag_utc",
+    "stats_call",
+    "tag_call",
+    "source"
+  ],
+  "rows": [
+    ["20260615", 21, 0, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202606", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260620", 100, 100, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202606", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260626", 285, 303, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202606", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260627", 707, 689, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202606", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260628", 109, 115, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202606", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260629", 70, 64, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202606", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260630", 619, 658, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202606", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260701", 78, 39, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202607", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260706", 340, 340, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202607", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260707", 805, 805, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202607", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260709", 1230, 1230, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202607", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260710", 541, 546, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202607", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260711", 628, 623, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202607", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260712", 472, 472, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202607", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260713", 168, 168, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202607", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8],
+    ["20260714", 911, 911, "https://api.lsst.fink-portal.org/api/v1/statistics?date=202607", "https://api.lsst.fink-portal.org/api/v1/tags?tag=in_tns&n=200000&startdate=2026-06-14&stopdate=2026-07-15&columns=r%3AdiaObjectId%2Cr%3AmidpointMjdTai", 8]
+  ]
+}
