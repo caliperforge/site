@@ -88,3 +88,15 @@ test('one table per behaviour under its name and description, with clients again
   const bare = await render(ok({ ...fixture, behaviours: { async_jobs: fixture.behaviours.async_jobs } }));
   assert.equal(tables(bare)[1].def, undefined);
 });
+
+test('astronomy.html is the redesign page with Astronomy current, one mount, and site-data.js deferred before astronomy.js', () => {
+  const html = source('astronomy.html');
+  assert.ok(html.includes('<link rel="stylesheet" href="/site.css">'));
+  assert.deepEqual([...html.matchAll(/<a href="([^"]*)"[^>]*aria-current/g)].map((m) => m[1]), ['/astronomy']);
+  assert.equal(html.match(/aria-current/g).length, 1);
+  assert.equal(html.match(/data-astronomy="matrix"/g).length, 1);
+  assert.deepEqual([...html.matchAll(/<script([^>]*)>/g)].map((m) => m[1]),
+    [' src="/site-data.js" defer', ' src="/astronomy.js" defer']);
+  assert.ok(html.includes('<title>Astronomy data clients, tested daily | CaliperForge</title>'));
+  assert.ok(html.includes('<h1>Astronomy data clients, tested daily</h1>'));
+});
