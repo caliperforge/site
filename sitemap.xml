@@ -37,6 +37,13 @@
   </url>
 
   <url>
+    <loc>https://caliperforge.com/astronomy</loc>
+    <lastmod>2026-10-24</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <url>
     <loc>https://caliperforge.com/blog/</loc>
     <lastmod>2026-07-14</lastmod>
     <changefreq>weekly</changefreq>
