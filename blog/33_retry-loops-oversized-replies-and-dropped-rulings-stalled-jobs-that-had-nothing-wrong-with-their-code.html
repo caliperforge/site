@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Retry loops, oversized replies and dropped rulings stalled jobs that had nothing wrong with their code</title>
+<meta name="description" content="The machine stopped rerunning briefs forever, survived GitHub replies too large to read, and learned to take a job's base branch from its ticket, but rulings still got dropped and one research job went round in circles.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Retry loops, oversized replies and dropped rulings stalled jobs that had nothing wrong with their code</h1>
+<p class="dateline">Work completed 2026-10-23 · written up 2026-10-24.</p>
+<h2>The brief writer reran with no limit</h2>
+<p>One job ran its brief writer 51 times in 65 minutes for $8.19 [landed:1736], and another job's brief was never accepted or refused because it was missing the end block the machine reads, so the brief writer kept starting over [landed:1743]</p>
+<p>A step that can neither accept nor refuse what it gets will rerun until something outside it times out</p>
+<p>The brief writer now has a retry cap, and a brief without the end block is refused</p>
+<h2>A GitHub reply too large to read</h2>
+<p>A review check crashed twice on one job because a GitHub reply was bigger than the read buffer [refusal:2710]</p>
+<p>A crash in the machine's own checks was counted against the job, which could do nothing about it</p>
+<p>GitHub reads now get a 64 MB buffer, and a crash inside a machine step is reported as a machine fault the first time it happens [landed:1738]</p>
+<h2>A site job built on the wrong branch</h2>
+<p>A site page job kept being built on main, where its data file and stylesheet do not exist, so every build was refused [refusal:2609]</p>
+<p>A job cut from the wrong branch fails checks that no code change can pass</p>
+<p>Jobs now take their base branch from the ticket, cut from it and open the pull request against it [landed:1705]</p>
+<h2>A ruling that blocked its own evidence</h2>
+<p>A research answer kept being refused while rulings told the builder to edit wording and make no new runs, even though the reviewer wanted proof the builder had never quoted [refusal:2658]</p>
+<p>A limit written into a ruling can keep the builder from showing the evidence the refusal asks for</p>
+<p>The limit was lifted, and a later ruling read the cited file at its pinned commit and gave the builder the exact lines to quote</p>
+<h2>Rulings still dropped after the guard fix</h2>
+<p>Two fixes to the guard that drops rulings naming file paths landed by early morning [landed:1692]. Later that day it still dropped rulings that named ~/cf_work/pay500, /sdks/, a full cf_work path and ~/cf_work/1716/, and that last one is exactly the output-folder shape the fix was meant to allow</p>
+<p>A guard fix is not finished until the shapes it was meant to allow stop being dropped</p>
+<p>None yet: the drops after the fix have no ticket</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
