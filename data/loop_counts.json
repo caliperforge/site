@@ -13,7 +13,9 @@
     "fix_tickets",
     "fix_tickets_landed",
     "language_notes",
-    "drift_fixed"
+    "drift_fixed",
+    "landed_caliperforge",
+    "landed_outside"
   ],
   "rows": [
     [
@@ -27,6 +29,8 @@
       0,
       0,
       0,
+      0,
+      17,
       0
     ],
     [
@@ -40,7 +44,9 @@
       0,
       0,
       0,
-      0
+      0,
+      319,
+      3
     ],
     [
       "2026-09-28",
@@ -53,6 +59,8 @@
       4,
       4,
       0,
+      0,
+      409,
       0
     ],
     [
@@ -66,7 +74,9 @@
       36,
       34,
       3,
-      6
+      6,
+      251,
+      5
     ],
     [
       "2026-10-12",
@@ -79,48 +89,71 @@
       66,
       57,
       3,
-      8
+      8,
+      349,
+      0
     ],
     [
       "2026-10-19",
-      27,
-      50,
-      1.85,
-      13,
-      0.48,
-      9,
+      260,
+      584,
+      2.25,
+      141,
+      0.54,
+      91,
+      67,
+      56,
+      1,
+      6,
+      256,
+      4
+    ],
+    [
+      "2026-10-26",
       7,
-      7,
+      3,
+      0.43,
+      5,
+      0.71,
       0,
-      1
+      1,
+      1,
+      0,
+      0,
+      7,
+      0
     ],
     [
       "all",
-      1380,
-      1900,
-      1.38,
-      625,
-      0.45,
-      578,
-      113,
-      102,
-      6,
-      15
+      1620,
+      2437,
+      1.5,
+      758,
+      0.47,
+      660,
+      174,
+      152,
+      7,
+      20,
+      1608,
+      12
     ],
     [
       "last_7_days",
-      319,
-      386,
-      1.21,
-      170,
-      0.53,
-      118,
-      61,
-      54,
+      245,
+      543,
+      2.22,
+      136,
+      0.56,
+      82,
+      62,
+      51,
       1,
-      6
+      5,
+      242,
+      3
     ]
   ],
-  "definition": "One row per Monday week holding a landed job, then all time, then the 7 UTC days to today. A landed job is a plan in the done state with at least one run, on the UTC day of its newest run. Refusals leave out blips, checkouts the network failed: a first-pass job had none, and a rebuilt one had at least one and two or more build runs. Fix tickets are the issues the director filed, the issues the fixer filed, and the origins of plans queued for a repeated stop, each counted once; one has landed when a done plan has it as its origin. Language notes count by the day they were kept, and drift fixes by the day the finding closed as fixed.",
+  "definition": "One row per Monday week holding a landed job, then all time, then the 7 UTC days to today. A landed job is a plan in the done state with at least one run, on the UTC day of its newest run. A landed job counts as caliperforge when its target repository's owner is caliperforge or it has no target, and as outside otherwise. Refusals leave out blips, checkouts the network failed: a first-pass job had none, and a rebuilt one had at least one and two or more build runs. Fix tickets are the issues the director filed, the issues the fixer filed, and the origins of plans queued for a repeated stop, each counted once; one has landed when a done plan has it as its origin. Language notes count by the day they were kept, and drift fixes by the day the finding closed as fixed.",
   "caveat": "A fix ticket counts on the day it was first filed, and a period with no landed job has no ratios."
 }

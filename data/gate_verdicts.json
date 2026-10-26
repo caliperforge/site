@@ -11,57 +11,57 @@
     [
       "pre_review",
       "pass",
-      94413
+      117957
     ],
     [
       "pre_review",
       "refuse",
-      692
+      777
     ],
     [
       "review",
       "needs_ceo",
-      437
+      443
     ],
     [
       "review",
       "pass",
-      1711
+      1930
     ],
     [
       "review",
       "refuse",
-      278
+      299
     ],
     [
       "senior_review",
       "needs_ceo",
-      4
-    ],
-    [
-      "senior_review",
-      "pass",
-      1512
-    ],
-    [
-      "senior_review",
-      "refuse",
-      96
-    ],
-    [
-      "blind_review",
-      "pass",
       5
     ],
     [
+      "senior_review",
+      "pass",
+      1724
+    ],
+    [
+      "senior_review",
+      "refuse",
+      103
+    ],
+    [
+      "blind_review",
+      "pass",
+      11
+    ],
+    [
       "blind_review",
       "refuse",
-      3
+      5
     ],
     [
       "ready",
       "pass",
-      2727
+      3214
     ],
     [
       "ready",

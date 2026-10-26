@@ -9,91 +9,99 @@
   "rows": [
     [
       "typescript_specialist",
-      2687
+      3098
     ],
     [
       "brief_writer",
-      2449
+      3059
     ],
     [
       "senior_review",
-      1280
+      1672
     ],
     [
       "code_quality",
-      1255
+      1304
     ],
     [
       "director",
-      598
+      889
     ],
     [
       "swift_specialist",
       283
     ],
     [
+      "fixer",
+      210
+    ],
+    [
       "orchestrator",
       208
     ],
     [
-      "fixer",
-      187
+      "python_specialist",
+      190
     ],
     [
-      "python_specialist",
-      131
+      "researcher",
+      150
     ],
     [
       "web_specialist",
-      114
+      134
     ],
     [
       "design",
-      95
+      100
+    ],
+    [
+      "fetcher",
+      94
+    ],
+    [
+      "rust_specialist",
+      93
     ],
     [
       "kotlin_specialist",
       75
     ],
     [
-      "rust_specialist",
-      72
+      "writer",
+      75
+    ],
+    [
+      "text_review",
+      74
     ],
     [
       "coo_lite",
       60
     ],
     [
-      "text_review",
-      53
-    ],
-    [
-      "writer",
-      53
-    ],
-    [
       "outside_specialist",
-      41
+      42
+    ],
+    [
+      "fizz_generator",
+      32
     ],
     [
       "design_lead",
       31
     ],
     [
+      "measurer",
+      22
+    ],
+    [
       "php_specialist",
       19
     ],
     [
-      "researcher",
-      17
-    ],
-    [
-      "fizz_generator",
-      14
-    ],
-    [
       "blind_review",
-      10
+      18
     ],
     [
       "ruby_specialist",
@@ -101,7 +109,7 @@
     ],
     [
       "growth_lead",
-      4
+      6
     ]
   ],
   "definition": "Every agent run, counted by the seat that ran it, highest first.",
