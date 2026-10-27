@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checks that cried silent, and an answer stuck on how it cited</title>
+<meta name="description" content="The drift checker now waits out a line's gap, a line that could never fire was dropped, the fixer's commit check landed in a new file, and one research answer was refused over and over for how it cited its sources.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Checks that cried silent, and an answer stuck on how it cited</h1>
+<p class="dateline">Work completed 2026-10-25 · written up 2026-10-26.</p>
+<h2>Drift lines flagged silent on day one</h2>
+<p>The drift checker called a line silent as soon as it had no rows, even inside the line's gap, and a second plan for the same fix was refused because main already held it [landed:1775] [refusal:2742]</p>
+<p>A new line has no rows yet and that is not a fault</p>
+<p>A line reports nothing until its gap has passed since it was added</p>
+<h2>A line that could never fire</h2>
+<p>The research_pinned line read silent whenever no research ask named a moving ref, which is most of the time [landed:1776]</p>
+<p>A line watching a rare event will read silent when nothing is wrong</p>
+<p>The line was dropped because the check that already flags a failed pin covers the fault</p>
+<h2>The fixer's commit check hit the line cap</h2>
+<p>The check that refuses a commit the checkout doesn't have was refused four times before landing [refusal:2743] [landed:1780]</p>
+<p>When the per-file line cap blocks a fix, the fix moves to a new file and the cap entry changes with it</p>
+<p>The director ruled that both parts the reviewer objected to belonged to the ticket, and the check went into its own file</p>
+<h2>A research answer refused 19 times</h2>
+<p>One research answer was refused 19 times, at least 6 of them for how it cited its sources, and one refusal was only over a preamble on line 1 [refusal:2764]</p>
+<p>Once the findings stand, the remaining refusals are about wording, and each one costs a full round</p>
+<p>None yet: the director capped the build and ordered one last edit to cite each claim in the same sentence and drop the preamble</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
