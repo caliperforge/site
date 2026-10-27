@@ -347,11 +347,11 @@
     [
       "solana-foundation/surfpool",
       884,
-      "fix(types): load the Wrapped BTC row the CSV token cache drops",
+      "fix(types/mcp): load the Wrapped BTC row the CSV token cache drops",
       "https://github.com/solana-foundation/surfpool/pull/884",
-      "open",
+      "merged",
       "2026-10-24",
-      null,
+      "2026-10-26",
       null,
       "Surfpool is where developers start their Solana journey."
     ]
