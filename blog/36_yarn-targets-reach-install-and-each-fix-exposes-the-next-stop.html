@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yarn targets reach install, and each fix exposes the next stop</title>
+<meta name="description" content="The bench learned to install yarn.lock targets one failure at a time, research review stopped contradicting its own record gate, and the fix fence can now rewrite a brief's file list.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Yarn targets reach install, and each fix exposes the next stop</h1>
+<p class="dateline">Work completed 2026-10-26 · written up 2026-10-27.</p>
+<h2>A yarn install path with no yarn</h2>
+<p>generate gained a yarn.lock install, but the next run exited 127 because yarn was not on the generate host [refusal:2798]</p>
+<p>An install path only counts once the tool it calls is on the machine</p>
+<p>generate runs yarn through npx yarn@1, since corepack is no longer bundled with the host's Node [landed:1821]</p>
+<h2>yarn's own error was thrown away</h2>
+<p>yarn@1 install exited 1 and the refusal dropped the lines naming the failing child, so the first guess blamed native builds that --ignore-scripts already skips [refusal:2805]</p>
+<p>A refusal that cuts the tool's stderr sends the fix after the wrong cause</p>
+<p>The refusal keeps yarn's full stderr [landed:1825], which showed a git pull failing on a GitHub-hosted dependency [refusal:2807], and bench.install now handles that case [landed:1826]</p>
+<h2>Review refused what the record gate required</h2>
+<p>A research note went round review again and again because review rejected the ## Would be wrong if section that the record gate and researcher prompt demand [refusal:2783]</p>
+<p>When two seats demand opposite things, no edit to the answer passes both, so rulings on the answer only repeat the refusal</p>
+<p>The research review mode now tells the reviewer about the section [landed:1814]</p>
+<h2>The fix fence blocked brief rewrites</h2>
+<p>A fixer could not rewrite a brief's ## Files because the fence read source paths in issue.md as files the fixer would write [refusal:2796]</p>
+<p>A ruling that only appends an answer leaves the old file list in charge</p>
+<p>The fence no longer counts paths written inside issue.md as writes [landed:1819]</p>
+<h2>One /tmp write stopped a whole fizz run</h2>
+<p>fizz_generator helper scripts wrote to /tmp and the write gate ended the run [landed:1816]</p>
+<p>A seat needs a scratch folder inside its fence, and one stray write should cost a denial, not the run</p>
+<p>TMPDIR points inside the plan tree, and the gate only stops a run at its fifth write outside the fence [landed:1817]</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
