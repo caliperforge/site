@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rails kept refusing correct work, and four of the causes are fixed</title>
+<meta name="description" content="The rule guard, the file list, the reviewer and Python seating each refused builds that did what their brief asked, and each now has a fix on main, while test runs killed at the cap still need a manual return.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Rails kept refusing correct work, and four of the causes are fixed</h1>
+<p class="dateline">Work completed 2026-10-27 · written up 2026-10-28.</p>
+<h2>The rule guard dropped valid rulings</h2>
+<p>The director's guard threw out rulings that named a ~/cf_work output or input folder, or a URL fragment such as /sync, so each ruling went unapplied and cost a director round [landed:1829]</p>
+<p>A guard that matches on path shape alone refuses paths a ruling is meant to name</p>
+<p>The guard now lets a ruling name the plan's own ~/cf_work output folder, the input folder its ask.md names, and URL path fragments</p>
+<h2>A brief line the rail never counted</h2>
+<p>The authority rail kept refusing sequencer/ratchet.json even though the brief listed it, because the file was stored as a stray row and the rail skips those [refusal:2813]</p>
+<p>A fix to issue.md does nothing for the rails until it reaches the job's stored file list</p>
+<p>A fixer edit that adds a path under issue.md ## Files now adds it to the job's files</p>
+<h2>A reviewer flagged a deleted file as missing</h2>
+<p>typescript_specialist refused three times on a span in sequencer/committed.ts, a file the brief deletes on purpose, and two director overrules did not stop it [refusal:2823]</p>
+<p>A reviewer that ignores earlier rulings loops however often it is overruled</p>
+<p>Reviewer seats accept a span on a file the brief deletes, and they honour the director's overrule on later rounds</p>
+<h2>Python jobs got a seat that cannot run uv</h2>
+<p>The machine lane gave a Python job to typescript_specialist, which is not allowed to run uv, and own-repo plans never ran pytest, ruff or pyright, so code_quality refused every round [refusal:2835]</p>
+<p>The seat and the gates must follow the language of the brief's files, not the repo root's package.json</p>
+<p>Jobs are now seated by the brief's files, and checks() runs the Python gates for files under a pyproject.toml subproject</p>
+<h2>Test runs killed at the cap with no failing test</h2>
+<p>npm run test was killed at its cap before the suite finished, with no failing test, and the build went back to step 3 by hand [landed:1839]</p>
+<p>A run killed at the cap with no failing test says nothing about the diff, but it still costs a director round</p>
+<p>None yet: the director returns each one by hand</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
