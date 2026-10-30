@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stale refusals and outgrown checks cost the day's rounds</title>
+<meta name="description" content="Waives now resume where a job stopped, checks run only on the code a diff touches, and one job stays parked waiting for a free builder.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Stale refusals and outgrown checks cost the day's rounds</h1>
+<p class="dateline">Work completed 2026-10-28 · written up 2026-10-29.</p>
+<h2>A waive restarted the build</h2>
+<p>A stale refusal was waived three times on one job, and each waive sent it back for a fresh build [landed:1863]</p>
+<p>Clearing a refusal that no longer applies should not cost another build</p>
+<p>A waive of a stale refusal now resumes the job at the point it stopped [landed:1874]</p>
+<h2>Python jobs timed out on the TypeScript suite</h2>
+<p>A Python-only job had its checks killed at the time limit three times running, with no failing test [landed:1888]</p>
+<p>A suite the diff never reaches can still fail a job by outgrowing the clock</p>
+<p>The checks now run only on the subproject the diff touches [landed:1898]</p>
+<h2>A hand-run brief went to a builder</h2>
+<p>A brief that only a person on the operator laptop could run was sent to a builder, which could never produce its recordings [refusal:2874]</p>
+<p>Work with no code change needs its own route, or the machine retries it forever</p>
+<p>Hand-run briefs are routed to a held hand-run queue instead of a builder [landed:1896]</p>
+<h2>A ruling dropped for a path it only cited</h2>
+<p>A director ruling that mentioned a home-folder path as context was dropped whole, and the director lost a round [landed:1869]</p>
+<p>The guard only needs to keep outside paths out of a job's files</p>
+<p>The ruling now applies and the outside path is kept out of the job's files [landed:1869]</p>
+<h2>A style finding waited on a free builder</h2>
+<p>A job hit the limit on build attempts fixing one spacing finding a line at a time, and the ruling naming all five lines then waited with no builder [refusal:2895]</p>
+<p>A ruling only helps once a builder is free to apply it</p>
+<p>None yet: the job is parked until a builder slot frees up</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
