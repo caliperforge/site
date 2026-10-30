@@ -9,23 +9,23 @@
   "rows": [
     [
       "typescript_specialist",
-      3300
+      3381
     ],
     [
       "brief_writer",
-      3181
+      3218
     ],
     [
       "senior_review",
-      1766
+      1792
     ],
     [
       "code_quality",
-      1329
+      1332
     ],
     [
       "director",
-      991
+      1006
     ],
     [
       "swift_specialist",
@@ -37,7 +37,7 @@
     ],
     [
       "python_specialist",
-      214
+      217
     ],
     [
       "orchestrator",
@@ -65,11 +65,11 @@
     ],
     [
       "writer",
-      81
+      88
     ],
     [
       "text_review",
-      80
+      87
     ],
     [
       "kotlin_specialist",
@@ -81,7 +81,7 @@
     ],
     [
       "fizz_generator",
-      50
+      51
     ],
     [
       "outside_specialist",
@@ -104,16 +104,16 @@
       19
     ],
     [
-      "ruby_specialist",
-      7
+      "fizz_lean_generator",
+      8
     ],
     [
       "growth_lead",
-      6
+      8
     ],
     [
-      "fizz_lean_generator",
-      2
+      "ruby_specialist",
+      7
     ]
   ],
   "definition": "Every agent run, counted by the seat that ran it, highest first.",
