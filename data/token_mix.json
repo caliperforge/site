@@ -9,19 +9,19 @@
   "rows": [
     [
       "input",
-      298783216
+      302380795
     ],
     [
       "cache_read",
-      4437598322
+      4938084812
     ],
     [
       "cache_write",
-      399142506
+      422745910
     ],
     [
       "output",
-      82209990
+      87284070
     ]
   ],
   "definition": "Tokens over every agent run, split four ways. input is input_tokens less cache_write_tokens, since input_tokens counts cache writes; cache_read, cache_write and output are their own columns; total is input_tokens + cache_read_tokens + output_tokens, the sum of the four.",
