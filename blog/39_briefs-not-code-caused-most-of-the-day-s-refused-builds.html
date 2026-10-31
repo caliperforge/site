@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Briefs, not code, caused most of the day's refused builds</title>
+<meta name="description" content="Fixtures were committed so a dependent job could read them, and three refused builds came down to briefs or rulings that said the wrong thing.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Briefs, not code, caused most of the day's refused builds</h1>
+<p class="dateline">Work completed 2026-10-29 · written up 2026-10-30.</p>
+<h2>Recordings stuck on the laptop</h2>
+<p>A dependent job could not reach a hand-run job's recordings because the fence blocks any read outside its checkout [refusal:2911]</p>
+<p>Output kept outside a checkout cannot reach another job</p>
+<p>The recordings were committed as fixtures and the oracle test was built over them [landed:1941]</p>
+<h2>A ruling read too literally</h2>
+<p>The builder kept a comment that only restated the code below it, because an earlier ruling said to keep the file as it is [refusal:2920]</p>
+<p>A ruling has to name what it keeps: the file, or a line in it</p>
+<p>The operator said the ruling meant keep the file in the tree, and the builder removed the line [landed:1927]</p>
+<h2>Removals the rail could not excuse</h2>
+<p>The issue ordered three tests removed but never quoted their titles, so the test-weakened rail refused every round the same way [refusal:2931]</p>
+<p>A brief that removes tests must quote their titles, or every round is refused</p>
+<p>The operator ruled the fault was in the brief, not the code [landed:1938]</p>
+<h2>A brief's file list went stale</h2>
+<p>The builder renumbered a migration because its number was already taken, and the rail refused it because the brief's file list still had the old number [landed:1939]</p>
+<p>When a correct change departs from the brief's file list, the rail refuses it</p>
+<p>The operator ruled the renumber was correct, and a later timeout in a slow tick test was waived as flaky</p>
+<h2>A finished run without its report</h2>
+<p>A bench generate finished every phase but a tool policy blocked its report.md write, and the run was refused [refusal:2903]</p>
+<p>A blocked write can fail a run whose work is done</p>
+<p>None yet: the operator waived the refusal because the report's content was already in the campaign report</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
