@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Machine faults kept refusing sound code</title>
+<meta name="description" content="Test-cap kills, a full CI disk and a test no step could run refused correct changes, and two refusals still name the wrong fault.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Machine faults kept refusing sound code</h1>
+<p class="dateline">Work completed 2026-10-31 · written up 2026-11-01.</p>
+<h2>Builds killed at the test cap</h2>
+<p>The full suite was killed at the test cap with no test red while several jobs tested at once [landed:1986]</p>
+<p>A timeout with no failing test comes from load on the machine, not from the job's code</p>
+<p>A test timeout with no failing test no longer counts as a refusal of the job's code [landed:1991]</p>
+<h2>A review asked for a test no step could run</h2>
+<p>A review needed the live-network tests run, and no step ran them on a branch that had not landed [landed:2022]</p>
+<p>If a review asks for a test that no step can run, the job waits on that gap in the machine</p>
+<p>A review step now runs a job's live-network tests on its branch and passes the result to the reviewer [landed:2022]</p>
+<h2>CI ran out of disk</h2>
+<p>CI runs failed when the runner ran out of /tmp space, and hundreds of tests the diff never touched died creating temp folders [refusal:3001]</p>
+<p>A full disk fails tests that have nothing to do with the change</p>
+<p>A fix for the runner's /tmp space landed in CI [landed:2026]</p>
+<h2>A split refused for the wrong reason</h2>
+<p>The brief writer's split was refused three times as if its title were wrong [refusal:3019]</p>
+<p>A refusal that names the wrong fault gets the same output back</p>
+<p>None yet: the director found the real fault, one part set to wait on two other parts when the format allows one at most, but the checks still report the title before that fault reaches the writer</p>
+<h2>A wanted reversal read as a weakened test</h2>
+<p>The check for weakened tests flagged an assertion that the ticket had asked to reverse, not loosen [refusal:2985]</p>
+<p>A reversed assertion is not a weaker one when the ticket asks for it</p>
+<p>The director ruled the reversal was wanted, and the build was refused twice more at the same step after the ruling. A removed-tests block now lets a job retire tests on purpose, but nothing yet lets it reverse one [landed:2028]</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
