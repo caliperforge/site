@@ -354,6 +354,17 @@
       "2026-10-26",
       null,
       "Surfpool is where developers start their Solana journey."
+    ],
+    [
+      "solana-foundation/surfpool",
+      930,
+      "fix(core): pass the datasource's validator error code and message through getTransaction",
+      "https://github.com/solana-foundation/surfpool/pull/930",
+      "open",
+      "2026-11-03",
+      null,
+      null,
+      "Surfpool is where developers start their Solana journey."
     ]
   ],
   "definition": "Every pull request we opened outside caliperforge, from GitHub search, one row each: its repository, number, title and link, its state (merged, closed, approved when open with an approving review, else open), the UTC days it was opened and merged, the field of its repository, and the description the repository gives on GitHub.",

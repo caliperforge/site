@@ -9,15 +9,15 @@
   "rows": [
     [
       "typescript_specialist",
-      3794
+      3843
     ],
     [
       "brief_writer",
-      3405
+      3427
     ],
     [
       "senior_review",
-      1922
+      1939
     ],
     [
       "code_quality",
@@ -25,7 +25,7 @@
     ],
     [
       "director",
-      1128
+      1248
     ],
     [
       "swift_specialist",
@@ -33,7 +33,7 @@
     ],
     [
       "fixer",
-      236
+      237
     ],
     [
       "python_specialist",
@@ -61,14 +61,14 @@
     ],
     [
       "writer",
-      95
-    ],
-    [
-      "fetcher",
-      94
+      99
     ],
     [
       "text_review",
+      98
+    ],
+    [
+      "fetcher",
       94
     ],
     [
@@ -84,6 +84,10 @@
       60
     ],
     [
+      "fizz_lean_generator",
+      44
+    ],
+    [
       "outside_specialist",
       42
     ],
@@ -94,10 +98,6 @@
     [
       "design_lead",
       31
-    ],
-    [
-      "fizz_lean_generator",
-      26
     ],
     [
       "blind_review",
