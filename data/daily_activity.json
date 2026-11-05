@@ -437,12 +437,21 @@
     ],
     [
       "2026-11-04",
-      12,
-      268026,
-      3198924,
-      556396,
-      71258,
-      4094604
+      98,
+      2356458,
+      37902240,
+      5039656,
+      722766,
+      46021120
+    ],
+    [
+      "2026-11-05",
+      9,
+      190270,
+      102367807,
+      2966453,
+      768813,
+      106293343
     ]
   ],
   "definition": "Every agent run, by the UTC day it was recorded, from the first run's day to today. input is input_tokens less cache_write_tokens, since input_tokens counts cache writes; cache_read, cache_write and output are their own columns; total is input_tokens + cache_read_tokens + output_tokens, the sum of the four.",
