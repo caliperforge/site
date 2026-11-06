@@ -365,6 +365,17 @@
       null,
       null,
       "Surfpool is where developers start their Solana journey."
+    ],
+    [
+      "solana-foundation/surfpool",
+      941,
+      "fix(core): reject oversized input lists on four RPC methods as Agave does",
+      "https://github.com/solana-foundation/surfpool/pull/941",
+      "open",
+      "2026-11-05",
+      null,
+      null,
+      "Surfpool is where developers start their Solana journey."
     ]
   ],
   "definition": "Every pull request we opened outside caliperforge, from GitHub search, one row each: its repository, number, title and link, its state (merged, closed, approved when open with an approving review, else open), the UTC days it was opened and merged, the field of its repository, and the description the repository gives on GitHub.",

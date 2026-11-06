@@ -26,32 +26,32 @@
     [
       "comms",
       "done",
-      47
+      50
     ],
     [
       "comms",
+      "queued",
+      1
+    ],
+    [
+      "pr_path",
+      "blocked_on_ceo",
+      9
+    ],
+    [
+      "pr_path",
+      "done",
+      1873
+    ],
+    [
+      "pr_path",
       "queued",
       2
     ],
     [
       "pr_path",
-      "blocked_on_ceo",
-      10
-    ],
-    [
-      "pr_path",
-      "done",
-      1853
-    ],
-    [
-      "pr_path",
       "refused",
       158
-    ],
-    [
-      "pr_path",
-      "running",
-      1
     ],
     [
       "research",
