@@ -376,6 +376,17 @@
       null,
       null,
       "Surfpool is where developers start their Solana journey."
+    ],
+    [
+      "solana-foundation/solana-keychain",
+      358,
+      "feat(rust): ledger device actor keeps one session per host_device_path",
+      "https://github.com/solana-foundation/solana-keychain/pull/358",
+      "open",
+      "2026-11-06",
+      null,
+      null,
+      "Framework-agnostic Solana transaction signing with multiple backends. Unified trait interface, async-first design, and feature-gated compilation for minimal dependencies."
     ]
   ],
   "definition": "Every pull request we opened outside caliperforge, from GitHub search, one row each: its repository, number, title and link, its state (merged, closed, approved when open with an approving review, else open), the UTC days it was opened and merged, the field of its repository, and the description the repository gives on GitHub.",

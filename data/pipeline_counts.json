@@ -11,49 +11,49 @@
   "rows": [
     [
       "brief",
-      3469,
+      3531,
       null,
       "runs"
     ],
     [
       "build",
-      4864,
+      4995,
       null,
       "runs"
     ],
     [
       "rails",
-      182164,
-      953,
+      188639,
+      975,
       "verdicts"
     ],
     [
       "code review",
-      3080,
-      333,
+      3139,
+      338,
       "verdicts"
     ],
     [
       "senior review",
-      2194,
-      123,
+      2248,
+      128,
       "verdicts"
     ],
     [
       "ready",
-      4002,
+      4131,
       110,
       "verdicts"
     ],
     [
       "CEO approvals",
-      69,
+      73,
       null,
       "approvals"
     ],
     [
       "pushed",
-      1540,
+      1572,
       null,
       "deliverables"
     ]

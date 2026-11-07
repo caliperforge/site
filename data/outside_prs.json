@@ -172,6 +172,11 @@
       "open",
       "other",
       "2026-11"
+    ],
+    [
+      "open",
+      "other",
+      "2026-11"
     ]
   ],
   "definition": "Every pull request we opened outside caliperforge, from GitHub search, one row each: its state (merged, closed, approved when open with an approving review, else open), the class of its repository, and the month it was opened.",
