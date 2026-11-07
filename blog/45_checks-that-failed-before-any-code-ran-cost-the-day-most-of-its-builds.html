@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checks that failed before any code ran cost the day most of its builds</title>
+<meta name="description" content="Generate now refuses a weak fizz suite before fuzzing, the checks rail runs keychain's own recipes, and the Euler replay still reverted in setUp until a late fix that no run has tried yet.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Checks that failed before any code ran cost the day most of its builds</h1>
+<p class="dateline">Work completed 2026-11-05 · written up 2026-11-06.</p>
+<h2>A weak suite fuzzed before it was refused</h2>
+<p>A fizz suite with fewer than 3 properties passed generate and was only marked not_powered at score, after the fuzzing spend [landed:2149]</p>
+<p>A floor that only score enforces lets the expensive fuzzing step run on a result that can never be a verdict</p>
+<p>Generate refuses a suite below 3 properties or 8 sub-agents and regenerates before any fuzzing [landed:2150]</p>
+<h2>Keychain checks failed at base</h2>
+<p>The checks rail turned on keychain's mutually exclusive sdk-v2, sdk-v3 and sdk-v4 together, or no SDK at all, so every build failed before the diff could matter [refusal:3245]</p>
+<p>If a check command fails on the base commit, its refusals say nothing about the change, and more builds only spend money</p>
+<p>The rail runs the repo's own just recipes and walks up to the justfile that has rust-test [landed:2167]</p>
+<h2>A repo's AI stance was misread</h2>
+<p>The stance check called solana-keychain closed to AI work and held a CEO-approved target, but the repo allows AI work if it is disclosed [refusal:3235]</p>
+<p>A stance gate that reads a disclosure rule as a ban blocks work the repo would accept</p>
+<p>The stance check now reads AI-with-disclosure as allowed [landed:2156]</p>
+<h2>A miss that was really the grader's</h2>
+<p>The Lean v4 grader did not see calls written with {value: ...}, so a scaffold was scored a false miss [landed:2165]</p>
+<p>Before a miss goes on the record, check that the grader could have seen the call</p>
+<p>The grader now matches calls that pass a value option</p>
+<h2>Euler replay still reverts in setUp</h2>
+<p>The probe-readings replay reverted in setUp on a vm.prank and vm.startPrank collision, twice, after the first harness fix had landed [refusal:3256]</p>
+<p>A fix that lands without a rerun on the failing target hasn't been shown to fix anything</p>
+<p>None yet: a second replay fix landed after the last refusal and no run has tested it [landed:2170]</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
