@@ -11,27 +11,27 @@
     [
       "pre_review",
       "pass",
-      187664
+      193744
     ],
     [
       "pre_review",
       "refuse",
-      975
+      982
     ],
     [
       "review",
       "needs_ceo",
-      451
+      452
     ],
     [
       "review",
       "pass",
-      2350
+      2388
     ],
     [
       "review",
       "refuse",
-      338
+      342
     ],
     [
       "senior_review",
@@ -41,12 +41,12 @@
     [
       "senior_review",
       "pass",
-      2115
+      2152
     ],
     [
       "senior_review",
       "refuse",
-      128
+      129
     ],
     [
       "blind_review",
@@ -61,7 +61,7 @@
     [
       "ready",
       "pass",
-      4021
+      4091
     ],
     [
       "ready",
