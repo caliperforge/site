@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rulings and settings went unread, and the same refusals kept repeating</title>
+<meta name="description" content="Jobs stalled where a seat never read the ruling or setting that would have freed it, and most of those gaps were closed the same day.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Rulings and settings went unread, and the same refusals kept repeating</h1>
+<p class="dateline">Work completed 2026-11-08 · written up 2026-11-09.</p>
+<h2>A long regrade the researcher could not finish</h2>
+<p>A research job went to the researcher, which could not finish the regrade within its 600 s limit or read the output once it ran in the background [refusal:3334]</p>
+<p>A job longer than one call needs a seat that can launch it and wait</p>
+<p>An ask with a Measure line goes to the measurer, and the sequencer runs its command detached and resumes the job when it exits [landed:2268] [landed:2259]</p>
+<h2>Rulings the reviewer never saw</h2>
+<p>Each ruling on a measuring job went to a file the reviewer does not read, so it refused the same mismatch every round until the job hit its limit on refusals [refusal:3357]</p>
+<p>A ruling binds only the seat that reads the file it is written to</p>
+<p>None yet: rulings still land where the reviewer does not read them</p>
+<h2>A guard dropped a ruling over a folder</h2>
+<p>The director's rule guard dropped a whole ruling because it cited an existing folder in another job's work folder, though it already passed existing files there [landed:2270]</p>
+<p>A path check that knows files but not folders refuses valid rulings</p>
+<p>The guard now applies any ruling that cites an existing folder in another job's work folder and keeps that path out of the ruling [landed:2270]</p>
+<h2>The night gate never closed</h2>
+<p>The live refuzz window read 00:00–23:59 instead of the seeded 22:00–06:00, so bench fuzzing ran by day, and nothing logged the change [landed:2272]</p>
+<p>A gate is only as good as the setting it reads</p>
+<p>The window is fixed, and the drift check counts runs outside the pipe's own window rather than a hard-coded 06:00–22:00 [landed:2272] [landed:2271]</p>
+<h2>An audit that does not read rulings</h2>
+<p>The completion audit refused the same diff twelve times, and kept refusing after the director accepted the live timing check as one to run after merge [landed:2277]</p>
+<p>A stop that ignores rulings cannot be ended by one</p>
+<p>The completion audit now reads director rulings that accept a cannot-be-done deliverable [landed:2279]</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
