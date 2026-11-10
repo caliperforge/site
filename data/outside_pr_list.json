@@ -261,9 +261,9 @@
       336,
       "feat(kotlin): add Kotlin package with the in-memory signer",
       "https://github.com/solana-foundation/solana-keychain/pull/336",
-      "open",
+      "merged",
       "2026-10-07",
-      null,
+      "2026-11-09",
       null,
       "Framework-agnostic Solana transaction signing with multiple backends. Unified trait interface, async-first design, and feature-gated compilation for minimal dependencies."
     ],
