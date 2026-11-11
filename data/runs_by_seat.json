@@ -9,35 +9,35 @@
   "rows": [
     [
       "typescript_specialist",
-      4192
+      4268
     ],
     [
       "brief_writer",
-      3637
+      3707
     ],
     [
       "senior_review",
-      2110
+      2165
     ],
     [
       "director",
-      1413
+      1475
     ],
     [
       "code_quality",
-      1358
+      1392
+    ],
+    [
+      "python_specialist",
+      301
     ],
     [
       "swift_specialist",
       286
     ],
     [
-      "python_specialist",
-      262
-    ],
-    [
       "fixer",
-      247
+      251
     ],
     [
       "orchestrator",
@@ -57,15 +57,15 @@
     ],
     [
       "writer",
-      127
+      128
     ],
     [
       "text_review",
-      123
+      124
     ],
     [
       "fetcher",
-      106
+      108
     ],
     [
       "fizz_lean_generator",
@@ -81,7 +81,7 @@
     ],
     [
       "measurer",
-      64
+      76
     ],
     [
       "fizz_generator",
