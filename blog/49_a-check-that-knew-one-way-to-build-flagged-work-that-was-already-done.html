@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A check that knew one way to build flagged work that was already done</title>
+<meta name="description" content="The drift probe now counts research builds, a red main and a narrow brief kept refusing jobs that were not at fault, and a brief's file list is still the fence that rulings cannot widen.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>A check that knew one way to build flagged work that was already done</h1>
+<p class="dateline">Work completed 2026-11-09 · written up 2026-11-10.</p>
+<h2>The probe knew one way to build</h2>
+<p>The rule_to_build drift line only counted builder runs, so it flagged a ruling as untaken when a research job's measurer had already taken it [landed:2298]</p>
+<p>A check that only knows one way work gets done will report the other ways as undone</p>
+<p>The probe also accepts a measurer or fetcher run on a research job as taking the ruling</p>
+<h2>Rulings never widen the file fence</h2>
+<p>The ledger session job came back with the same diff on every build because its brief listed only mod.rs, so the fence refused the dashboard.rs edit each ruling named [refusal:3382]</p>
+<p>A files: line in a ruling does not reach the brief's Files list, and only that list moves the fence</p>
+<p>None yet: the job is parked until the brief is edited by hand and a ticket is filed for rulings to carry their files into the brief</p>
+<h2>A red main refused clean jobs</h2>
+<p>The commit that gave the machine lane a second home turned main red, and jobs whose own tests passed were refused for it [refusal:3383]</p>
+<p>When unrelated jobs fail the same way, the fault is on main and rebuilding them repeats the red run</p>
+<p>None yet: a plan to fix the three broken tests on main is queued and the refused jobs are parked behind it</p>
+<h2>A screenshot error in CI blocked other jobs</h2>
+<p>A headless Chromium screenshot protocol error in the design test refused a hardware-list job that never touched that code [refusal:3379]</p>
+<p>A flaky gate on one path blocks every job that runs through it</p>
+<p>The design test's screenshot failure was fixed, and the blocked job landed after it [landed:2303]</p>
+<h2>The class map assumed five classes</h2>
+<p>ALeRCE's live class list held classes the label map did not have [landed:2310]</p>
+<p>Map labels from the source's own list, not from what we assume it returns</p>
+<p>The map now covers nuclear, off-nuclear and bogus from ALeRCE's class list</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
