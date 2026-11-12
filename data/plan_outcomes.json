@@ -11,12 +11,12 @@
     [
       "bench",
       "blocked_on_ceo",
-      2
+      4
     ],
     [
       "bench",
       "done",
-      29
+      32
     ],
     [
       "bench",
@@ -25,8 +25,13 @@
     ],
     [
       "comms",
+      "blocked_on_ceo",
+      1
+    ],
+    [
+      "comms",
       "done",
-      58
+      59
     ],
     [
       "pr_path",
@@ -36,7 +41,7 @@
     [
       "pr_path",
       "done",
-      2036
+      2047
     ],
     [
       "pr_path",
@@ -47,6 +52,11 @@
       "pr_path",
       "refused",
       170
+    ],
+    [
+      "pr_path",
+      "running",
+      1
     ],
     [
       "research",

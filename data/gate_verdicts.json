@@ -11,27 +11,27 @@
     [
       "pre_review",
       "pass",
-      204023
+      206293
     ],
     [
       "pre_review",
       "refuse",
-      1195
+      1215
     ],
     [
       "review",
       "needs_ceo",
-      459
+      461
     ],
     [
       "review",
       "pass",
-      2483
+      2515
     ],
     [
       "review",
       "refuse",
-      360
+      365
     ],
     [
       "senior_review",
@@ -41,32 +41,32 @@
     [
       "senior_review",
       "pass",
-      2243
+      2273
     ],
     [
       "senior_review",
       "refuse",
-      133
+      135
     ],
     [
       "blind_review",
       "pass",
+      24
+    ],
+    [
+      "blind_review",
+      "refuse",
       18
     ],
     [
-      "blind_review",
-      "refuse",
-      11
-    ],
-    [
       "ready",
       "pass",
-      4235
+      4356
     ],
     [
       "ready",
       "refuse",
-      121
+      129
     ]
   ],
   "definition": "Every verdict at pre_review (the rails), review, senior_review, blind_review and ready, counted by outcome, in the order a job meets the gates.",

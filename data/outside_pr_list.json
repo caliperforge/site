@@ -387,6 +387,28 @@
       null,
       null,
       "Framework-agnostic Solana transaction signing with multiple backends. Unified trait interface, async-first design, and feature-gated compilation for minimal dependencies."
+    ],
+    [
+      "pashov/skills",
+      76,
+      "fizz: rounding tolerance for share-converted comparisons, and limits for stand-in contracts",
+      "https://github.com/pashov/skills/pull/76",
+      "open",
+      "2026-11-11",
+      null,
+      null,
+      "Pashov Audit Group Skills"
+    ],
+    [
+      "pashov/skills",
+      77,
+      "fizz: stand-in contracts declare and enforce the limits of what they replace",
+      "https://github.com/pashov/skills/pull/77",
+      "closed",
+      "2026-11-11",
+      null,
+      null,
+      "Pashov Audit Group Skills"
     ]
   ],
   "definition": "Every pull request we opened outside caliperforge, from GitHub search, one row each: its repository, number, title and link, its state (merged, closed, approved when open with an approving review, else open), the UTC days it was opened and merged, the field of its repository, and the description the repository gives on GitHub.",
