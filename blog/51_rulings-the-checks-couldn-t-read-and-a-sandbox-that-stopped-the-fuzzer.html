@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rulings the checks couldn't read, and a sandbox that stopped the fuzzer</title>
+<meta name="description" content="The final ready check now honours a director's ruling, research notes can be written where the job keeps them, and one bench stays stuck until its sandbox allows local ports.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Rulings the checks couldn't read, and a sandbox that stopped the fuzzer</h1>
+<p class="dateline">Work completed 2026-11-11 · written up 2026-11-12.</p>
+<h2>A ready check that ignored rulings</h2>
+<p>A docs-only change kept going back through rebuild and review to the same red CI run, because the final ready check ignored three director rulings that the red came from an unrelated hardware flake [refusal:3449]</p>
+<p>A ruling the check cannot read changes nothing</p>
+<p>The final ready check now accepts a director's ruling that a red CI run doesn't count when the code hasn't changed</p>
+<h2>Research notes the job could not write</h2>
+<p>A research job's note-writing step was blocked from the job's own output folder, so its notes kept two cells known to be wrong and the job could not finish [landed:2352]</p>
+<p>A job that cannot write its own output can never meet its finish line</p>
+<p>That step may now write to the job's output folder, with no network access</p>
+<h2>A sandbox that blocks local ports</h2>
+<p>Every generator run on the euler-earn-m01 bench died because the sandbox would not let the fuzzer's log viewer listen on a local port, so no sub-agent ran and the bench refused each round [refusal:3465]</p>
+<p>A sandbox that blocks local ports stops the fuzzer before it starts, whatever the generator changes</p>
+<p>None yet: a person has to open a ticket to let that seat bind local ports</p>
+<h2>A moved test read as a skipped one</h2>
+<p>A Rust change's checks refused it repeatedly for weakening a test, when the test was an unchanged skipped hardware diagnostic that git's diff showed as moved [refusal:3474]</p>
+<p>A skipped test that only moved is not a new skip</p>
+<p>The weakened-test check now ignores a skipped test that is unchanged but shown as moved</p>
+<h2>A runner outage taken for a code fault</h2>
+<p>A change's CI failed three times because GitHub's runner could not look up Ubuntu's package servers while installing browser fonts [refusal:3460]</p>
+<p>An outage on the runner says nothing about the diff, and waiting a fixed hour doesn't show it has passed</p>
+<p>The director sent the change back as soon as another job's CI passed, without waiting out the hold</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
