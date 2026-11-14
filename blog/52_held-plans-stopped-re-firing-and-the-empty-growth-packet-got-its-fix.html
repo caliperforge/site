@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Held plans stopped re-firing and the empty growth packet got its fix</title>
+<meta name="description" content="The machine stopped paying for repeat director runs on held plans and fixed the empty growth gather, but rulings still asked seats for things they cannot do and file moves still died at the issue-list cap.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Held plans stopped re-firing and the empty growth packet got its fix</h1>
+<p class="dateline">Work completed 2026-11-12 · written up 2026-11-13.</p>
+<h2>Growth packet gathered nothing</h2>
+<p>The weekly growth pack was refused at its pack step on every rerun because its packet came back empty [refusal:3488]</p>
+<p>A rerun cannot fix bad input, so a gather that returns nothing should stop the job instead of retrying it</p>
+<p>The weekly growth plan now gathers the 7 days ending on its date instead of its own 6-hour day [landed:2381]</p>
+<h2>Held plans kept drawing director runs</h2>
+<p>A held plan whose move was never applied left no event and fired again, and one plan drew 90 runs ($18.20) for 4 events [landed:2378]</p>
+<p>A hold has to be visible to the tick or every hour pays for the same ruling again</p>
+<p>Unapplied director runs now leave an event, and the director skips its hourly re-park while held_until is still ahead [landed:2379]</p>
+<h2>Sandbox blocked local listen</h2>
+<p>Every plain-fizz generate failed with EPERM when run_medusa.js tried to listen on 127.0.0.1 [landed:2380]</p>
+<p>If the sandbox denies the job's own runtime, no rebuild can clear it</p>
+<p>The offline sandbox now allows local binding</p>
+<h2>Rulings the seat could not carry out</h2>
+<p>Empty-commit rulings never moved the head because the builder had no git shell, so CI kept going red on the same results file [refusal:3502]</p>
+<p>A ruling only works if the seat can do it: the machine pushes file changes, not commits</p>
+<p>None yet: the director now asks for a real diff, but seats still lack git and gh</p>
+<h2>File moves died at the issue-list cap</h2>
+<p>The director's file move failed after two code_quality refusals on a scenario job, because gh issue list stopped at 100 issues [refusal:3522]</p>
+<p>Once the open issues pass the cap, every file move is dropped and the stop loops</p>
+<p>None yet: the issue read still stops at 100</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
