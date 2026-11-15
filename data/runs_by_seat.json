@@ -9,15 +9,15 @@
   "rows": [
     [
       "typescript_specialist",
-      4331
+      4344
     ],
     [
       "brief_writer",
-      3749
+      3755
     ],
     [
       "senior_review",
-      2207
+      2216
     ],
     [
       "director",
@@ -25,11 +25,11 @@
     ],
     [
       "code_quality",
-      1415
+      1418
     ],
     [
       "python_specialist",
-      329
+      334
     ],
     [
       "swift_specialist",
@@ -41,7 +41,7 @@
     ],
     [
       "rust_specialist",
-      216
+      218
     ],
     [
       "orchestrator",
@@ -57,11 +57,11 @@
     ],
     [
       "writer",
-      144
+      147
     ],
     [
       "text_review",
-      138
+      141
     ],
     [
       "web_specialist",
@@ -93,7 +93,7 @@
     ],
     [
       "blind_review",
-      45
+      46
     ],
     [
       "outside_specialist",

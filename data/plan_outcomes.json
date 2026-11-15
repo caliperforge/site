@@ -10,38 +10,33 @@
   "rows": [
     [
       "bench",
-      "blocked_on_ceo",
-      3
-    ],
-    [
-      "bench",
       "done",
       33
     ],
     [
       "bench",
       "refused",
-      8
+      11
     ],
     [
       "comms",
-      "blocked_on_ceo",
+      "done",
+      63
+    ],
+    [
+      "comms",
+      "refused",
       1
     ],
     [
-      "comms",
-      "done",
-      62
-    ],
-    [
       "pr_path",
       "blocked_on_ceo",
-      13
+      9
     ],
     [
       "pr_path",
       "done",
-      2063
+      2069
     ],
     [
       "pr_path",
@@ -51,7 +46,7 @@
     [
       "pr_path",
       "refused",
-      172
+      176
     ],
     [
       "research",
