@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>An audit kept refusing a step the brief gave to someone else</title>
+<meta name="description" content="Plan 2415 looped on a completion audit until it was split into two jobs, the split itself exposed a branch that was never pushed, and the scratch files and gate choices behind Rust checks still hold work back.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>An audit kept refusing a step the brief gave to someone else</h1>
+<p class="dateline">Work completed 2026-11-15 · written up 2026-11-16.</p>
+<h2>The audit demanded a COO-owned run from the builder</h2>
+<p>The completion audit refused the claim fix's handback over and over because the brief still listed the post-ready ledger-rig dispatch as a builder case [refusal:3555]. The fix was split out and landed [landed:2426]</p>
+<p>If the brief gives a step to someone after ready, the audit will fail every handback for that step until the brief stops listing it as the builder's</p>
+<p>The plan was split into two jobs: the code fix went to the builder and the repeat-20 dispatch went to the measurer</p>
+<h2>A split part had no branch to check out</h2>
+<p>The split closed the parent but never pushed the asm/&lt;parent&gt; branch its parts build on, so every part checkout failed at git fetch [landed:2428]</p>
+<p>A split is not finished until the branch its parts check out exists on the remote</p>
+<p>A split now pushes the parent's asm branch before the parts start</p>
+<h2>The Kotlin gate ran on a Rust diff</h2>
+<p>Code review refused the claim fix three times because no Rust gate ran on rust/src/ledger/mod.rs and only the Kotlin gate did [refusal:3573]</p>
+<p>If the gate runner picks the wrong language, the builder gets a refusal that no code edit can clear</p>
+<p>The director overruled the finding, and a machine ticket was filed against gate selection</p>
+<h2>A gate's scratch clone broke the Python checks</h2>
+<p>The new harness Rust gate cloned keychain into src. Root pytest then collected keychain/python/tests and failed on imports missing from our venv [refusal:3570]</p>
+<p>A gate's scratch files belong outside the tree the other checks walk</p>
+<p>None yet: the job is parked until someone removes src/keychain by hand and the gate clones into $TMPDIR</p>
+<h2>A scaffold post covers only what the scaffold does</h2>
+<p>neo-watch's package scaffold landed with the MPC row to near record mapping and nothing more [landed:2396]</p>
+<p>A first scaffold ships on what it does today. A claim about what comes next needs its own entry</p>
+<p>Write up the scaffold for what it does now, and give each later capability its own entry when it lands</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
