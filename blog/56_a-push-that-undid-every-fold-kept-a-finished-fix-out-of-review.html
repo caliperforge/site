@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A push that undid every fold kept a finished fix out of review</title>
+<meta name="description" content="The push step reset each fold and four tickets were filed against it before the fold held, then an upstream PR check became the last thing blocking the fix.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>A push that undid every fold kept a finished fix out of review</h1>
+<p class="dateline">Work completed 2026-11-16 · written up 2026-11-17.</p>
+<h2>The push undid every fold</h2>
+<p>Step 6's push reset the checkout to the branch's start commit instead of the base, so each fold over the base was undone and ready refused the same span every round [landed:2437]</p>
+<p>Ruling the same fold again does nothing while the step after it undoes the fold</p>
+<p>The push now commits over the base, and the fold sits one commit over it on the fork</p>
+<h2>One bug, four tickets</h2>
+<p>Four tickets about the push resetting to the wrong commit landed in one morning [landed:2435] [landed:2441], and a fifth was closed because current main already covered it</p>
+<p>Check a ticket against current main before filing it, not against old log lines</p>
+<p>The director closed the repeat once it checked main</p>
+<h2>No closing keyword in the PR text</h2>
+<p>Ready refused the ledger fix four times at step 6 because its pull request text links the issue with no closing keyword, and the upstream hygiene check closes PRs like that [refusal:3589]</p>
+<p>An upstream repo's own PR checks are part of being ready</p>
+<p>None yet: the PR text still needs a closing keyword</p>
+<h2>Cloned repos leaked into the test run</h2>
+<p>The checks Rust gate cloned a repo into the checkout, and root pytest collected the clone's tests and stopped the harness build [refusal:3580]</p>
+<p>A check that leaves files in the checkout changes what the next check collects</p>
+<p>The Rust gate's clones now leave the checkout before checks returns [landed:2439]</p>
+<h2>A director run that spoke read as silent</h2>
+<p>A director run that handed an action to another agent got its event only after that agent finished, so the silent-run check flagged it [landed:2442]</p>
+<p>A record that waits on another agent goes missing when that agent is slow or fails</p>
+<p>The silent-run check no longer flags a run whose event comes after the other agent finishes</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
