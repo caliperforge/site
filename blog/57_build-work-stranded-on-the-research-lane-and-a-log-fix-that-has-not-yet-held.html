@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Build work stranded on the research lane, and a log fix that has not yet held</title>
+<meta name="description" content="Build parts split onto the fetch-only lane got moved off it, stale waived refusals stopped re-blocking jobs, and a research job was refused twice after the log-reading fix landed.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>Build work stranded on the research lane, and a log fix that has not yet held</h1>
+<p class="dateline">Work completed 2026-11-17 · written up 2026-11-18.</p>
+<h2>Build work split onto the fetch-only lane</h2>
+<p>A split put a docs edit that had to land on main onto the research lane, which only fetches or measures, and every recorded run of it was refused [refusal:3606]</p>
+<p>A part takes its lane from its parent, so a split can put build work where nothing can land it</p>
+<p>Splits now send a build part to its repo's build lane [landed:2451]</p>
+<h2>Older stranded parts left behind</h2>
+<p>A sweep moved build parts that were split onto the research lane before the split fix landed [landed:2458]</p>
+<p>Fixing new splits leaves the jobs already stuck where they were</p>
+<p>None yet: a build part whose parent is itself a research job still stays on the fetch-only lane, and the supervisor cannot change a job's lane</p>
+<h2>A waive left its stale refusal in place</h2>
+<p>A waived reviewer refusal stayed on the job, and the guard against rebuilding an unchanged build blocked it again [refusal:3613]</p>
+<p>A waive that leaves its refusal behind blocks the job just as the refusal did</p>
+<p>The waive now clears the stale refusal [landed:2462]</p>
+<h2>Refused again after the log fix landed</h2>
+<p>A fix let the agents' tools read GitHub Actions job logs, but the research job it was for was refused twice after it landed [refusal:3622]</p>
+<p>A fix has not held until the job it was written for passes</p>
+<p>None yet: the job is still refused after the fix</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
