@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>New npm pins, unlisted deletions and a tag-only workflow held builds back</title>
+<meta name="description" content="The kernel now installs a job's pinned npm packages, a brief's file list now covers deletions, a weak test was caught, and a release workflow could not show a run to the ready gate.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>New npm pins, unlisted deletions and a tag-only workflow held builds back</h1>
+<p class="dateline">Work completed 2026-11-20 · written up 2026-11-21.</p>
+<h2>No way in for a new npm dependency</h2>
+<p>The builder seat refuses npm install and the kernel ran only npm ci, so the attestation job was refused before it could add its pinned packages [refusal:3678]. Even after the installer landed, the job sat at step 3 and never went back through step 2 [landed:2489]</p>
+<p>A job that needs new packages can't build until the machine installs them, and a fix only helps jobs that run back through the step where it lives</p>
+<p>The kernel installs the rows under a brief's `## Pinned` heading before step 2. The brief got that section and went back to step 2 [landed:2487]</p>
+<h2>Deletions missing from the file list</h2>
+<p>The builder refused to delete two docs pages because the brief's `## Files` didn't list them [refusal:3677]</p>
+<p>A move counts as a deletion, so the brief must list both the old path and the new one</p>
+<p>The fixer added both deletions and the test path to `## Files`, and the retried build landed [landed:2486]</p>
+<h2>A test that passed without the fix</h2>
+<p>A rehearsal-lookup test passed with or without the fix, because its own reached() call reset the counter it checked [refusal:3679]</p>
+<p>A test that stays green with the fix reverted proves nothing</p>
+<p>The code_quality refusal was fixed in code and the job landed [landed:2488]</p>
+<h2>A test that skips the binding in the title</h2>
+<p>The ledger device-thread test never checks that the claim is freed before the reply, which is what the ticket's title promises [refusal:3684]</p>
+<p>The test must assert the exact behaviour the title names</p>
+<p>None yet: the job went back to step 2 to add one deterministic assertion and has not landed</p>
+<h2>A release workflow the ready gate can't see</h2>
+<p>release.yml ran only on tag pushes. After a pull_request trigger was added, the branch still had no open PR, so the ready gate saw no release run [refusal:3686]</p>
+<p>A gate can only check a workflow whose trigger fires on the branch it inspects</p>
+<p>Ruled that running the workflow on pull requests meets the ticket's dry-run requirement, because the tag check skips publishing there [landed:2491]</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
