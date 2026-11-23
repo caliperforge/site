@@ -85,11 +85,19 @@
     ],
     [
       "2026-11-16",
-      67,
-      2327220.4,
-      411148.3,
-      1916072.1,
-      9.9
+      70,
+      2388545.9,
+      419849.9,
+      1968696,
+      9.7
+    ],
+    [
+      "2026-11-23",
+      1,
+      35895,
+      32300,
+      3595,
+      2
     ]
   ],
   "definition": "Every plan in the done state with at least one run, grouped by the week it was queued, each week labelled by its Monday. A job's tokens are the sum over all its runs, rework included; fresh is input_tokens + output_tokens, and total is fresh plus cache_read_tokens.",
