@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A host that fails one probe now gets a second probe before the failure counts</title>
+<meta name="description" content="A single failed probe no longer closes a host's verdict, the build seat now gets its npm packages installed for it, and the fuzz-rig lane built its parts in dependency order while one measurer kept getting refused for citing the wrong files.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>A host that fails one probe now gets a second probe before the failure counts</h1>
+<p class="dateline">Work completed 2026-11-23 · written up 2026-11-24.</p>
+<h2>One network blip closed a host's verdict</h2>
+<p>A host that failed a single probe was counted as down, even though the blip could have been on the network side; the live pass now probes it once more first [landed:2505]</p>
+<p>One failed probe tells you as much about the network as about the host</p>
+<p>A host that newly fails is probed again before the failure counts</p>
+<h2>The builder was told to run npm with no shell</h2>
+<p>A brief told the builder to run npm install and read the SDK's type file, but the build seat has no shell and the checkout had no node_modules [refusal:3714]</p>
+<p>A ruling can't ask a seat to do something that seat has no tool for</p>
+<p>The machine installs the brief's pinned npm packages into the checkout before the build step</p>
+<h2>A measurer cited its script instead of its outputs</h2>
+<p>The measurer's answer was refused over and over because it quoted the script's fixed strings, not the Medusa outputs it had saved [refusal:3720]</p>
+<p>Evidence is the saved output, not the code that writes it</p>
+<p>The operator ruled that the answer be rewritten to cite the saved files, with no new Medusa run</p>
+<h2>Split parts couldn't see each other's work</h2>
+<p>A split plan's builder work was never committed, and its measured files sat outside any checkout a seat could read, so the next part couldn't build on them [landed:2526]</p>
+<p>A split is only useful if each part's work lands where the next part can read it</p>
+<p>A split plan's builder diff is now applied in the checkout of its first part that is not a measure part</p>
+<h2>The skeleton went first and the rest waited</h2>
+<p>The new repo held only a LICENSE file, so the plans that needed the runner were parked and the skeleton was let past the lane's concurrency cap to land first [landed:2518]</p>
+<p>Phases that plug into a runner can't be built before the runner is on main</p>
+<p>The operator parked the dependent plans and let the skeleton past the lane cap</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
