@@ -9,27 +9,27 @@
   "rows": [
     [
       "typescript_specialist",
-      4528
+      4587
     ],
     [
       "brief_writer",
-      3896
+      3932
     ],
     [
       "senior_review",
-      2495
+      2521
     ],
     [
       "director",
-      1895
+      1942
     ],
     [
       "code_quality",
-      1461
+      1466
     ],
     [
       "python_specialist",
-      400
+      404
     ],
     [
       "swift_specialist",
@@ -37,7 +37,11 @@
     ],
     [
       "fixer",
-      273
+      282
+    ],
+    [
+      "measurer",
+      269
     ],
     [
       "rust_specialist",
@@ -49,11 +53,11 @@
     ],
     [
       "writer",
-      187
+      188
     ],
     [
       "text_review",
-      177
+      178
     ],
     [
       "researcher",
@@ -69,15 +73,11 @@
     ],
     [
       "fetcher",
-      125
+      128
     ],
     [
       "design",
       103
-    ],
-    [
-      "measurer",
-      95
     ],
     [
       "kotlin_specialist",

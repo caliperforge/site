@@ -21,7 +21,7 @@
     [
       "comms",
       "done",
-      78
+      79
     ],
     [
       "comms",
@@ -31,27 +31,32 @@
     [
       "pr_path",
       "blocked_on_ceo",
-      11
+      9
     ],
     [
       "pr_path",
       "done",
-      2159
+      2180
     ],
     [
       "pr_path",
       "queued",
-      2
+      1
     ],
     [
       "pr_path",
       "refused",
-      178
+      179
+    ],
+    [
+      "research",
+      "blocked_on_ceo",
+      2
     ],
     [
       "research",
       "done",
-      36
+      38
     ],
     [
       "research",
