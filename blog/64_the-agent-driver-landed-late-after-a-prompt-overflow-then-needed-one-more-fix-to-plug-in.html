@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The agent driver landed late, after a prompt overflow, then needed one more fix to plug in</title>
+<meta name="description" content="The machine fixed the prompt overflow, the handback-mode loop and the hidden lockfile that held back the day's builds, but a parked job still burns measurer runs while it waits.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>The agent driver landed late, after a prompt overflow, then needed one more fix to plug in</h1>
+<p class="dateline">Work completed 2026-11-24 · written up 2026-11-25.</p>
+<h2>The prompt overflowed before the first turn</h2>
+<p>The agent-driver build died at 0 tokens with the prompt too long. Trimming the brief to line ranges changed nothing, because the packages installed into the checkout overflowed the build prompt [refusal:3760]</p>
+<p>If fixing the brief changes nothing, the overflow is in how the machine builds the prompt, and no builder run can fix it</p>
+<p>Pinned packages installed into the checkout no longer overflow the build prompt [landed:2540]</p>
+<h2>Rulings never reached a build</h2>
+<p>After each step-3 ruling the builder came back in handback mode, so step 3 audited the same unchanged handback 12 times [landed:2539]</p>
+<p>Step 3 keeps refusing the same work until a build-mode run applies the ruling</p>
+<p>A run after a director or return event can no longer start in handback mode</p>
+<h2>A lockfile the ask required was hidden</h2>
+<p>The machine's generated exclude file listed uv.lock, so the lockfile the ask said to commit never reached the diff [landed:2542]</p>
+<p>A file the ask lists under Files must never be hidden by the machine's own ignore rules</p>
+<p>Lockfiles are dropped from the generated exclude file</p>
+<h2>The landed driver did not fit its socket</h2>
+<p>The agent driver landed, but the target command still threw &quot;no agent driver&quot; because the driver's interface did not match the Session that locate and write take [landed:2544]</p>
+<p>When a dependency lands, check the code that calls it before un-parking the jobs waiting on it</p>
+<p>A Session adapter puts sdkDriver behind the target command</p>
+<h2>A parked job kept spending</h2>
+<p>A parked measurement job kept firing the measurer while it waited on the driver: 160 runs, 10.2M tokens, nothing measured [refusal:3771]</p>
+<p>Parking a job is useless if its seat keeps running</p>
+<p>None yet: the ticket for it was refused at step 1</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
