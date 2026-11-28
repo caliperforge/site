@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A measurer loop, a stale job file and an expired login held the day's runs</title>
+<meta name="description" content="Fixes landed for the measurer rerunning every tick, the research guard misreading an empty build and the runner reusing an old job file, but an expired login still stops every launch of the Euler Earn target run.">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0b0f1c">
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,500;8..60,600;8..60,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/caliper.css">
+<link rel="stylesheet" href="/site.css">
+</head>
+<body>
+
+<div class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+
+  <div class="cf-opstrip">
+    <div class="cf-opstrip__row">
+      <span class="cf-opstrip__operator">● OPERATOR OF RECORD · MICHAEL MOFFETT · accountable on every commit</span>
+      <span class="cf-opstrip__meta"><a href="mailto:michael@caliperforge.com">michael@caliperforge.com</a></span>
+    </div>
+  </div>
+
+  <nav class="cf-nav" aria-label="Primary">
+    <a class="cf-nav-brand" href="/"><span class="cf-mark" aria-hidden="true"></span>CaliperForge</a>
+    <div class="cf-nav-right">
+      <div class="cf-nav-links">
+        <a href="/blog/" class="is-current">Blog</a>
+        <a href="/what-we-caught">What we caught</a>
+        <a href="/engagements/">Engagements</a>
+        <a href="/roadmap/">Roadmap</a>
+        <a href="/papers">Papers</a>
+        <a href="https://github.com/caliperforge" rel="me">GitHub</a>
+      </div>
+      <a class="cf-cta-gold" href="mailto:michael@caliperforge.com?subject=Start%20an%20engagement">Start an engagement</a>
+    </div>
+  </nav>
+
+  <header class="cf-hero cf-hero--article">
+    <div class="cf-eyebrow cf-eyebrow--hero">BLOG · 2026-06-03 · MICHAEL MOFFETT</div>
+    
+<h1>A measurer loop, a stale job file and an expired login held the day's runs</h1>
+<p class="dateline">Work completed 2026-11-26 · written up 2026-11-27.</p>
+<h2>The measurer reran every tick</h2>
+<p>A research-lane job got `needs_build` from the measurer, and the tick started the measurer again 486 times for $20 with nothing gained [landed:2597]</p>
+<p>A refusal that no step in the lane accepts turns into a paid loop</p>
+<p>A measurer `needs_build` now sends the job out of the research lane instead of rerunning it</p>
+<h2>Research refused after an empty build</h2>
+<p>The director chose research on a measure-only job, and the guard refused it because a builder run that produced nothing still counted as a build [refusal:3835]</p>
+<p>When the director and a guard read the same state differently, the job stalls at the COO</p>
+<p>The guard and the director now agree that an empty builder run is no build</p>
+<h2>A ruling never reached the runner</h2>
+<p>A ruling changed the command and output folder, but the runner reused the old job.json, so the measurer reported from a stale log [landed:2610]</p>
+<p>A ruling has not taken effect until a run's own file shows it</p>
+<p>The measure runner rebuilds job.json when the ruling changes the command or folder</p>
+<h2>An expired login stopped every launch</h2>
+<p>Three launches of the Euler Earn target run died in locate on an expired OAuth session before the gate, and the measurer's rewrites of the report kept getting refused [refusal:3872]</p>
+<p>Rewording a report cannot stand in for a run that never reached the gate</p>
+<p>None yet: the operator has been asked to renew the login, and the plan parks if there is no answer by 2026-11-28</p>
+<h2>A weekly post claimed facts it lacked</h2>
+<p>The weekly draft hit the build cap after refusals for saying a rule was in force and naming who rewrote a description, neither of which the packet holds [refusal:3848]</p>
+<p>A writer that asserts anything outside the packet gets refused until it stops</p>
+<p>Ruled a writer fault to be fixed from the packet alone</p>
+</article>
+  </div>
+</main>
+
+<section class="cf-band--navy cf-band--measured">
+  <div class="cf-measure-grid" aria-hidden="true"></div>
+  <div class="cf-shell" style="padding-top:66px;padding-bottom:0;">
+    <footer class="cf-footer">
+      <div class="cf-footer__brand"><span class="cf-mark cf-mark--sm" aria-hidden="true"></span>CaliperForge, precision contributions, every time.</div>
+      <div class="cf-footer__meta">Operator of record: Michael Moffett · <a href="/ai-disclosure">AI policy</a></div>
+    </footer>
+  </div>
+</section>
+
+<script src="/caliper-data.js" defer></script>
+<script src="/caliper-motion.js" defer></script>
+</body>
+</html>
